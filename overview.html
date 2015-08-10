@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting started &mdash; Flitchio SDK 0.5.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/supenta.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Flitchio SDK 0.5.0 documentation" href="index.html"/>
+        <link rel="next" title="Flitchio SDK for Android" href="sdkandroid.html"/>
+        <link rel="prev" title="Flitchio Developer Documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="index.html" class="icon icon-home"> Flitchio SDK
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-the-device">Overview of the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#communicate-with-flitchio">Communicate with Flitchio</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sdkandroid.html">Flitchio SDK for Android</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#bind-to-flitchio">Bind to Flitchio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#get-data-from-flitchio">Get data from Flitchio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#listening-mode">Listening Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#polling-mode">Polling Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#troubleshooting-best-practices">Troubleshooting &amp; Best practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#debug-logs">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#deal-with-flitchio-manager-connection-error">Deal with Flitchio Manager connection error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#know-when-to-poll-data-from-flitchio">Know when to poll data from Flitchio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#receive-listener-callbacks-on-a-particular-thread">Receive listener callbacks on a particular thread</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#keep-your-screen-on-while-using-flitchio">Keep your screen on while using Flitchio</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sdkunity.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases and ideas for Flitchio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flitchioime.html">Enable Flitchio compatibility without Flitchio SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Feedback &amp; Support</a></li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Flitchio SDK</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Getting started</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/overview.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://flitch.io/">Flitchio</a> is a new kind of controller that is attached to the back of an Android smartphone.
+It uses NFC to communicate with the host device and may be used for a variety of applications especially in gaming.
+The Flitchio SDK provides you with everything you need to build apps enhanced by <a class="reference external" href="https://flitch.io/">Flitchio</a>.</p>
+<p>This page is intended for app developers only.
+It guides you through the installation and the integration of the Flitchio SDK into your project.</p>
+<p>Note that if your game already supports USB/Bluetooth game controllers, and you want to add basic support for Flitchio, you might not need to implement anything.
+See <a class="reference internal" href="flitchioime.html#flitchio-ime"><span>Enable Flitchio compatibility without Flitchio SDK</span></a> for further informations.</p>
+<p>If you&#8217;re the happy owner of a Flitchio, but you&#8217;re still looking for an innovative use case to develop, <a class="reference internal" href="usecases.html#use-cases"><span>here</span></a> are some ideas.</p>
+<div class="section" id="overview-of-the-device">
+<h2>Overview of the device<a class="headerlink" href="#overview-of-the-device" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center" id="id2">
+<span id="fig-flitchio-device"></span><img alt="Flitchio seen from the back of the phone" src="_images/flitchio_device.png" />
+<p class="caption"><span class="caption-text">Flitchio seen from the back of the phone</span></p>
+</div>
+<p>Flitchio comes as a smartphone case that adds interactive controls at the back the phone.</p>
+<p>It has two <strong>shoulder buttons</strong> which are clickable and sensitive to pressure variations.
+Through the Flitchio SDK, you can receive press and release events of the buttons and measure the pressure applied by the user.</p>
+<ul class="simple">
+<li>The button called <code class="docutils literal"><span class="pre">BUTTON_TOP</span></code> is the one naturally at the top when you hold your phone in portrait. When you rotate your phone to landscape to handle Flitchio, <code class="docutils literal"><span class="pre">BUTTON_TOP</span></code> is under your <em>right</em> hand.</li>
+<li>The button called <code class="docutils literal"><span class="pre">BUTTON_BOTTOM</span></code> is the one naturally at the bottom when you hold your phone in portrait. When you rotate your phone to landscape to handle Flitchio, <code class="docutils literal"><span class="pre">BUTTON_BOTTOM</span></code> is under your <em>left</em> hand.</li>
+</ul>
+<p>Flitchio also has two analogue <strong>joysticks</strong>.
+Through the Flitchio SDK, you can receive events when each of the joystick moves, and you can poll the current position of each joystick at all times.</p>
+<ul class="simple">
+<li>The joystick called <code class="docutils literal"><span class="pre">JOYSTICK_TOP</span></code> is the one naturally at the top when you hold your phone in portrait. When you rotate your phone to landscape to handle Flitchio, <code class="docutils literal"><span class="pre">JOYSTICK_TOP</span></code> is under your <em>right</em> hand.</li>
+<li>The button called <code class="docutils literal"><span class="pre">JOYSTICK_BOTTOM</span></code> is the one naturally at the bottom when you hold your phone in portrait. When you rotate your phone to landscape to handle Flitchio, <code class="docutils literal"><span class="pre">JOYSTICK_BOTTOM</span></code> is under your <em>left</em> hand.</li>
+</ul>
+<p>For each joystick are also defined virtual buttons for the four directions (up, down, left and right).
+These virtual buttons are called <strong>D-Pad buttons</strong> (for &#8220;directional pad&#8221;) and they act just like shoulder buttons in the sense that you can receive press and release events for each them.
+However joysticks don&#8217;t support pressure-sensitivity so the pressure of the D-Pad buttons will always be 0.5 when pressed.
+You have eight D-Pad buttons in total:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">DPAD_BOTTOM_UP</span></code> for the up direction of <code class="docutils literal"><span class="pre">JOYSTICK_BOTTOM</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_BOTTOM_DOWN</span></code> for the down direction of <code class="docutils literal"><span class="pre">JOYSTICK_BOTTOM</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_BOTTOM_LEFT</span></code> for the left direction of <code class="docutils literal"><span class="pre">JOYSTICK_BOTTOM</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_BOTTOM_RIGHT</span></code> for the right direction of <code class="docutils literal"><span class="pre">JOYSTICK_BOTTOM</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_TOP_UP</span></code> for the up direction of <code class="docutils literal"><span class="pre">JOYSTICK_TOP</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_TOP_DOWN</span></code> for the down direction of <code class="docutils literal"><span class="pre">JOYSTICK_TOP</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_TOP_LEFT</span></code> for the left direction of <code class="docutils literal"><span class="pre">JOYSTICK_TOP</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">DPAD_TOP_RIGHT</span></code> for the right direction of <code class="docutils literal"><span class="pre">JOYSTICK_TOP</span></code>.</li>
+</ul>
+<p>The Flitchio Manager app automatically handles the orientation of the phone so that the user experience is always consistent: e.g. whether your app works in portrait or landscape, the left direction is always the natural left direction. You don&#8217;t have to worry about it.</p>
+</div>
+<div class="section" id="communicate-with-flitchio">
+<h2>Communicate with Flitchio<a class="headerlink" href="#communicate-with-flitchio" title="Permalink to this headline">¶</a></h2>
+<p>The Flitchio Manager Android app is required in order to connect to Flitchio.
+Through the Flitchio SDK, your app will bind to Flitchio Manager to access the device.</p>
+<p>If you possess Flitchio, you probably already have downloaded the Flitchio Manager app.
+If you haven&#8217;t, <a class="reference external" href="https://play.google.com/store/apps/details?id=com.supenta.flitchio.manager">go to the Play Store and install it</a>.</p>
+<p>Before building your app, you&#8217;ll need to understand the general architecture of all Flitchio apps.
+The diagram below pictures the interactions between your app, the Flitchio Manager app and Flitchio itself:</p>
+<div class="figure align-center" id="id3">
+<span id="fig-software-architecture"></span><img alt="Overall software architecture" src="_images/software_architecture.png" />
+<p class="caption"><span class="caption-text">Overall software architecture</span></p>
+</div>
+<p>Flitchio communicates through NFC with the mobile device.
+The <a class="reference external" href="https://play.google.com/store/apps/details?id=com.supenta.flitchio.manager">Flitchio Manager</a> app is absolutely required on the user&#8217;s phone.
+It receives data from the device and dispatches it to your client app.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sdkandroid.html" class="btn btn-neutral float-right" title="Flitchio SDK for Android" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Flitchio Developer Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, SUPENTA.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.5.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
