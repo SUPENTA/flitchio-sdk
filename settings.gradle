@@ -1,0 +1,3 @@
+include ':sdk'
+include ':libJavadocFilter'
+include ':docs'

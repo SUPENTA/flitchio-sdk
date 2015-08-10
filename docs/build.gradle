@@ -1,0 +1,58 @@
+apply from: 'checkSetup.gradle'
+
+ext {
+    srcDir = 'src'
+    outputDir = 'build'
+    outputDocsDir = outputDir + '/docs'
+    outputSpellingDir = outputDir + '/spelling'
+}
+
+/*
+ * SPELL CHECK
+ */
+task("checkSpelling") {
+    dependsOn "checkSetupSphinx",
+            "checkSetupSphinxSpelling"
+
+    inputs.dir fileTree(dir: srcDir, include: '*.rst')
+    outputs.dir outputSpellingDir
+} << {
+    exec {
+        commandLine 'sphinx-build',
+                '-b', 'spelling',
+                srcDir,
+                outputSpellingDir
+
+        standardOutput = new ByteArrayOutputStream()
+
+        ignoreExitValue = true // otherwise the misspelled words make it fail
+    }
+
+    System.err << "WARNING: the following words are not correctly spelled:\n"
+    System.err << file("$outputSpellingDir/output.txt").text
+}
+
+/*
+ * SPHINX -> HTML
+ */
+task("buildHtml") {
+    dependsOn "checkSetupSphinx",
+            "checkSetupSphinxJavalink",
+            ":sdk:assembleRelease" // to generate classes for sphinx-javalink
+
+    inputs.dir srcDir
+    outputs.dir outputDocsDir
+} << {
+    exec {
+        workingDir srcDir
+
+        commandLine 'sphinx-build',
+                '-b', 'html',
+                '-D', 'version=' + libraryVersion,
+                '-D', 'release=' + libraryVersion,
+                '.',
+                '../' + outputDocsDir
+
+        standardOutput = new ByteArrayOutputStream()
+    }
+}

@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+    ext {
+        libraryVersion = '0.5.0'
+        libraryVersionCode = 500000
+    }
+}
+
+apply from: 'ghPages.gradle'

@@ -1,0 +1,1 @@
+Here, put the AAR of Flitchio SDK when you include the polug-in to a game.

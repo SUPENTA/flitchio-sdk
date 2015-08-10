@@ -1,0 +1,50 @@
+
+This is a Title
+===============
+
+That has a paragraph about a main subject and is set when the '='
+is at least the same length of the title itself.
+
+Subject Subtitle
+----------------
+
+Subtitles are set with '-' and are required to have the same length
+of the subtitle itself, just like titles.
+
+Lists can be unnumbered like:
+
+* Item Foo
+* Item Bar
+
+Or automatically numbered:
+
+#. Item 1
+#. Item 2
+
+Inline Markup
+-------------
+
+Words can have *emphasis in italics* or be **bold** and you can define
+code samples with back quotes, like when you talk about a command: ``sudo``
+gives you super user powers!
+
+
+Formatting: `http://sphinx-doc.org/rest.html <http://sphinx-doc.org/rest.html>`_ and `http://docutils.sourceforge.net/docs/user/rst/quickstart.html <http://docutils.sourceforge.net/docs/user/rst/quickstart.html>`_ and `http://docutils.sourceforge.net/docs/user/rst/quickref.html <http://docutils.sourceforge.net/docs/user/rst/quickref.html>`_ `http://sphinx-doc.org/markup/inline.html <http://sphinx-doc.org/markup/inline.html>`_
+
+
+Section headers (ref) are created by underlining (and optionally overlining) the section title with a punctuation character, at least as long as the text:
+
+=================
+This is a heading
+=================
+,
+Normally, there are no heading levels assigned to certain characters as the structure is determined from the succession of headings. However, for the Python documentation, this convention is used which you may follow:
+
+# with overline, for parts
+* with overline, for chapters
+=, for sections
+-, for subsections
+^, for subsubsections
+", for paragraphs
+
+Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level, but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.

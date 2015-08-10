@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayUserOrg = 'supenta'
+    bintrayName = 'flitchio-sdk'
+
+    publishedGroupId = 'com.supenta.flitchio'
+    libraryName = 'Flitchio SDK'
+    artifact = 'sdk'
+
+    libraryDescription = 'The complete devkit for Flitchio, ' +
+            'the first game controller built into a smartphone case.'
+
+    siteUrl = 'https://github.com/Flitchio/flitciho-sdk'
+    gitUrl = 'https://github.com/Flitchio/flitciho-sdk.git'
+
+    developerId = 'supenta-team'
+    developerName = 'The SUPENTA Development Team'
+    developerEmail = 'devs@supenta.com'
+
+    licenseName = 'The MIT License (MIT)'
+    licenseUrl = 'http://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 22
+
+        versionName libraryVersion
+        versionCode libraryVersionCode
+    }
+
+    buildTypes {
+        release {
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'

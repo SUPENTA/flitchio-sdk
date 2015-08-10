@@ -1,0 +1,33 @@
+// Takes care of generating all the doc: sphinx + javadoc
+
+def ghPagesDir = 'gh-pages'
+
+task resetGhPages(type: Delete) {
+    delete fileTree(dir: ghPagesDir, exclude: [
+            '.git',
+            '.gitignore',
+            'CNAME',
+            '.nojekyll'
+    ])
+}
+
+task generateAllDocs {
+    mustRunAfter resetGhPages
+    dependsOn ":sdk:javadoc", ":docs:buildHtml"
+}
+
+task copyAllDocs(type: Copy) {
+    dependsOn resetGhPages, generateAllDocs
+
+    from(tasks.getByPath(":docs:buildHtml").outputs)
+    from(tasks.getByPath(":sdk:javadoc").outputs) {
+        into 'javadoc'
+    }
+
+    into ghPagesDir
+}
+
+copyAllDocs.doLast {
+    println "Docs has been generated in the gh-pages subfolder. " +
+            "Now you need to go inside, commit the changes and 'git push origin gh-pages'"
+}

@@ -1,0 +1,102 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+// This is needed only to build the doc locally, for test purposes.
+// Later, the release doc will be generated using https://readthedocs.org/
+
+/*
+ About the output technique for Exec tasks, see
+ http://forums.gradle.org/gradle/topics/hide_exec_output_for_non_failing_tasks
+*/
+task("checkSetupPython", type: Exec) {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'where', 'python'
+    } else {
+        commandLine 'whereis', 'python'
+    }
+
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+
+    ignoreExitValue = true
+    doLast {
+        if (execResult.exitValue != 0) {
+            throw new GradleException("Can't find python executable.\n" +
+                    "Windows: Please install Python 2.x (not 3.x!) and add PYTHON_HOME and " +
+                    "PYTHON_HOME\\Scripts to your PATH (e.g. C:\\Python27 and " +
+                    "C:\\Python27\\Scripts), then restart Android Studio.\n" +
+                    "Download:\n" +
+                    "https://www.python.org/downloads/\n" +
+                    "Note: If you want to use cygwin's python, make sure to include /usr/bin " +
+                    "in your PATH. Also, copy python2.*.exe to python.exe."
+            )
+        }
+    }
+}
+
+task("checkSetupSphinx", type: Exec) {
+    dependsOn "checkSetupPython"
+
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'where', 'sphinx-build'
+    } else {
+        commandLine 'whereis', 'sphinx-build'
+    }
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+
+    ignoreExitValue = true
+    doLast {
+        if (execResult.exitValue != 0) {
+            throw new GradleException("Can't find sphinx-build executable. Please install " +
+                    "Sphinx.\n" +
+                    "Run (in a Windows terminal, not Babun):\n" +
+                    "> pip install sphinx\n" +
+                    "Note: you might need to run it as admin.\n" +
+                    "Source: http://sphinx-doc.org/latest/install.html" +
+                    "#windows-install-python-and-sphinx"
+            )
+        }
+    }
+}
+
+task("checkSetupSphinxSpelling", type: Exec) {
+    dependsOn "checkSetupSphinx", "checkSetupPython"
+
+    commandLine 'python', '-c', '"import sphinxcontrib.spelling"'
+
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+
+    ignoreExitValue = true
+    doLast {
+        if (execResult.exitValue != 0) {
+            throw new GradleException("Can't find Sphinx spelling plugin. Please install it.\n" +
+                    "Run (in a Windows terminal, not Babun):\n" +
+                    "> pip install sphinxcontrib-spelling pyenchant\n" +
+                    "Note: you might need to run it as admin.\n" +
+                    "Source: http://sphinxcontrib-spelling.readthedocs.org/en/latest/install.html"
+            )
+        }
+    }
+}
+
+task("checkSetupSphinxJavalink", type: Exec) {
+    dependsOn "checkSetupSphinx", "checkSetupPython"
+
+    commandLine 'python', '-c', '"import javalink"'
+
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+
+    ignoreExitValue = true
+    doLast {
+        if (execResult.exitValue != 0) {
+            throw new GradleException("Can't find sphinx-javalink plugin. Please install it.\n" +
+                    "Run (in a Windows terminal, not Babun):\n" +
+                    "> pip install sphinx-javalink\n" +
+                    "Note: you might need to run it as admin.\n" +
+                    "Source: https://github.com/bluekeyes/sphinx-javalink"
+            )
+        }
+    }
+}
