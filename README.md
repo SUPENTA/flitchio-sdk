@@ -2,6 +2,8 @@
 
 By [SUPENTA](https://supenta.com/).
 
+[![GitHub version](https://badge.fury.io/gh/supenta%2Fflitchio-sdk.svg)](http://badge.fury.io/gh/supenta%2Fflitchio-sdk)
+
 [Flitchio](https://flitch.io/) is the **first game controller built into a smartphone case**.
 
 With its two analogue joysticks and two shoulder buttons at the back of the phone,
