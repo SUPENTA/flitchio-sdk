@@ -3,6 +3,7 @@
 By [SUPENTA](https://supenta.com/).
 
 [![GitHub version](https://badge.fury.io/gh/supenta%2Fflitchio-sdk.svg)](http://badge.fury.io/gh/supenta%2Fflitchio-sdk)
+[![Build Status](https://travis-ci.org/SUPENTA/flitchio-sdk.svg)](https://travis-ci.org/SUPENTA/flitchio-sdk)
 
 [Flitchio](https://flitch.io/) is the **first game controller built into a smartphone case**.
 
