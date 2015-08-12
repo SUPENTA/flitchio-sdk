@@ -29,8 +29,10 @@ The Change Log itself follows a standard format described [there](http://keepach
 ### Added
 - Support for Travis CI and README badges
 - Google Analytics in documentation
+
 ### Changed
 - Use latest Gradle plug-in 1.3.0
+
 ### Fixed
 - Fix version code of Flitchio Manager (was completely broken), now calculated automatically
 - Fix links to Javadoc to use Java 8 formatting
