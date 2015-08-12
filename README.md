@@ -25,7 +25,7 @@ Add a library dependency to your app module's `build.gradle`:
 
 ```
 dependencies {
-    compile 'com.supenta.flitchio:sdk:0.5.0'
+    compile 'com.supenta.flitchio:sdk:<version>'
 }
 ```
 
