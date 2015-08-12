@@ -43,5 +43,5 @@ The Change Log itself follows a standard format described [there](http://keepach
 - All documentation on http://dev.flitch.io.
 
 [unreleased]: https://github.com/SUPENTA/flitchio-sdk/compare/v0.5.0...HEAD
-[0.5.1]: https://github.com/SUPENTA/flitchio-sdk/compare/v0.5.0...0.5.1
-<!-- [0.6.0]: https://github.com/SUPENTA/flitchio-sdk/compare/v0.5.0...0.6.0 -->
+[0.5.1]: https://github.com/SUPENTA/flitchio-sdk/compare/v0.5.0...v0.5.1
+<!-- [0.6.0]: https://github.com/SUPENTA/flitchio-sdk/compare/v0.5.0...v0.6.0 -->
