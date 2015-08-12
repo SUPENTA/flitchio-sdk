@@ -95,6 +95,10 @@ proguard/
 gen-external-apklibs
 
 
+### Python ###
+*.pyc
+
+
 ### Custom ###
 # The gh-pages is actually another clone of flitchio-sdk, but it's dedicated only to the gh-pages branch
 /gh-pages
