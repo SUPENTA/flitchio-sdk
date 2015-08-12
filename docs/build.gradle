@@ -38,6 +38,7 @@ task("checkSpelling") {
 task("buildHtml") {
     dependsOn "checkSetupSphinx",
 //            "checkSetupSphinxJavalink", // we use local sphinx-javalink temporarily
+            "checkSetupSphinxAnalytics",
             ":sdk:assembleRelease" // to generate classes for sphinx-javalink
 
     inputs.dir srcDir

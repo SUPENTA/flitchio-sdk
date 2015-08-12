@@ -293,15 +293,14 @@ texinfo_documents = [
 # Use Java highlighting
 highlight_language = 'java'
 
-# Spell checking
+# EXTENSION spell checking ================
 extensions += ['sphinxcontrib.spelling']
 spelling_lang = 'en_GB'
 spelling_word_list_filename = 'dict.txt'
 
-# sphinx-javalink
+# EXTENSIONS sphinx-javalink ==============
 
-# TODO use the official extension instead when https://github.com/bluekeyes/sphinx-javalink/pull/6
-# is solved
+# TODO use official extension instead when https://github.com/bluekeyes/sphinx-javalink/pull/6 is ok
 
 sys.path.append(os.path.abspath('_extensions'))
 
@@ -325,3 +324,8 @@ javalink_docroots = [
 javalink_add_method_parameters = False
 javalink_add_package_names = False
 #javalink_qualify_nested_types = True # default is True
+
+# EXTENSIONS Google Analytics =============
+extensions += ['sphinxcontrib.googleanalytics']
+googleanalytics_id = 'UA-60421016-4'
+#googleanalytics_enabled = #True by default
