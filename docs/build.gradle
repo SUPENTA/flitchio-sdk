@@ -42,6 +42,7 @@ task("buildHtml") {
             ":sdk:assembleRelease" // to generate classes for sphinx-javalink
 
     inputs.dir srcDir
+    inputs.property("version", libraryVersion)
     outputs.dir outputDocsDir
 } << {
     exec {
