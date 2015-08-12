@@ -9,14 +9,26 @@ buildscript {
     }
 }
 
+def versionMajor = 0
+def versionMinor = 5
+def versionBuild = 1
+
+def generateVersionName = {
+    return versionMajor+"."+versionMinor+"."+versionBuild
+}
+
+def generateVersionCode = {
+    return versionMajor * 100 * 100 * 100 + versionMinor * 100 * 100 + versionBuild * 100
+}
+
 allprojects {
     repositories {
         jcenter()
     }
 
     ext {
-        libraryVersion = '0.5.0'
-        libraryVersionCode = 500000
+        libraryVersion = generateVersionName()
+        libraryVersionCode = generateVersionCode()
     }
 }
 
