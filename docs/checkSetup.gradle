@@ -100,3 +100,29 @@ task("checkSetupSphinxJavalink", type: Exec) {
         }
     }
 }
+
+task("checkSetupSphinxAnalytics", type: Exec) {
+    dependsOn "checkSetupSphinx", "checkSetupPython"
+
+    commandLine 'python', '-c', '"import sphinxcontrib.googleanalytics"'
+
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+
+    ignoreExitValue = true
+    doLast {
+        if (execResult.exitValue != 0) {
+            throw new GradleException("Can't find Sphinx Google Analytics plugin. Please install " +
+                    "it.\n" +
+                    "Follow the instructions: " +
+                    "https://pypi.python.org/pypi/sphinxcontrib-googleanalytics"
+
+                    // REMARK: the package in PyPi is not fixed yet. When it is, you can do:
+                    //"Run (in a Windows terminal, not Babun):\n" +
+                    //"> pip install sphinxcontrib-googleanalytics\n" +
+                    //"Note: you might need to run it as admin.\n" +
+                    //"Source: https://pypi.python.org/pypi/sphinxcontrib-googleanalytics"
+            )
+        }
+    }
+}

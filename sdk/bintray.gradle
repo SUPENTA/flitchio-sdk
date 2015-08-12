@@ -22,6 +22,8 @@ task javadoc(type: Javadoc) {
 
         docletpath = files('../libJavadocFilter/build/libs/libJavadocFilter.jar').asType(List)
         doclet = "com.supenta.flitchio.javadocfilter.JavadocFilter"
+
+        noTimestamp true
     }
 
     failOnError false

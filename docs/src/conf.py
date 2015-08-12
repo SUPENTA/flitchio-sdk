@@ -293,12 +293,17 @@ texinfo_documents = [
 # Use Java highlighting
 highlight_language = 'java'
 
-# Spell checking
+# EXTENSION spell checking ================
 extensions += ['sphinxcontrib.spelling']
 spelling_lang = 'en_GB'
 spelling_word_list_filename = 'dict.txt'
 
-# sphinx-javalink
+# EXTENSIONS sphinx-javalink ==============
+
+# TODO use official extension instead when https://github.com/bluekeyes/sphinx-javalink/pull/6 is ok
+
+sys.path.append(os.path.abspath('_extensions'))
+
 import javalink
 
 extensions += ['javalink']
@@ -307,10 +312,20 @@ javalink_classpath = [
     '../../sdk/build/intermediates/classes/debug/'
 ]
 javalink_docroots = [
-    'http://docs.oracle.com/javase/7/docs/api/',
-    'http://dev.flitch.io/javadoc/'
+    # New version modded by us
+    (7, 'http://docs.oracle.com/javase/7/docs/api/'),
+    (8, 'http://dev.flitch.io/javadoc/')
+
+    # Official old version of sphinx-javalink
+    # 'http://docs.oracle.com/javase/7/docs/api/',
+    # 'http://dev.flitch.io/javadoc/'
 ]
 
 javalink_add_method_parameters = False
 javalink_add_package_names = False
 #javalink_qualify_nested_types = True # default is True
+
+# EXTENSIONS Google Analytics =============
+extensions += ['sphinxcontrib.googleanalytics']
+googleanalytics_id = 'UA-60421016-4'
+#googleanalytics_enabled = #True by default
