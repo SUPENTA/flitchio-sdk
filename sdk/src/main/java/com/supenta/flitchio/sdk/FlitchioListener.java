@@ -7,7 +7,7 @@ import android.os.Handler;
  * (connected/disconnected). A listener must be registered with
  * {@link FlitchioController#onResume(FlitchioListener)} to receive events.
  *
- * @since Flitchio-0.5.0
+ * @since 0.5.0
  */
 public interface FlitchioListener {
 
@@ -21,7 +21,7 @@ public interface FlitchioListener {
      *
      * @param source The button whose state has changed.
      * @param event  The event corresponding to the button state change.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     void onFlitchioButtonEvent(InputElement.Button source, ButtonEvent event);
 
@@ -34,7 +34,7 @@ public interface FlitchioListener {
      *
      * @param source The joystick whose position has changed.
      * @param event  The event corresponding to the joystick position change.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     void onFlitchioJoystickEvent(InputElement.Joystick source, JoystickEvent event);
 
@@ -47,7 +47,7 @@ public interface FlitchioListener {
      * was specified.
      *
      * @param isConnected The new connection status.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     void onFlitchioStatusChanged(boolean isConnected);
 }

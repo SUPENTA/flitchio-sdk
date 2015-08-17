@@ -4,7 +4,7 @@ package com.supenta.flitchio.sdk;
  * Exception thrown when the Flitchio Manager app was not found on the system or is too old for this
  * SDK version.
  *
- * @since Flitchio-0.5.0
+ * @since 0.5.0
  */
 @SuppressWarnings("serial")
 public class FlitchioManagerDependencyException extends Exception {

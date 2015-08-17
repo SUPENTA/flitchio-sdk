@@ -13,7 +13,7 @@ import android.os.Parcelable;
  * <p>
  * Each event has one source that is one of the joysticks defined in {@link InputElement#JOYSTICKS}.
  *
- * @since Flitchio-0.5.0
+ * @since 0.5.0
  */
 public class JoystickEvent extends InputEvent<InputElement.Joystick> implements Parcelable {
     /**
@@ -58,7 +58,7 @@ public class JoystickEvent extends InputEvent<InputElement.Joystick> implements 
      * Retrieve the X position of the joystick in this event.
      *
      * @return A value ranging from -1.0 to 1.0.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public float getX() {
         return x;
@@ -68,7 +68,7 @@ public class JoystickEvent extends InputEvent<InputElement.Joystick> implements 
      * Retrieve the Y position of the joystick in this event.
      *
      * @return A value ranging from -1.0 to 1.0.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public float getY() {
         return y;
@@ -79,7 +79,7 @@ public class JoystickEvent extends InputEvent<InputElement.Joystick> implements 
      * horizontal right and the angle is measured clockwise.
      *
      * @return A value in degrees from 0 to 360 (excluded).
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public float getAngle() {
         float angle = (float) Math.toDegrees(Math.atan2(y, x));
@@ -95,7 +95,7 @@ public class JoystickEvent extends InputEvent<InputElement.Joystick> implements 
      * event.
      *
      * @return A value ranging from 0.0 to sqrt(2).
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public float getDistance() {
         return (float) Math.sqrt(x * x + y * y);

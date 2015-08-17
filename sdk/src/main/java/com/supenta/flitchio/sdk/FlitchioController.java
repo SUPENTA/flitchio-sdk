@@ -47,7 +47,7 @@ import java.util.Map;
  * presses/releases and {@link JoystickEvent}s for joystick position updates, as well as updates
  * about the connection status of Flitchio.
  *
- * @since Flitchio-0.5.0
+ * @since 0.5.0
  */
 public class FlitchioController {
 
@@ -167,7 +167,7 @@ public class FlitchioController {
      * @param context The context used to bind. It should be the Activity / Service, not the
      *                Application's context.
      * @return An instance of {@link FlitchioController}.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public static synchronized FlitchioController getInstance(Context context) {
         if (context == null) {
@@ -208,7 +208,7 @@ public class FlitchioController {
      * Get an Intent to download the FlitchioManager app on the Play Store.
      *
      * @return An intent to open the PlayStore on FlitchioManager page.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public static Intent getPlayStoreIntentForFlitchioManager() {
         // This intent will work only if the Play Store is installed, which we assume here.
@@ -227,7 +227,7 @@ public class FlitchioController {
      * defined in the Manifest.
      *
      * @return The version code of the SDK.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     @SuppressWarnings({"WeakerAccess", "SameReturnValue"})
     public static int getVersionCode() {
@@ -240,7 +240,7 @@ public class FlitchioController {
      *
      * @return The version code of Flitchio Manager.
      * @throws FlitchioManagerDependencyException If FlitchioManager is not installed.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     @SuppressWarnings("WeakerAccess")
     public static int getFlitchioManagerVersionCode(Context context)
@@ -267,7 +267,7 @@ public class FlitchioController {
      * @return True if the {@link FlitchioController} is going to get bound.
      * @throws FlitchioManagerDependencyException If Flitchio Manager was not found or is too old
      *                                            and needs to be upgraded.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public boolean onCreate() throws FlitchioManagerDependencyException {
         if (flitchioService != null) {
@@ -300,7 +300,7 @@ public class FlitchioController {
      *
      * @param listener The listener.
      * @param handler  The handler associated to the thread on which the callbacks will happen.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public void onResume(FlitchioListener listener, Handler handler) {
         synchronized (lockListener) {
@@ -346,7 +346,7 @@ public class FlitchioController {
      * You only need to call this if you declare a {@link FlitchioListener}.
      *
      * @param listener The listener.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public void onResume(FlitchioListener listener) {
         onResume(listener, null);
@@ -360,7 +360,7 @@ public class FlitchioController {
      * You only need to call this if you have declared Listener with
      * {@link #onResume(FlitchioListener)}.
      *
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public void onPause() {
         unregisterClient();
@@ -374,7 +374,7 @@ public class FlitchioController {
      * Flitchio after this call. This should be called in the onDestroy() method of the
      * {@link Activity} / {@link Service}.
      *
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public void onDestroy() {
         /*
@@ -475,7 +475,7 @@ public class FlitchioController {
      *
      * @return The snapshot representing the latest state of Flitchio. It is never null: when
      * Flitchio is disconnected, you get an empty snapshot instead.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public FlitchioSnapshot obtainSnapshot() {
         synchronized (lockService) {
@@ -505,7 +505,7 @@ public class FlitchioController {
      * implementing {@link FlitchioListener#onFlitchioStatusChanged(boolean)}.
      *
      * @return True if Flitchio is connected and data can be read from it.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public boolean isConnected() {
         synchronized (lockService) {

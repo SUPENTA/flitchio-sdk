@@ -35,7 +35,7 @@ import android.os.Parcelable;
  *
  * @see ButtonEvent
  * @see JoystickEvent
- * @since Flitchio-0.5.0
+ * @since 0.5.0
  */
 public final class FlitchioSnapshot implements Parcelable {
 
@@ -46,28 +46,28 @@ public final class FlitchioSnapshot implements Parcelable {
     /**
      * State of a button that is being pressed for the first time.
      *
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public static final int STATE_PRESSING = InputEvent.ACTION_DOWN;
 
     /**
      * State of a button that is being pressed.
      *
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public static final int STATE_PRESSED = InputEvent.ACTION_MOVE;
 
     /**
      * State of a button that is being released.
      *
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public static final int STATE_RELEASING = InputEvent.ACTION_UP;
 
     /**
      * State of a button that is not pressed.
      *
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public static final int STATE_RELEASED = InputEvent.ACTION_NONE;
 
@@ -178,7 +178,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from 0.0 (if not pressed) to 1.0 (maximum pressure).
      * @see #getButtonPressure(InputElement.Button)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     // !!! KEEP THE JAVADOC SYNCED WITH ButtonEvent !!!
     public final float getButtonPressure(int buttonCode) {
@@ -194,7 +194,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from 0.0 (if not pressed) to 1.0 (maximum pressure).
      * @see #getButtonPressure(int)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getButtonPressure(InputElement.Button button) {
         return getButtonPressure(button.code);
@@ -206,7 +206,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @return One of {@link #STATE_PRESSING}, {@link #STATE_PRESSED}, {@link #STATE_RELEASING} or
      * {@link #STATE_RELEASED}.
      * @see #getButtonState(InputElement.Button)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final int getButtonState(int buttonCode) {
         if (buttonEvents[buttonCode] != null) {
@@ -222,7 +222,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @return One of {@link #STATE_PRESSING}, {@link #STATE_PRESSED}, {@link #STATE_RELEASING} or
      * {@link #STATE_RELEASED}.
      * @see #getButtonState(int)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getButtonState(InputElement.Button button) {
         return getButtonState(button.code);
@@ -233,7 +233,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from -1.0 to 1.0.
      * @see #getJoystickX(InputElement.Joystick)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickX(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
@@ -248,7 +248,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from -1.0 to 1.0.
      * @see #getJoystickX(int)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickX(InputElement.Joystick joystick) {
         return getJoystickX(joystick.code);
@@ -259,7 +259,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from -1.0 to 1.0.
      * @see #getJoystickY(InputElement.Joystick)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickY(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
@@ -274,7 +274,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from -1.0 to 1.0.
      * @see #getJoystickY(int)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickY(InputElement.Joystick joystick) {
         return getJoystickY(joystick.code);
@@ -286,7 +286,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value in degrees from 0 to 360 (excluded).
      * @see #getJoystickAngle(InputElement.Joystick)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickAngle(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
@@ -302,7 +302,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value in degrees from 0 to 360 (excluded).
      * @see #getJoystickAngle(int)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickAngle(InputElement.Joystick joystick) {
         return getJoystickAngle(joystick.code);
@@ -313,7 +313,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from 0.0 to sqrt(2).
      * @see #getJoystickDistance(InputElement.Joystick)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickDistance(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
@@ -328,7 +328,7 @@ public final class FlitchioSnapshot implements Parcelable {
      *
      * @return A value ranging from 0.0 to sqrt(2).
      * @see #getJoystickDistance(int)
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final float getJoystickDistance(InputElement.Joystick joystick) {
         return getJoystickDistance(joystick.code);

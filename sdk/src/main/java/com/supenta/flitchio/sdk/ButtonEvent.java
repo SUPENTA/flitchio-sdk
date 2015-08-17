@@ -20,7 +20,7 @@ import android.os.Parcelable;
  * <p>
  * Each event has one source that is one of the buttons defined in {@link InputElement#BUTTONS}.
  *
- * @since Flitchio-0.5.0
+ * @since 0.5.0
  */
 public class ButtonEvent extends InputEvent<InputElement.Button> implements Parcelable {
     /**
@@ -68,7 +68,7 @@ public class ButtonEvent extends InputEvent<InputElement.Button> implements Parc
      * Retrieve the pressure of the button in this event.
      *
      * @return A value ranging from 0.0 (if not pressed) to 1.0 (maximum pressure).
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public float getPressure() {
         return pressure;
@@ -80,7 +80,7 @@ public class ButtonEvent extends InputEvent<InputElement.Button> implements Parc
      * with incremental repeat count.
      *
      * @return The number of times this button has been repeatedly pressed.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public final int getRepeatCount() {
         return repeatCount;
@@ -92,7 +92,7 @@ public class ButtonEvent extends InputEvent<InputElement.Button> implements Parc
      *
      * @return The time at which the corresponding button was first pressed, in the
      * {@link android.os.SystemClock#uptimeMillis()} time base.
-     * @since Flitchio-0.5.0
+     * @since 0.5.0
      */
     public long getFirstDownTime() {
         return firstDownTime;
