@@ -309,7 +309,7 @@ import javalink
 extensions += ['javalink']
 javalink_classpath = [
     javalink.find_rt_jar(),
-    '../../sdk/build/intermediates/classes/debug/'
+    '../../sdk/build/intermediates/classes/release/'
 ]
 javalink_docroots = [
     # New version modded by us
