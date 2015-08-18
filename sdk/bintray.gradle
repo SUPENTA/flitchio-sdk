@@ -28,6 +28,9 @@ task javadoc(type: Javadoc) {
         noTimestamp true
     }
 
+    inputs.file options.stylesheetFile
+    inputs.files tasks.findByPath(":libJavadocFilter:build").outputs
+
     failOnError false
 }
 
