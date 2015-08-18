@@ -1,5 +1,52 @@
 @import url("theme.css");
 
+/*
+flitchio-red: #EA0006
+indigo-500: #3F51B5
+indigo-700: #303F9F
+*/
+
+
+/* Figures captions */
 .caption-text {
 	font-size: 60%;
+}
+
+
+/* Side menu */
+.wy-side-nav-search {
+    background-color: #3F51B5;
+}
+/* Selected category in side menu */
+.wy-menu-vertical li.current>a {
+    color: #303F9F;
+}
+/* Top navbar (small screens) */
+.wy-nav-top {
+    background-color: #3F51B5;
+}
+
+
+/* Flitchio logo */
+.wy-nav-side {
+    background: #343131 url("../flitchio_logo.png") 50% 95% no-repeat;
+}
+
+
+/* Links in content */
+.rst-content a {
+    color: #3F51B5;
+}
+.rst-content a:hover {
+    color: #EA0006;
+}
+
+
+
+/* References to Javadoc */
+.rst-content a code {
+    color: #303F9F;
+}
+.rst-content a:hover code {
+    color: #3F51B5;
 }
