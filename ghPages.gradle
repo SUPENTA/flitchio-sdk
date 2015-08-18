@@ -14,7 +14,9 @@ githubPages {
 //    }
 
     pages {
-        from(tasks.getByPath(":docs:buildHtml").outputs)
+        from(tasks.getByPath(":docs:buildHtml").outputs) {
+            exclude ".*" // Excluse .doctrees/ and .buildinfo
+        }
         from(tasks.getByPath(":sdk:javadoc").outputs) {
             into 'javadoc'
         }
