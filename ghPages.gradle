@@ -5,9 +5,11 @@ task generateAllDocs {
 }
 
 githubPages {
-    repoUri = 'https://github.com/SUPENTA/flitchio-sdk.git'
+    repoUri = 'https://github.com/SUPENTA/flitchio-sdk.git' // Apparently important to use HTTPS
 
-    // Will open a popup to prompt credentials. TODO find a way to use SSH key
+    //deleteExistingFiles = true // Defaults to true
+
+    // Will open a popup to prompt GitHub credentials. TODO find a way to use SSH key
 //    credentials {
 //        username = ""
 //        password = ""
@@ -15,12 +17,13 @@ githubPages {
 
     pages {
         from(tasks.getByPath(":docs:buildHtml").outputs) {
-            exclude ".*" // Excluse .doctrees/ and .buildinfo
+            exclude ".*"
         }
         from(tasks.getByPath(":sdk:javadoc").outputs) {
             into 'javadoc'
         }
+        from("ghPagesStatic") {
+            exclude "README.txt"
+        }
     }
-
-    // TODO find a way to keep some files in the repo, namely '.gitignore', 'CNAME', '.nojekyll'
 }

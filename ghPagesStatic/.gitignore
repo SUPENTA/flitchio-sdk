@@ -1,0 +1,22 @@
+### By default, ignore everything...
+/*
+
+### ... except:
+
+# Gitignore
+!/.gitignore
+
+# GitHub configs
+!/CNAME
+!/.nojekyll
+
+# Javadoc
+!/javadoc/
+
+# Sphinxdoc
+!/*.html
+!/*.js
+!/objects.inv
+!/_images/
+!/_sources/
+!/_static/
