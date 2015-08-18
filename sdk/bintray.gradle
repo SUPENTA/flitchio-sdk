@@ -23,6 +23,8 @@ task javadoc(type: Javadoc) {
         docletpath = files('../libJavadocFilter/build/libs/libJavadocFilter.jar').asType(List)
         doclet = "com.supenta.flitchio.javadocfilter.JavadocFilter"
 
+        stylesheetFile = new File(projectDir, "javadoc_stylesheet.css");
+
         noTimestamp true
     }
 
