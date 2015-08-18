@@ -32,3 +32,6 @@ before_install:
 cache:
   directories:
     - $HOME/.gradle
+
+notifications:
+  slack: supenta:yxT5lRTBRvGNvmKsYxzRgVNY
