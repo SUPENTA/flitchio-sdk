@@ -29,7 +29,7 @@ indigo-700: #303F9F
 
 /* Flitchio logo */
 .wy-nav-side {
-    background: #343131 url("../../_images/flitchio_logo.png") 50% 95% no-repeat;
+    background: #343131 url("../flitchio_logo.png") 50% 95% no-repeat;
 }
 
 
