@@ -1,33 +1,24 @@
-// Takes care of generating all the doc: sphinx + javadoc
-
-def ghPagesDir = 'gh-pages'
-
-task resetGhPages(type: Delete) {
-    delete fileTree(dir: ghPagesDir, exclude: [
-            '.git',
-            '.gitignore',
-            'CNAME',
-            '.nojekyll'
-    ])
-}
+apply plugin: 'org.ajoberstar.github-pages'
 
 task generateAllDocs {
-    mustRunAfter resetGhPages
     dependsOn ":sdk:javadoc", ":docs:buildHtml"
 }
 
-task copyAllDocs(type: Copy) {
-    dependsOn resetGhPages, generateAllDocs
+githubPages {
+    repoUri = 'https://github.com/SUPENTA/flitchio-sdk.git'
 
-    from(tasks.getByPath(":docs:buildHtml").outputs)
-    from(tasks.getByPath(":sdk:javadoc").outputs) {
-        into 'javadoc'
+    // Will open a popup to prompt credentials. TODO find a way to use SSH key
+//    credentials {
+//        username = ""
+//        password = ""
+//    }
+
+    pages {
+        from(tasks.getByPath(":docs:buildHtml").outputs)
+        from(tasks.getByPath(":sdk:javadoc").outputs) {
+            into 'javadoc'
+        }
     }
 
-    into ghPagesDir
-}
-
-copyAllDocs.doLast {
-    println "Docs has been generated in the gh-pages subfolder. " +
-            "Now you need to go inside, commit the changes and 'git push origin gh-pages'"
+    // TODO find a way to keep some files in the repo, namely '.gitignore', 'CNAME', '.nojekyll'
 }
