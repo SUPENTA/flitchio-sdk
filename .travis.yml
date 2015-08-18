@@ -26,8 +26,8 @@ android:
 
 before_install:
   - chmod +x gradlew
-  - echo "bintray.user=travis">local.properties
-  - echo "bintray.apikey=travisCantAccessBintray">local.properties
+  - echo "bintray.user=travis">localconfig.properties
+  - echo "bintray.apikey=travisCantAccessBintray">localconfig.properties
 
 cache:
   directories:
