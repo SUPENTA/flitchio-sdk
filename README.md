@@ -29,7 +29,7 @@ dependencies {
 }
 ```
 
-You'll need to have `jCenter()` in your list of repositories.
+You'll need to have `jcenter()` in your list of repositories.
 
 
 ## History
