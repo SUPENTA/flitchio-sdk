@@ -23,7 +23,7 @@ It explains all the steps in details, from set up to troubleshooting.**
 
 Add a library dependency to your app module's `build.gradle`:
 
-```
+```gradle
 dependencies {
     compile 'com.supenta.flitchio:sdk:<version>'
 }
@@ -39,7 +39,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
-Contributers, for code and/or documentation are very welcome!
+Contributors, for code and/or documentation are very welcome!
 It is understood, however, that you need a Flitchio to really test your features.
 
 Here's how you can contribute:
@@ -53,4 +53,4 @@ Here's how you can contribute:
 
 ## License
 
-MIT License. Copyright 2015 SUPENTA. http://supenta.com
+MIT License. Copyright 2015 SUPENTA. https://supenta.com
