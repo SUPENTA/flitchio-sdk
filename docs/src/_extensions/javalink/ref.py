@@ -19,14 +19,12 @@ from .model import parse_name
 CONFIG_VALUES = {
     'javalink_classpath': ([], 'env', 'javalink_classloader'),
     'javalink_docroots': ([], 'env', 'javalink_packages'),
+    'javalink_default_version': (7, 'env', None),
     'javalink_add_package_names': (True, 'env', None),
     'javalink_qualify_nested_types': (True, 'env', None),
     'javalink_add_method_parameters': (True, 'env', None)
 }
 
-# TODO:
-# Where to add a ref to javalink_packages_versions?
-# Where to define the format (javadoc_version, url-base) or (javadoc_version, url, base) of config?
 
 def abspath(root, path):
     return os.path.normpath(os.path.join(root, path))
@@ -262,14 +260,14 @@ def initialize_package_list(app):
     env.javalink_packages = {}
     env.javalink_packages_versions = {}
 
-    for javadoc_version, url, base in [parse_docroot(env.srcdir, javadoc_version, r) for javadoc_version, r in app.config.javalink_docroots]:
+    for version, url, base in [parse_docroot(env.srcdir, app.config.javalink_default_version, r) for r in app.config.javalink_docroots]:
         try:
             with contextlib.closing(urllib2.urlopen(url)) as package_list:
                 for package in package_list:
                     package = package.strip()
                     if package not in env.javalink_packages:
                         env.javalink_packages[package] = base
-                        env.javalink_packages_versions[package] = javadoc_version
+                        env.javalink_packages_versions[package] = version
                     else:
                         app.warn("[javalink] duplicate package '{}' in {}".format(package, url))
 
@@ -278,23 +276,30 @@ def initialize_package_list(app):
             app.verbose('[javalink] %s', traceback.format_exc())
 
 
-def parse_docroot(srcdir, javadoc_version, root):
+def parse_docroot(srcdir, default_version, root):
     """Creates a package-list URL and a link base from a docroot element.
 
     Args:
         srcdir: the Sphinx source directory
-        javadoc_version: the version of Javadoc used [7 or 8]
-        root: the docroot element [string or tuple]
+        default_version: the default Javadoc version
+        root: the docroot element [string or dictionary]
     """
 
     if isinstance(root, basestring):
         url = _parse_docroot_str(srcdir, root)[0]
         base = _parse_docroot_str(srcdir, root)[1]
-        return (javadoc_version, url, base)
+        return (default_version, url, base)
     else:
-        url = _parse_docroot_str(srcdir, root[0])[0]
-        base = _parse_docroot_str(srcdir, root[1])[1]
-        return (javadoc_version, url, base)
+        url = _parse_docroot_str(srcdir, root['root'])[0]
+        if 'base' in root:
+            base = _parse_docroot_str(srcdir, root['base'])[1]
+        else:
+            base = _parse_docroot_str(srcdir, root['root'])[1]
+        if 'version' in root:
+            version = root['version']
+        else:
+            version = default_version
+        return (version, url, base)
 
 
 def _parse_docroot_str(srcdir, root):
