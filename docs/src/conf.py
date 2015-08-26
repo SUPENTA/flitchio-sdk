@@ -313,8 +313,8 @@ javalink_classpath = [
 ]
 javalink_docroots = [
     # New version modded by us
-    'http://docs.oracle.com/javase/7/docs/api/',
-    {'root' : 'http://dev.flitch.io/javadoc/', 'version' : 8}
+    {'root' : 'http://docs.oracle.com/javase/7/docs/api/', 'version' : 7},
+    'http://dev.flitch.io/javadoc/'
 
     # Official old version of sphinx-javalink
     # 'http://docs.oracle.com/javase/7/docs/api/',
@@ -324,7 +324,7 @@ javalink_docroots = [
 javalink_add_method_parameters = False
 javalink_add_package_names = False
 #javalink_qualify_nested_types = True # default is True
-#javalink_default_version = 7 # default is 7
+javalink_default_version = 8 # default is 7
 
 # EXTENSIONS Google Analytics =============
 extensions += ['sphinxcontrib.googleanalytics']
