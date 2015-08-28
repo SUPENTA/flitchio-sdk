@@ -399,7 +399,7 @@ public class FlitchioController {
                 FlitchioLog.e("Unexpected error: could not notify Flitchio Manager about " +
                         "this controller termination.");
 
-            } catch (NullPointerException e) {
+            } catch (NullPointerException | IllegalArgumentException e) {
                 FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective.");
             }
 
