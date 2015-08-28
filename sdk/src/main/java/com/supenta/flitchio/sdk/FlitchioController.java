@@ -409,7 +409,7 @@ public class FlitchioController {
                 context.unbindService(serviceConnection);
             } catch (IllegalArgumentException e){
                 FlitchioLog.w("Warning: it seems that you tried to call onDestroy without" +
-                        " having a bind to Flitchio Manager");
+                        " having a binding to Flitchio Manager");
             }
             flitchioService = null;
         }
