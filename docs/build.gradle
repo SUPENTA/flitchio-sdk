@@ -7,6 +7,10 @@ ext {
     outputSpellingDir = outputDir + '/spelling'
 }
 
+task("clean") {
+    delete(outputDir)
+}
+
 /*
  * SPELL CHECK
  */
