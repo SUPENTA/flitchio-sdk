@@ -394,19 +394,23 @@ public class FlitchioController {
              */
             try {
                 flitchioService.removeClientInfo(authToken);
-
             } catch (RemoteException e) {
                 FlitchioLog.e("Unexpected error: could not notify Flitchio Manager about " +
                         "this controller termination.");
 
-            } catch (NullPointerException | IllegalArgumentException e) {
+            } catch (NullPointerException e) {
                 FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective.");
             }
 
             /*
              * UNBIND
              */
-            context.unbindService(serviceConnection);
+            try {
+                context.unbindService(serviceConnection);
+            } catch (IllegalArgumentException e) {
+                FlitchioLog.w("Warning: it seems that you tried to call onDestroy without" +
+                        " having a binding to Flitchio Manager");
+            }
             flitchioService = null;
         }
 
