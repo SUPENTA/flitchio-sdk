@@ -34,3 +34,7 @@ allprojects {
 }
 
 apply from: 'ghPages.gradle'
+
+task("clean") {
+    delete("build/")
+}
