@@ -42,7 +42,7 @@ import java.util.Map;
  * <p/>
  * If you don't want to actively poll data from Flitchio, but rather receive events every time
  * something has changed on the device, you can use your controller in <em>listening mode</em>. To
- * do so, simply register a {@link FlitchioEventListener} with {@link #onResume(FlitchioEventListener)} and
+ * do so, simply register a {@link FlitchioEventListener} with {@link #onResume(FlitchioEventListener, FlitchioStatusListener)} and
  * unregister it with {@link #onPause()}. You will then receive {@link ButtonEvent}s for button
  * presses/releases and {@link JoystickEvent}s for joystick position updates, as well as updates
  * about the connection status of Flitchio.
@@ -314,19 +314,17 @@ public class FlitchioController {
      * @param handler       The handler associated to the thread on which the callbacks will happen.
      * @since 0.5.0
      */
-    public void onResume(FlitchioEventListener eventListener, Handler handler) {
+    public void onResume(FlitchioEventListener eventListener, FlitchioStatusListener statusListener, Handler handler) {
         synchronized (lockListener) {
             /*
-             * ENSURE CLEAN STATE = termination of the (previous) eventListener thread
+             * ENSURE CLEAN STATE = termination of the (previous) listeners' thread
              */
             resetListener();
 
-            /*
-             * SET LISTENER
-             */
-            if (eventListener != null) {
-                this.eventListener = eventListener;
+            this.eventListener = eventListener;
+            this.statusListener = statusListener;
 
+            if (eventListener != null || statusListener != null) {
                 if (handler != null) {
                     listenerHandler = handler;
                 } else {
@@ -335,8 +333,8 @@ public class FlitchioController {
                     listenerHandler = listenerThread.getHandler();
                 }
             } else {
-                FlitchioLog.i(
-                        "No need to call onResume()/onPause() if you don't declare an eventListener.");
+                FlitchioLog.i("No need to call onResume()/onPause() if you don't declare a" +
+                        " FlitchioEventListener or a FlitchioStatusListener");
             }
         }
 
@@ -357,11 +355,12 @@ public class FlitchioController {
      * this can be called right after {@link #onCreate()}.
      * You only need to call this if you declare a {@link FlitchioEventListener}.
      *
-     * @param listener The eventListener.
+     * @param eventListener  The eventListener.
+     * @param statusListener The statusListener.
      * @since 0.5.0
      */
-    public void onResume(FlitchioEventListener listener) {
-        onResume(listener, null);
+    public void onResume(FlitchioEventListener eventListener, FlitchioStatusListener statusListener) {
+        onResume(eventListener, statusListener, null);
     }
 
     /**
@@ -370,7 +369,7 @@ public class FlitchioController {
      * onPause() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
      * this can be called as late as in your Service's onDestroy().
      * You only need to call this if you have declared Listener with
-     * {@link #onResume(FlitchioEventListener)}.
+     * {@link #onResume(FlitchioEventListener, FlitchioStatusListener)}.
      *
      * @since 0.5.0
      */
