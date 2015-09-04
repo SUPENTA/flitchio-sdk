@@ -297,12 +297,6 @@ public class FlitchioController {
         return willBind;
     }
 
-    public boolean onCreate(FlitchioStatusListener statusListener) throws FlitchioManagerDependencyException {
-        this.statusListener = statusListener;
-
-        return onCreate();
-    }
-
     /**
      * Register a {@link FlitchioEventListener} to receive callbacks. If you use this
      * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
