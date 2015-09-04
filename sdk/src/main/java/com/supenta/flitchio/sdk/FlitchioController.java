@@ -23,7 +23,7 @@ import java.util.Map;
  * Object providing the main communication channel to the Flitchio Manager app. This is the most
  * important component of the Flitchio SDK, and the only object you have to manipulate in order to
  * use Flitchio with your app.
- * <p>
+ * <p/>
  * The controller binds to the Flitchio Manager app when you call {@link #onCreate()}. You need the
  * Flitchio Manager app to be able to use Flitchio, otherwise a
  * {@link FlitchioManagerDependencyException} will be thrown. When {@link #onCreate()} returns true,
@@ -31,7 +31,7 @@ import java.util.Map;
  * or {@link #obtainSnapshot()} yet. You can listen to the moment the binding gets effective by
  * implementing {@link FlitchioListener#onFlitchioStatusChanged(boolean)}. To free the controller
  * properly, you must call {@link #onDestroy()}.
- * <p>
+ * <p/>
  * After initialisation and as soon as this controller is bound to the Flitchio Manager app, you can
  * check if Flitchio is attached to the phone by calling {@link #isConnected()} and poll data from
  * it by requesting a {@link FlitchioSnapshot} of its state with {@link #obtainSnapshot()}. You
@@ -39,7 +39,7 @@ import java.util.Map;
  * <em>polling mode</em>, i.e. if your app is designed to have a rendering loop updating the display
  * at high frequency. That's typically the case for games that use a {@link SurfaceView} or a
  * {@link GLSurfaceView}.
- * <p>
+ * <p/>
  * If you don't want to actively poll data from Flitchio, but rather receive events every time
  * something has changed on the device, you can use your controller in <em>listening mode</em>. To
  * do so, simply register a {@link FlitchioListener} with {@link #onResume(FlitchioListener)} and
@@ -84,7 +84,7 @@ public class FlitchioController {
      * Variable used to follow the flow of the Activity. Its value is updated correctly if the
      * 3rd-party dev does the appropriate callbacks.
      */
-    private ActivityLifecycle activityLifecycleMoment = ActivityLifecycle.UNDEFINED;
+    private int activityLifecycleMoment = ActivityLifecycle.UNDEFINED;
     /**
      * Interface to FlitchioService.
      */
@@ -524,8 +524,12 @@ public class FlitchioController {
         }
     }
 
-    private enum ActivityLifecycle {
-        UNDEFINED, ON_CREATE, ON_RESUME, ON_PAUSE, ON_DESTROY
+    private static class ActivityLifecycle {
+        private static final int UNDEFINED = -1;
+        private static final int ON_CREATE = 0;
+        private static final int ON_RESUME = 1;
+        private static final int ON_PAUSE = 2;
+        private static final int ON_DESTROY = 3;
     }
 
     /**
