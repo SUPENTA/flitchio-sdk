@@ -7,7 +7,4 @@ import com.supenta.flitchio.sdk.JoystickEvent;
 interface IFlitchioClient {
 	oneway void onButtonEvent(in ButtonEvent event);
 	oneway void onJoystickEvent(in JoystickEvent event);
-
-	oneway void onStatusChanged(boolean isConnected);
-
 }

@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * {@link ButtonEvent} and partly like a {@link JoystickEvent}, in the sense that it contains
  * information about all the buttons and all the joysticks at the same time. The snapshot should be
  * retrieved in polling mode, once per update loop iteration. If you don't use polling mode in your
- * app, you should rather consider registering a {@link FlitchioListener} to receive the equivalent
+ * app, you should rather consider registering a {@link FlitchioEventListener} to receive the equivalent
  * {@link ButtonEvent}s and {@link JoystickEvent}s.
  * <p>
  * <h3>Buttons</h3>
