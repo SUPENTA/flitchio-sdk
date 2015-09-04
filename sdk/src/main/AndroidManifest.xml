@@ -2,6 +2,12 @@
           package="com.supenta.flitchio.sdk">
 
 	<application android:allowBackup="true">
+		<receiver android:name=".FlitchioStatusReceiver">
+			<intent-filter>
+				<action android:name="com.supenta.flitchio.manager.communication.ACTION_FLITCHIO_CONNECTED" />
+				<action android:name="com.supenta.flitchio.manager.communication.ACTION_FLITCHIO_DISCONNECTED" />
+			</intent-filter>
+		</receiver>
 	</application>
 
 </manifest>
