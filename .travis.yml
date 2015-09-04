@@ -35,3 +35,4 @@ cache:
 
 notifications:
   slack: supenta:yxT5lRTBRvGNvmKsYxzRgVNY
+  email: false

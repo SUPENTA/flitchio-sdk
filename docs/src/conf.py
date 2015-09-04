@@ -299,10 +299,7 @@ spelling_lang = 'en_GB'
 spelling_word_list_filename = 'dict.txt'
 
 # EXTENSIONS sphinx-javalink ==============
-
-# TODO use official extension instead when https://github.com/bluekeyes/sphinx-javalink/pull/6 is ok
-
-sys.path.append(os.path.abspath('_extensions'))
+# Note: needs sphinx-javalink >= 0.10.0
 
 import javalink
 
@@ -312,18 +309,14 @@ javalink_classpath = [
     '../../sdk/build/intermediates/classes/release/'
 ]
 javalink_docroots = [
-    # New version modded by us
-    (7, 'http://docs.oracle.com/javase/7/docs/api/'),
-    (8, 'http://dev.flitch.io/javadoc/')
-
-    # Official old version of sphinx-javalink
-    # 'http://docs.oracle.com/javase/7/docs/api/',
-    # 'http://dev.flitch.io/javadoc/'
+    {'root' : 'http://docs.oracle.com/javase/7/docs/api/', 'version' : 7},
+    'http://dev.flitch.io/javadoc/'
 ]
 
 javalink_add_method_parameters = False
 javalink_add_package_names = False
 #javalink_qualify_nested_types = True # default is True
+javalink_default_version = 8 # default is 7
 
 # EXTENSIONS Google Analytics =============
 extensions += ['sphinxcontrib.googleanalytics']

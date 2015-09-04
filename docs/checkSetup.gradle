@@ -91,7 +91,8 @@ task("checkSetupSphinxJavalink", type: Exec) {
     ignoreExitValue = true
     doLast {
         if (execResult.exitValue != 0) {
-            throw new GradleException("Can't find sphinx-javalink plugin. Please install it.\n" +
+            throw new GradleException("Can't find sphinx-javalink plugin (version >= 0.10.1). " +
+                    "Please install it.\n" +
                     "Run (in a Windows terminal, not Babun):\n" +
                     "> pip install sphinx-javalink\n" +
                     "Note: you might need to run it as admin.\n" +

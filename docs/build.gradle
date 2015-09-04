@@ -7,6 +7,10 @@ ext {
     outputSpellingDir = outputDir + '/spelling'
 }
 
+task("clean") {
+    delete(outputDir)
+}
+
 /*
  * SPELL CHECK
  */
@@ -37,9 +41,9 @@ task("checkSpelling") {
  */
 task("buildHtml") {
     dependsOn "checkSetupSphinx",
-//            "checkSetupSphinxJavalink", // we use local sphinx-javalink temporarily
+            "checkSetupSphinxJavalink",
             "checkSetupSphinxAnalytics",
-            ":sdk:assembleRelease" // to generate classes for sphinx-javalink
+            ":sdk:assembleRelease" // To generate classes for sphinx-javalink
 
     inputs.dir srcDir
     inputs.property("version", libraryVersion)
