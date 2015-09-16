@@ -135,7 +135,8 @@ public class FlitchioController {
             // We connect the client in case he asked for it while binding was not ready. The client
             // should not call onResume() if its eventListener is null, but in case he did, we don't
             // register the client for a null Listener.
-            if (activityLifecycleMoment == ActivityLifecycle.ON_RESUME && eventListener != null) {
+            if (activityLifecycleMoment == ActivityLifecycle.ON_RESUME
+                    && (statusListener != null || eventListener != null)) {
                 registerClient();
             }
         }
@@ -308,15 +309,15 @@ public class FlitchioController {
      * @param handler       The handler associated to the thread on which the callbacks will happen.
      * @since 0.5.0
      */
-    public void onResume(FlitchioEventListener eventListener, FlitchioStatusListener statusListener, Handler handler) {
+    public void onResume(FlitchioStatusListener statusListener, FlitchioEventListener eventListener, Handler handler) {
         synchronized (lockListener) {
             /*
              * ENSURE CLEAN STATE = termination of the (previous) listeners' thread
              */
             resetListener();
 
-            this.eventListener = eventListener;
             this.statusListener = statusListener;
+            this.eventListener = eventListener;
 
             if (eventListener != null || statusListener != null) {
                 if (handler != null) {
@@ -353,8 +354,8 @@ public class FlitchioController {
      * @param statusListener The statusListener.
      * @since 0.5.0
      */
-    public void onResume(FlitchioEventListener eventListener, FlitchioStatusListener statusListener) {
-        onResume(eventListener, statusListener, null);
+    public void onResume(FlitchioStatusListener statusListener, FlitchioEventListener eventListener) {
+        onResume(statusListener, eventListener, null);
     }
 
     /**
@@ -433,8 +434,8 @@ public class FlitchioController {
             }
             listenerHandler = null;
 
-            eventListener = null;
             statusListener = null;
+            eventListener = null;
         }
     }
 
