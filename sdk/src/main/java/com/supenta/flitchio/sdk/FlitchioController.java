@@ -50,6 +50,7 @@ import java.util.Map;
  *
  * @since 0.5.0
  */
+@SuppressWarnings("unused")
 public class FlitchioController {
 
     static final String FLITCHIO_MANAGER_PACKAGE = "com.supenta.flitchio.manager";
