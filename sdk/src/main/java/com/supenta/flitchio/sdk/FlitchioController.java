@@ -51,8 +51,8 @@ import java.util.Map;
  */
 public class FlitchioController {
 
-    static final String FLITCHIO_MANAGER_PACKAGE = "com.supenta.flitchio.manager";
-    private static final String FLITCHIO_SERVICE_CLASS =
+    private static final String FLITCHIO_MANAGER_PACKAGE = "com.supenta.flitchio.manager";
+    static final String FLITCHIO_SERVICE_CLASS =
             FLITCHIO_MANAGER_PACKAGE + ".communication.FlitchioService";
     private static final int INVALID_AUTH_TOKEN = -1;
     /**
