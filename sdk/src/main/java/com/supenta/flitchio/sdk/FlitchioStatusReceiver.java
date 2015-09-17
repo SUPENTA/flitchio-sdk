@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 /**
  * Receiver for listening changes to the status of Flitchio
  */
-public class FlitchioStatusReceiver extends BroadcastReceiver {
+class FlitchioStatusReceiver extends BroadcastReceiver {
 
     private static final String ACTION_FLITCHIO_CONNECTED =
             FlitchioController.FLITCHIO_SERVICE_CLASS + ".communication.ACTION_FLITCHIO_CONNECTED";
@@ -18,7 +18,7 @@ public class FlitchioStatusReceiver extends BroadcastReceiver {
 
     private final FlitchioController flitchioController;
 
-    public FlitchioStatusReceiver(FlitchioController flitchioController) {
+    FlitchioStatusReceiver(FlitchioController flitchioController) {
         this.flitchioController = flitchioController;
     }
 
