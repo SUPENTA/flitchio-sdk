@@ -76,6 +76,7 @@ public class FlitchioController {
      * The context used to bind.
      */
     private final Context context;
+    private final FlitchioStatusReceiver statusReceiver;
     /**
      * Received from service once the handshake has been done. Used for every further communication.
      */
@@ -94,7 +95,6 @@ public class FlitchioController {
      * can be only one eventListener per controller, and only one controller per context.
      */
     private FlitchioEventListener eventListener = null;
-
     private FlitchioStatusListener statusListener = null;
     /**
      * The thread to which the eventListener callbacks will be delivered (used by default), or the
@@ -123,9 +123,7 @@ public class FlitchioController {
                         FlitchioLog.e("Unexpected error: could not authenticate to service.");
                     }
 
-                    if (listenerHandler != null) {
-                        listenerHandler.post(new StatusRunnable(flitchioService.isConnected(authToken)));
-                    }
+                    postStatusUpdate(flitchioService.isConnected(authToken));
 
                 } catch (RemoteException e) {
                     FlitchioLog.e("Unexpected error: could not identify this controller.");
@@ -153,9 +151,7 @@ public class FlitchioController {
             resetListener();
 
             synchronized (lockListener) {
-                if (listenerHandler != null) {
-                    listenerHandler.post(new StatusRunnable(false /* isConnected */));
-                }
+                postStatusUpdate(false /* isConnected */);
             }
         }
     };
@@ -165,7 +161,8 @@ public class FlitchioController {
      */
     private FlitchioController(Context context) {
         this.context = context;
-        clientId = new ComponentName(context, context.getClass());
+        this.clientId = new ComponentName(context, context.getClass());
+        this.statusReceiver = new FlitchioStatusReceiver(this);
     }
 
     /**
@@ -263,6 +260,12 @@ public class FlitchioController {
         }
     }
 
+    void postStatusUpdate(boolean isConnected) {
+        if (listenerHandler != null) {
+            listenerHandler.post(new StatusRunnable(isConnected));
+        }
+    }
+
     /**
      * Initialise the {@link FlitchioController}. This method verifies the presence of the Flitchio
      * Manager app and binds to it. It must be the first method to be called, in the onCreate()
@@ -319,6 +322,10 @@ public class FlitchioController {
             this.statusListener = statusListener;
             this.eventListener = eventListener;
 
+            if (statusListener != null) {
+                context.registerReceiver(statusReceiver, statusReceiver.getIntentFilter());
+            }
+
             if (eventListener != null || statusListener != null) {
                 if (handler != null) {
                     listenerHandler = handler;
@@ -369,6 +376,8 @@ public class FlitchioController {
      * @since 0.5.0
      */
     public void onPause() {
+        context.unregisterReceiver(statusReceiver);
+
         unregisterClient();
         resetListener();
 
