@@ -42,10 +42,11 @@ import java.util.Map;
  * <p/>
  * If you don't want to actively poll data from Flitchio, but rather receive events every time
  * something has changed on the device, you can use your controller in <em>listening mode</em>. To
- * do so, simply register a {@link FlitchioEventListener} with {@link #onResume(FlitchioEventListener, FlitchioStatusListener)} and
- * unregister it with {@link #onPause()}. You will then receive {@link ButtonEvent}s for button
+ * do so, simply register either a {@link FlitchioEventListener} or a {@link FlitchioStatusListener}
+ * with {@link #onResume(FlitchioStatusListener, FlitchioEventListener)} and unregister it with
+ * {@link #onPause()}. You will then receive {@link ButtonEvent}s for button
  * presses/releases and {@link JoystickEvent}s for joystick position updates, as well as updates
- * about the connection status of Flitchio.
+ * about the connection status of Flitchio (depending on which listeners you registered).
  *
  * @since 0.5.0
  */
@@ -76,6 +77,9 @@ public class FlitchioController {
      * The context used to bind.
      */
     private final Context context;
+    /**
+     * Receiver used for listening to connection/disconnection events of Flitchio.
+     */
     private final FlitchioStatusReceiver statusReceiver;
     /**
      * Received from service once the handshake has been done. Used for every further communication.
@@ -91,10 +95,16 @@ public class FlitchioController {
      */
     private IFlitchioService flitchioService = null;
     /**
-     * The eventListener to be called on receiving data and disconnected events. Known limitation: there
+     * The eventListener to be called on receiving data. Known limitation: there
      * can be only one eventListener per controller, and only one controller per context.
      */
     private FlitchioEventListener eventListener = null;
+
+    /**
+     * The statusListener to be called on receiving connected and disconnected events.
+     * Known limitation: there can be only one eventListener per controller, and only one controller
+     * per context.
+     */
     private FlitchioStatusListener statusListener = null;
     /**
      * The thread to which the eventListener callbacks will be delivered (used by default), or the
@@ -130,9 +140,10 @@ public class FlitchioController {
                 }
             }
 
-            // We connect the client in case he asked for it while binding was not ready. The client
-            // should not call onResume() if its eventListener is null, but in case he did, we don't
-            // register the client for a null Listener.
+            /* We connect the client in case he asked for it while binding was not ready. The client
+             * should not call onResume() if its eventListener is null, but in case he did, we don't
+             * register the client for a null Listener.
+             */
             if (activityLifecycleMoment == ActivityLifecycle.ON_RESUME
                     && (statusListener != null || eventListener != null)) {
                 registerClient();
@@ -260,6 +271,12 @@ public class FlitchioController {
         }
     }
 
+    /**
+     * Post a status update when the FlitchioService disconnect/connects or the
+     * {@link FlitchioStatusReceiver} receives an appropriate Intent broadcast.
+     *
+     * @param isConnected the state of Flitchio.
+     */
     void postStatusUpdate(boolean isConnected) {
         if (listenerHandler != null) {
             listenerHandler.post(new StatusRunnable(isConnected));
@@ -302,14 +319,15 @@ public class FlitchioController {
     }
 
     /**
-     * Register a {@link FlitchioEventListener} to receive callbacks. If you use this
-     * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
-     * onResume() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
-     * this can be called right after {@link #onCreate()}. You only need to call this if you declare
-     * a {@link FlitchioEventListener}.
+     * Register a {@link FlitchioStatusListener} and/or a {@link FlitchioEventListener} to receive
+     * callbacks. If you use this {@link FlitchioController} in an {@link Activity}, this should be
+     * called in your Activity's onResume() (hence the name). If you use this {@link FlitchioController}
+     * in a {@link Service}, this can be called right after {@link #onCreate()}. You only need to
+     * call this if you declare at least one of the two listeners.
      *
-     * @param eventListener The eventListener.
-     * @param handler       The handler associated to the thread on which the callbacks will happen.
+     * @param statusListener The status listener.
+     * @param eventListener  The event listener.
+     * @param handler        The handler associated to the thread on which the callbacks will happen.
      * @since 0.5.0
      */
     public void onResume(FlitchioStatusListener statusListener, FlitchioEventListener eventListener, Handler handler) {
@@ -351,14 +369,9 @@ public class FlitchioController {
     }
 
     /**
-     * Register a {@link FlitchioEventListener} to receive callbacks. If you use this
-     * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
-     * onResume() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
-     * this can be called right after {@link #onCreate()}.
-     * You only need to call this if you declare a {@link FlitchioEventListener}.
+     * {@code handler} defaults to a Main Thread {@link Handler}.
      *
-     * @param eventListener  The eventListener.
-     * @param statusListener The statusListener.
+     * @see FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener, Handler)
      * @since 0.5.0
      */
     public void onResume(FlitchioStatusListener statusListener, FlitchioEventListener eventListener) {
@@ -366,12 +379,12 @@ public class FlitchioController {
     }
 
     /**
-     * Unregister the {@link FlitchioEventListener} that has been previously declared. If you use this
-     * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
-     * onPause() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
-     * this can be called as late as in your Service's onDestroy().
-     * You only need to call this if you have declared Listener with
-     * {@link #onResume(FlitchioEventListener, FlitchioStatusListener)}.
+     * Unregister the {@link FlitchioStatusListener} and/or {@link FlitchioEventListener} that have
+     * been previously declared. If you use this {@link FlitchioController} in an {@link Activity},
+     * this should be called in your Activity's onPause() (hence the name). If you use this
+     * {@link FlitchioController} in a {@link Service}, this can be called as late as in your
+     * Service's onDestroy(). You only need to call this if you have provided either one of the
+     * listeners with {@link #onResume(FlitchioStatusListener, FlitchioEventListener)}.
      *
      * @since 0.5.0
      */
@@ -433,7 +446,8 @@ public class FlitchioController {
     }
 
     /**
-     * Reset the eventListener variables (thread, handler and eventListener itself) properly.
+     * Reset the status and event listener variables (thread, handler and the listeners themselves)
+     * properly.
      */
     private void resetListener() {
         synchronized (lockListener) {
@@ -585,7 +599,7 @@ public class FlitchioController {
 
     /**
      * Runnable callback for status changed (connected/disconnected) events. It will be run on the
-     * eventListener's thread.
+     * status listener's thread.
      */
     private class StatusRunnable implements Runnable {
         private final boolean isConnected;
@@ -605,7 +619,7 @@ public class FlitchioController {
     }
 
     /**
-     * Runnable callback for button events. It will be run on the eventListener's thread.
+     * Runnable callback for button events. It will be run on the event listener's thread.
      */
     private class ButtonEventRunnable implements Runnable {
         private final ButtonEvent event;
@@ -625,7 +639,7 @@ public class FlitchioController {
     }
 
     /**
-     * Runnable callback for joystick events. It will be run on the eventListener's thread.
+     * Runnable callback for joystick events. It will be run on the event listener's thread.
      */
     private class JoystickEventRunnable implements Runnable {
         private final JoystickEvent event;

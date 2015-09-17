@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 /**
- * Receiver for listening changes to the status of Flitchio
+ * Receiver for listening changes to the status of Flitchio. This holds a reference to the controller
+ * so when a status update triggers (as a broadcast) the receiver can easily broadcast the update
+ * through the SDK.
  */
 class FlitchioStatusReceiver extends BroadcastReceiver {
 

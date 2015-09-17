@@ -3,9 +3,9 @@ package com.supenta.flitchio.sdk;
 import android.os.Handler;
 
 /**
- * Listener of Flitchio events: button state changed, joystick position changed, status changed
- * (connected/disconnected). A listener must be registered with
- * {@link FlitchioController#onResume(FlitchioEventListener)} to receive events.
+ * Listener of Flitchio events: button state changed, joystick position changed. A listener must be
+ * registered with {@link FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener)}
+ * to receive events.
  *
  * @since 0.5.0
  */

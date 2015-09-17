@@ -1,5 +1,15 @@
 package com.supenta.flitchio.sdk;
 
+
+import android.os.Handler;
+
+/**
+ * Listener of Flitchio status update events like connection and disconnection). A listener must be
+ * registered with {@link FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener)}
+ * to receive events.
+ *
+ * @since TODO update when we release a new version
+ */
 public interface FlitchioStatusListener {
 
     /**
