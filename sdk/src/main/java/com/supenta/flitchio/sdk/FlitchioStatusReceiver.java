@@ -11,10 +11,10 @@ import android.content.IntentFilter;
 class FlitchioStatusReceiver extends BroadcastReceiver {
 
     private static final String ACTION_FLITCHIO_CONNECTED =
-            FlitchioController.FLITCHIO_SERVICE_CLASS + ".communication.ACTION_FLITCHIO_CONNECTED";
+            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_CONNECTED";
 
     private static final String ACTION_FLITCHIO_DISCONNECTED =
-            FlitchioController.FLITCHIO_SERVICE_CLASS + ".communication.ACTION_FLITCHIO_DISCONNECTED";
+            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_DISCONNECTED";
 
     private final FlitchioController flitchioController;
 
