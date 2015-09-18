@@ -291,7 +291,7 @@ public class FlitchioController {
 
     /**
      * Post a status update when the FlitchioService disconnect/connects or the
-     * {@link FlitchioStatusReceiver} receives an appropriate broadcast Intent.
+     * {@link FlitchioStatusReceiver} receives an appropriate Intent broadcast.
      *
      * @param isConnected The state of Flitchio.
      */
