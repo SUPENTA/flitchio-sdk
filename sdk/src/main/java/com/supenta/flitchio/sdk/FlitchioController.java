@@ -23,48 +23,56 @@ import java.util.Map;
  * Object providing the main communication channel to the Flitchio Manager app. This is the most
  * important component of the Flitchio SDK, and the only object you have to manipulate in order to
  * use Flitchio with your app.
- * <p>
- * The controller binds to the Flitchio Manager app when you call {@link #onCreate()}. You need the
- * Flitchio Manager app to be able to use Flitchio, otherwise a
- * {@link FlitchioManagerDependencyException} will be thrown. When {@link #onCreate()} returns true,
- * the binding is going to be effective soon in the future, but you can't use {@link #isConnected()}
- * or {@link #obtainSnapshot()} yet. You can listen to the moment the binding gets effective by
- * implementing {@link FlitchioListener#onFlitchioStatusChanged(boolean)}. To free the controller
- * properly, you must call {@link #onDestroy()}.
- * <p>
- * After initialisation and as soon as this controller is bound to the Flitchio Manager app, you can
- * check if Flitchio is attached to the phone by calling {@link #isConnected()} and poll data from
- * it by requesting a {@link FlitchioSnapshot} of its state with {@link #obtainSnapshot()}. You
- * typically call {@link #obtainSnapshot()} if you want to use your controller in
- * <em>polling mode</em>, i.e. if your app is designed to have a rendering loop updating the display
- * at high frequency. That's typically the case for games that use a {@link SurfaceView} or a
- * {@link GLSurfaceView}.
- * <p>
+ * <p/>
+ * The controller binds to the Flitchio Manager app when you call {@link #onCreate()}. The Flitchio
+ * Manager app needs to be installed on the user's phone, otherwise a
+ * {@link FlitchioManagerDependencyException} will be thrown. Likewise, if the Flitchio Manager app
+ * installed doesn't support this version of the SDK, a {@link FlitchioManagerDependencyException}
+ * will be thrown. To free the controller properly after use, you must call {@link #onDestroy()}.
+ * <p/>
+ * After {@link #onCreate()} returns true, the binding is not effective yet. You need to wait for
+ * the initial callback {@link FlitchioStatusListener#onFlitchioStatusChanged(boolean)} before you
+ * can start using Flitchio. It happens asynchronously, and usually right after the Activity has
+ * been initialised. To catch this callback, you need to register a {@link FlitchioStatusListener}
+ * (see "listening mode" below).
+ * <p/>
+ * As soon as this controller is bound to the Flitchio Manager app, you can check if Flitchio is
+ * attached to the phone by calling {@link #isConnected()} and poll data from it by requesting a
+ * {@link FlitchioSnapshot} of its state with {@link #obtainSnapshot()}. You typically call
+ * {@link #obtainSnapshot()} if you want to use your controller in <em>polling mode</em>, i.e. if
+ * your app is designed to have a rendering loop updating the display at high frequency. That's
+ * typically the case for games that use a {@link SurfaceView} or a {@link GLSurfaceView}.
+ * <p/>
  * If you don't want to actively poll data from Flitchio, but rather receive events every time
- * something has changed on the device, you can use your controller in <em>listening mode</em>. To
- * do so, simply register a {@link FlitchioListener} with {@link #onResume(FlitchioListener)} and
- * unregister it with {@link #onPause()}. You will then receive {@link ButtonEvent}s for button
- * presses/releases and {@link JoystickEvent}s for joystick position updates, as well as updates
- * about the connection status of Flitchio.
+ * something has changed on the device, you can use your controller in <em>listening mode</em>.
+ * There are two types of listeners: {@link FlitchioStatusListener} for updates about the
+ * connection status of Flitchio, and {@link FlitchioEventListener} for updates about buttons and
+ * joystick states. You can register any of the listeners or both with
+ * {@link #onResume(FlitchioStatusListener, FlitchioEventListener)}. If you register at least one
+ * listener, you should then unregister with {@link #onPause()}.
  *
  * @since 0.5.0
  */
+@SuppressWarnings("unused")
 public class FlitchioController {
 
-    private static final String FLITCHIO_MANAGER_PACKAGE = "com.supenta.flitchio.manager";
+    static final String FLITCHIO_MANAGER_PACKAGE = "com.supenta.flitchio.manager";
     private static final String FLITCHIO_SERVICE_CLASS =
             FLITCHIO_MANAGER_PACKAGE + ".communication.FlitchioService";
     private static final int INVALID_AUTH_TOKEN = -1;
+
     /**
      * Map of per-{@link Context} existing {@link FlitchioController}s. Using {@link WeakReference}
      * to not leak memory when contexts have to be destroyed by the system.
      */
     private static final Map<WeakReference<Context>, FlitchioController> controllers = new HashMap<>();
+
     /**
      * Interface to this client passed to FlitchioService to identify this client and to allow
      * callbacks.
      */
     private final IFlitchioClient clientStub = new IFlitchioClientStub();
+
     /**
      * Locks used to synchronise the 3 threads: the main one where FlitchioController is created
      * (most probably UI thread), the anonymous callback thread on which the service does his
@@ -72,38 +80,60 @@ public class FlitchioController {
      */
     private final Object lockListener = new Object();
     private final Object lockService = new Object();
+
     /**
      * The context used to bind.
      */
     private final Context context;
+
+    /**
+     * Receiver used for listening to connection/disconnection events of Flitchio.
+     */
+    private final FlitchioStatusReceiver statusReceiver;
+
     /**
      * Received from service once the handshake has been done. Used for every further communication.
      */
     private int authToken = INVALID_AUTH_TOKEN;
+
     /**
      * Variable used to follow the flow of the Activity. Its value is updated correctly if the
      * 3rd-party dev does the appropriate callbacks.
      */
-    private ActivityLifecycle activityLifecycleMoment = ActivityLifecycle.UNDEFINED;
+    private int activityLifecycleMoment = ActivityLifecycle.UNDEFINED;
+
     /**
      * Interface to FlitchioService.
      */
     private IFlitchioService flitchioService = null;
+
     /**
-     * The listener to be called on receiving data and disconnected events. Known limitation: there
-     * can be only one listener per controller, and only one controller per context.
+     * The event listener to be called on receiving data.
+     * Known limitation: there can be only one event listener per controller, and only one
+     * controller per context.
      */
-    private FlitchioListener listener = null;
+    private FlitchioEventListener eventListener = null;
+
+    /**
+     * The status listener to be called on receiving connected and disconnected events.
+     * Known limitation: there can be only one status listener per controller, and only one
+     * controller per context.
+     */
+    private FlitchioStatusListener statusListener = null;
+
     /**
      * The thread to which the listener callbacks will be delivered (used by default), or the
-     * handler associated to the thread decided by the 3rd-party dev.
+     * handler associated to the thread decided by the 3rd-party dev. The same thread is used for
+     * both status and event listeners.
      */
     private ListenerThread listenerThread = null;
     private Handler listenerHandler = null;
+
     /**
      * The {@link ComponentName} for this context, used to identify this client in Flitchio Service.
      */
     private ComponentName clientId = null;
+
     /**
      * Listener object for the binding to the service, that detects when the binding is done and
      * when an unexpected disconnection occurred. The methods here are ALWAYS CALLED ON UI THREAD.
@@ -121,15 +151,19 @@ public class FlitchioController {
                         FlitchioLog.e("Unexpected error: could not authenticate to service.");
                     }
 
+                    postStatusUpdate(flitchioService.isConnected(authToken));
+
                 } catch (RemoteException e) {
                     FlitchioLog.e("Unexpected error: could not identify this controller.");
                 }
             }
 
-            // We connect the client in case he asked for it while binding was not ready. The client
-            // should not call onResume() if its listener is null, but in case he did, we don't
-            // register the client for a null Listener.
-            if (activityLifecycleMoment == ActivityLifecycle.ON_RESUME && listener != null) {
+            /* We connect the client in case he asked for it while binding was not ready. The client
+             * should not call onResume() if both listeners are null, but in case he did, we don't
+             * register the client.
+             */
+            if (activityLifecycleMoment == ActivityLifecycle.ON_RESUME
+                    && (statusListener != null || eventListener != null)) {
                 registerClient();
             }
         }
@@ -146,9 +180,7 @@ public class FlitchioController {
             resetListener();
 
             synchronized (lockListener) {
-                if (listenerHandler != null) {
-                    listenerHandler.post(new StatusRunnable(false /* isConnected */));
-                }
+                postStatusUpdate(false /* isConnected */);
             }
         }
     };
@@ -158,7 +190,8 @@ public class FlitchioController {
      */
     private FlitchioController(Context context) {
         this.context = context;
-        clientId = new ComponentName(context, context.getClass());
+        this.clientId = new ComponentName(context, context.getClass());
+        this.statusReceiver = new FlitchioStatusReceiver(this);
     }
 
     /**
@@ -257,12 +290,25 @@ public class FlitchioController {
     }
 
     /**
+     * Post a status update when the FlitchioService disconnect/connects or the
+     * {@link FlitchioStatusReceiver} receives an appropriate Intent broadcast.
+     *
+     * @param isConnected The state of Flitchio.
+     */
+    void postStatusUpdate(boolean isConnected) {
+        if (listenerHandler != null) {
+            listenerHandler.post(new StatusRunnable(isConnected));
+        }
+    }
+
+    /**
      * Initialise the {@link FlitchioController}. This method verifies the presence of the Flitchio
      * Manager app and binds to it. It must be the first method to be called, in the onCreate()
      * method of your {@link Activity} / {@link Service}. At the moment this method returns true,
      * the binding is <strong>not yet effective</strong>.
-     * To be notified as soon as the binding is done, you should declare a {@link FlitchioListener}
-     * and implement {@link FlitchioListener#onFlitchioStatusChanged(boolean)}.
+     * To be notified as soon as the binding is done, you should declare a
+     * {@link FlitchioStatusListener} and implement
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(boolean)}.
      *
      * @return True if the {@link FlitchioController} is going to get bound.
      * @throws FlitchioManagerDependencyException If Flitchio Manager was not found or is too old
@@ -292,29 +338,34 @@ public class FlitchioController {
     }
 
     /**
-     * Register a {@link FlitchioListener} to receive callbacks. If you use this
-     * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
-     * onResume() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
-     * this can be called right after {@link #onCreate()}. You only need to call this if you declare
-     * a {@link FlitchioListener}.
+     * Register a {@link FlitchioStatusListener} and/or a {@link FlitchioEventListener} to receive
+     * callbacks. If you use this {@link FlitchioController} in an {@link Activity}, this should be
+     * called in your Activity's onResume() (hence the name). If you use this
+     * {@link FlitchioController} in a {@link Service}, this can be called right after
+     * {@link #onCreate()}. You only need to call this if you declare at least one of the two
+     * listeners.
      *
-     * @param listener The listener.
-     * @param handler  The handler associated to the thread on which the callbacks will happen.
-     * @since 0.5.0
+     * @param statusListener The status listener.
+     * @param eventListener  The event listener.
+     * @param handler        The handler associated to the thread on which the callbacks will
+     *                       happen.
+     * @since 0.6.0
      */
-    public void onResume(FlitchioListener listener, Handler handler) {
+    public void onResume(FlitchioStatusListener statusListener, FlitchioEventListener eventListener, Handler handler) {
         synchronized (lockListener) {
             /*
-             * ENSURE CLEAN STATE = termination of the (previous) listener thread
+             * ENSURE CLEAN STATE = termination of the (previous) listeners' thread
              */
             resetListener();
 
-            /*
-             * SET LISTENER
-             */
-            if (listener != null) {
-                this.listener = listener;
+            this.statusListener = statusListener;
+            this.eventListener = eventListener;
 
+            if (statusListener != null) {
+                context.registerReceiver(statusReceiver, statusReceiver.getIntentFilter());
+            }
+
+            if (eventListener != null || statusListener != null) {
                 if (handler != null) {
                     listenerHandler = handler;
                 } else {
@@ -323,8 +374,8 @@ public class FlitchioController {
                     listenerHandler = listenerThread.getHandler();
                 }
             } else {
-                FlitchioLog.i(
-                        "No need to call onResume()/onPause() if you don't declare a listener.");
+                FlitchioLog.i("No need to call onResume()/onPause() if you don't declare a" +
+                        " FlitchioEventListener or a FlitchioStatusListener");
             }
         }
 
@@ -339,30 +390,29 @@ public class FlitchioController {
     }
 
     /**
-     * Register a {@link FlitchioListener} to receive callbacks. If you use this
-     * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
-     * onResume() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
-     * this can be called right after {@link #onCreate()}.
-     * You only need to call this if you declare a {@link FlitchioListener}.
+     * {@code handler} defaults to a {@link Handler} for an arbitrary thread (different from the
+     * main thread).
      *
-     * @param listener The listener.
-     * @since 0.5.0
+     * @see FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener, Handler)
+     * @since 0.6.0
      */
-    public void onResume(FlitchioListener listener) {
-        onResume(listener, null);
+    public void onResume(FlitchioStatusListener statusListener, FlitchioEventListener eventListener) {
+        onResume(statusListener, eventListener, null);
     }
 
     /**
-     * Unregister the {@link FlitchioListener} that has been previously declared. If you use this
-     * {@link FlitchioController} in an {@link Activity}, this should be called in your Activity's
-     * onPause() (hence the name). If you use this {@link FlitchioController} in a {@link Service},
-     * this can be called as late as in your Service's onDestroy().
-     * You only need to call this if you have declared Listener with
-     * {@link #onResume(FlitchioListener)}.
+     * Unregister the {@link FlitchioStatusListener} and/or {@link FlitchioEventListener} that have
+     * been previously declared. If you use this {@link FlitchioController} in an {@link Activity},
+     * this should be called in your Activity's onPause() (hence the name). If you use this
+     * {@link FlitchioController} in a {@link Service}, this can be called as late as in your
+     * Service's onDestroy(). You only need to call this if you have provided at least one of the
+     * two listeners with {@link #onResume(FlitchioStatusListener, FlitchioEventListener)}.
      *
      * @since 0.5.0
      */
     public void onPause() {
+        context.unregisterReceiver(statusReceiver);
+
         unregisterClient();
         resetListener();
 
@@ -418,7 +468,8 @@ public class FlitchioController {
     }
 
     /**
-     * Reset the listener variables (thread, handler and listener itself) properly.
+     * Reset the status and event listener variables (thread, handler and the listeners themselves)
+     * properly.
      */
     private void resetListener() {
         synchronized (lockListener) {
@@ -428,7 +479,8 @@ public class FlitchioController {
             }
             listenerHandler = null;
 
-            listener = null;
+            statusListener = null;
+            eventListener = null;
         }
     }
 
@@ -473,9 +525,9 @@ public class FlitchioController {
 
     /**
      * Retrieve the latest state of Flitchio as a {@link FlitchioSnapshot}.
-     * <strong>Attention:</strong> before the binding is effective, this will always return an empty
-     * snapshot. You can listen to the moment the binding gets effective by implementing
-     * {@link FlitchioListener#onFlitchioStatusChanged(boolean)}.
+     * <strong>Attention:</strong> before the binding is effective, this will always return an
+     * empty snapshot. You can listen to the moment the binding gets effective by implementing
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(boolean)}.
      *
      * @return The snapshot representing the latest state of Flitchio. It is never null: when
      * Flitchio is disconnected, you get an empty snapshot instead.
@@ -506,7 +558,7 @@ public class FlitchioController {
     /**
      * Check if Flitchio is connected. <strong>Attention:</strong> before the binding is effective,
      * this will always return false. You can listen to the moment the binding gets effective by
-     * implementing {@link FlitchioListener#onFlitchioStatusChanged(boolean)}.
+     * implementing {@link FlitchioStatusListener#onFlitchioStatusChanged(boolean)}.
      *
      * @return True if Flitchio is connected and data can be read from it.
      * @since 0.5.0
@@ -528,26 +580,19 @@ public class FlitchioController {
         }
     }
 
-    private enum ActivityLifecycle {
-        UNDEFINED, ON_CREATE, ON_RESUME, ON_PAUSE, ON_DESTROY
+    private static class ActivityLifecycle {
+        private static final int UNDEFINED = -1;
+        private static final int ON_CREATE = 0;
+        private static final int ON_RESUME = 1;
+        private static final int ON_PAUSE = 2;
+        private static final int ON_DESTROY = 3;
     }
 
     /**
      * Stub that receives the IPC callbacks from the Service and presents them to the client
-     * ({@link FlitchioListener}) the right way and in the right thread.
-     *
-     * @author david.f
+     * ({@link FlitchioEventListener}) the right way and in the right thread.
      */
     private class IFlitchioClientStub extends IFlitchioClient.Stub {
-
-        @Override
-        public void onStatusChanged(boolean isConnected) throws RemoteException {
-            synchronized (lockListener) {
-                if (listenerHandler != null) {
-                    listenerHandler.post(new StatusRunnable(isConnected));
-                }
-            }
-        }
 
         @Override
         public void onButtonEvent(ButtonEvent event) throws RemoteException {
@@ -574,7 +619,7 @@ public class FlitchioController {
 
     /**
      * Runnable callback for status changed (connected/disconnected) events. It will be run on the
-     * listener's thread.
+     * listener thread.
      */
     private class StatusRunnable implements Runnable {
         private final boolean isConnected;
@@ -586,15 +631,15 @@ public class FlitchioController {
         @Override
         public void run() {
             synchronized (lockListener) {
-                if (listener != null) {
-                    listener.onFlitchioStatusChanged(isConnected);
+                if (statusListener != null) {
+                    statusListener.onFlitchioStatusChanged(isConnected);
                 }
             }
         }
     }
 
     /**
-     * Runnable callback for button events. It will be run on the listener's thread.
+     * Runnable callback for button events. It will be run on the listener thread.
      */
     private class ButtonEventRunnable implements Runnable {
         private final ButtonEvent event;
@@ -606,15 +651,15 @@ public class FlitchioController {
         @Override
         public void run() {
             synchronized (lockListener) {
-                if (listener != null) {
-                    listener.onFlitchioButtonEvent(event.getSource(), event);
+                if (eventListener != null) {
+                    eventListener.onFlitchioButtonEvent(event.getSource(), event);
                 }
             }
         }
     }
 
     /**
-     * Runnable callback for joystick events. It will be run on the listener's thread.
+     * Runnable callback for joystick events. It will be run on the listener thread.
      */
     private class JoystickEventRunnable implements Runnable {
         private final JoystickEvent event;
@@ -626,8 +671,8 @@ public class FlitchioController {
         @Override
         public void run() {
             synchronized (lockListener) {
-                if (listener != null) {
-                    listener.onFlitchioJoystickEvent(event.getSource(), event);
+                if (eventListener != null) {
+                    eventListener.onFlitchioJoystickEvent(event.getSource(), event);
                 }
             }
         }

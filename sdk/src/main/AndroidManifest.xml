@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.supenta.flitchio.sdk">
+    package="com.supenta.flitchio.sdk">
 
-	<application android:allowBackup="true">
-	</application>
+    <application android:allowBackup="true"></application>
 
 </manifest>
