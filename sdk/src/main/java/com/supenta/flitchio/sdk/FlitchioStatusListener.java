@@ -4,11 +4,12 @@ package com.supenta.flitchio.sdk;
 import android.os.Handler;
 
 /**
- * Listener of Flitchio status update events like connection and disconnection). A listener must be
- * registered with {@link FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener)}
- * to receive events.
+ * Listener of Flitchio status update events like connection and disconnection. A listener must be
+ * registered with
+ * {@link FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener)} to receive
+ * events.
  *
- * @since TODO update when we release a new version
+ * @since 0.6.0
  */
 public interface FlitchioStatusListener {
 
@@ -21,7 +22,7 @@ public interface FlitchioStatusListener {
      * was specified.
      *
      * @param isConnected The new connection status.
-     * @since TODO update when we release a new version
+     * @since 0.6.0
      */
     void onFlitchioStatusChanged(boolean isConnected);
 }

@@ -6,15 +6,23 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 /**
- * Receiver for listening changes to the status of Flitchio. This holds a reference to the controller
- * so when a status update triggers (as a broadcast) the receiver can easily broadcast the update
- * through the SDK.
+ * Receiver of Flitchio status update events. This holds a reference to the controller so when a
+ * status update triggers (as a broadcast) the receiver can easily broadcast the update through the
+ * SDK.
  */
 class FlitchioStatusReceiver extends BroadcastReceiver {
 
+    /**
+     * Action for "Flitchio connected" event. Important to keep the value synced with the one in
+     * Flitchio Manager.
+     */
     private static final String ACTION_FLITCHIO_CONNECTED =
             FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_CONNECTED";
 
+    /**
+     * Action for "Flitchio disconnected" event. Important to keep the value synced with the one in
+     * Flitchio Manager.
+     */
     private static final String ACTION_FLITCHIO_DISCONNECTED =
             FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_DISCONNECTED";
 
