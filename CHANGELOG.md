@@ -25,7 +25,12 @@ The Change Log itself follows a standard format described [there](http://keepach
 ### Deprecated
 -->
 
-
+## [0.6.0] - 2015-09-18
+### Added
+- FlitchioStatusListener for listening to Flitchio status updates
+### Changed
+- Enums to ints for less memory footprint
+- FlitchioEventListener now only notifies on button and joystick events
 
 ## [0.5.1] - 2015-08-12
 ### Added
