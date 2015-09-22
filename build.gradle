@@ -12,7 +12,7 @@ buildscript {
 
 def versionMajor = 0
 def versionMinor = 6
-def versionBuild = 0
+def versionBuild = 1
 
 def generateVersionName = {
     return versionMajor + "." + versionMinor + "." + versionBuild

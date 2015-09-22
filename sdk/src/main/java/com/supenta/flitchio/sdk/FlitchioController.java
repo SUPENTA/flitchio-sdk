@@ -148,13 +148,13 @@ public class FlitchioController {
                 try {
                     authToken = flitchioService.receiveClientInfo(clientId);
                     if (authToken == INVALID_AUTH_TOKEN) {
-                        FlitchioLog.e("Unexpected error: could not authenticate to service.");
+                        FlitchioLog.e("Unexpected error: could not authenticate to service");
                     }
 
                     postStatusUpdate(flitchioService.isConnected(authToken));
 
                 } catch (RemoteException e) {
-                    FlitchioLog.e("Unexpected error: could not identify this controller.");
+                    FlitchioLog.e("Unexpected error: could not identify this controller");
                 }
             }
 
@@ -171,7 +171,7 @@ public class FlitchioController {
         @Override
         public void onServiceDisconnected(ComponentName className) {
             FlitchioLog.e(
-                    "Unexpected error: this controller has been unbound from Flitchio Manager.");
+                    "Unexpected error: this controller has been unbound from Flitchio Manager");
 
             synchronized (lockService) {
                 flitchioService = null;
@@ -411,7 +411,13 @@ public class FlitchioController {
      * @since 0.5.0
      */
     public void onPause() {
-        context.unregisterReceiver(statusReceiver);
+        if (statusListener != null) {
+            try {
+                context.unregisterReceiver(statusReceiver);
+            } catch (IllegalArgumentException e) {
+                FlitchioLog.w("Tried to unregister the status receiver, but it was not registered");
+            }
+        }
 
         unregisterClient();
         resetListener();
@@ -446,10 +452,10 @@ public class FlitchioController {
                 flitchioService.removeClientInfo(authToken);
             } catch (RemoteException e) {
                 FlitchioLog.e("Unexpected error: could not notify Flitchio Manager about " +
-                        "this controller termination.");
+                        "this controller termination");
 
             } catch (NullPointerException e) {
-                FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective.");
+                FlitchioLog.w("Binding to Flitchio Manager not yet effective");
             }
 
             /*
@@ -458,7 +464,7 @@ public class FlitchioController {
             try {
                 context.unbindService(serviceConnection);
             } catch (IllegalArgumentException e) {
-                FlitchioLog.w("Warning: it seems that you tried to call onDestroy without" +
+                FlitchioLog.w("It seems that you tried to call onDestroy without" +
                         " having a binding to Flitchio Manager");
             }
             flitchioService = null;
@@ -495,10 +501,10 @@ public class FlitchioController {
                     flitchioService.registerClient(authToken, clientStub);
 
                 } catch (RemoteException e) {
-                    FlitchioLog.e("Unexpected error while trying to register.");
+                    FlitchioLog.e("Unexpected error while trying to register");
 
                 } catch (NullPointerException e) {
-                    FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective. " +
+                    FlitchioLog.w("Binding to Flitchio Manager not yet effective. " +
                             "Client will be registered later.");
                 }
             }
@@ -515,9 +521,9 @@ public class FlitchioController {
                 try {
                     flitchioService.unregisterClient(authToken, clientStub);
                 } catch (RemoteException e) {
-                    FlitchioLog.e("Unexpected error while trying to unregister.");
+                    FlitchioLog.e("Unexpected error while trying to unregister");
                 } catch (NullPointerException e) {
-                    FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective.");
+                    FlitchioLog.w("Binding to Flitchio Manager not yet effective");
                 }
             }
         }
@@ -544,11 +550,11 @@ public class FlitchioController {
                 }
 
             } catch (RemoteException e) {
-                FlitchioLog.e("Unexpected error while trying to obtain a snapshot.");
+                FlitchioLog.e("Unexpected error while trying to obtain a snapshot");
                 return new FlitchioSnapshot();
 
             } catch (NullPointerException e) {
-                FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective. " +
+                FlitchioLog.w("Binding to Flitchio Manager not yet effective. " +
                         "Returned snapshot will be empty.");
                 return new FlitchioSnapshot();
             }
@@ -569,11 +575,11 @@ public class FlitchioController {
                 return flitchioService.isConnected(authToken);
 
             } catch (RemoteException e) {
-                FlitchioLog.e("Unexpected error while trying to check the connection status.");
+                FlitchioLog.e("Unexpected error while trying to check the connection status");
                 return false;
 
             } catch (NullPointerException e) {
-                FlitchioLog.w("Warning: binding to Flitchio Manager not yet effective. " +
+                FlitchioLog.w("Binding to Flitchio Manager not yet effective. " +
                         "Returned status will be disconnected.");
                 return false;
             }
