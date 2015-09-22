@@ -6,11 +6,6 @@ The Change Log itself follows a standard format described [there](http://keepach
 
 
 ## [Unreleased][unreleased]
-### Added
-- Custom stylesheet for Sphinx and Javadoc
-
-### Changed
-- gh-pages are now generated automatically with Git-Gradle plugin
 
 
 
@@ -28,10 +23,12 @@ The Change Log itself follows a standard format described [there](http://keepach
 ## [0.6.0] - 2015-09-18
 ### Added
 - FlitchioStatusListener for listening to Flitchio status updates
+- Custom stylesheet for Sphinx and Javadoc
 
 ### Changed
 - Enums to ints for less memory footprint
 - FlitchioEventListener now only notifies on button and joystick events
+- gh-pages are now generated automatically with Git-Gradle plugin
 
 ## [0.5.1] - 2015-08-12
 ### Added
