@@ -3,6 +3,7 @@ apply plugin: 'org.ajoberstar.github-pages'
 task generateAllDocs {
     dependsOn ":sdk:javadoc", ":docs:buildHtml"
 }
+
 githubPages {
     repoUri = 'https://github.com/SUPENTA/flitchio-sdk.git' // Apparently important to use HTTPS
 
