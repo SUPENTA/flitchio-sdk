@@ -10,7 +10,7 @@ This page is intended for app developers only.
 It guides you through the installation and the integration of the Flitchio SDK into your project.
 
 Note that if your game already supports USB/Bluetooth game controllers, and you want to add basic support for Flitchio, you might not need to implement anything.
-See :ref:`flitchio-ime` for further informations.
+See :ref:`flitchio-ime` for further information.
 
 If you're the happy owner of a Flitchio, but you're still looking for an innovative use case to develop, :ref:`here <use-cases>` are some ideas.
 
@@ -25,7 +25,7 @@ Overview of the device
 
     Flitchio seen from the back of the phone
 
-Flitchio comes as a smartphone case that adds interactive controls at the back the phone.
+Flitchio comes as a smartphone case that adds interactive controls at the back of the phone.
 
 It has two **shoulder buttons** which are clickable and sensitive to pressure variations.
 Through the Flitchio SDK, you can receive press and release events of the buttons and measure the pressure applied by the user.
@@ -41,7 +41,7 @@ Through the Flitchio SDK, you can receive events when each of the joystick moves
 
 For each joystick are also defined virtual buttons for the four directions (up, down, left and right).
 These virtual buttons are called **D-Pad buttons** (for "directional pad") and they act just like shoulder buttons in the sense that you can receive press and release events for each them.
-However joysticks don't support pressure-sensitivity so the pressure of the D-Pad buttons will always be 0.5 when pressed.
+However, joysticks don't support pressure-sensitivity so the pressure of the D-Pad buttons will always be 0.5 when pressed.
 You have eight D-Pad buttons in total:
 
 * ``DPAD_BOTTOM_UP`` for the up direction of ``JOYSTICK_BOTTOM``,
@@ -65,7 +65,7 @@ Through the Flitchio SDK, your app will bind to Flitchio Manager to access the d
 If you possess Flitchio, you probably already have downloaded the Flitchio Manager app.
 If you haven't, `go to the Play Store and install it <https://play.google.com/store/apps/details?id=com.supenta.flitchio.manager>`_.
 
-Before building your app, you'll need to understand the general architecture of all Flitchio apps.
+Before building your app, you'll need to understand the general architecture of Flitchio apps.
 The diagram below pictures the interactions between your app, the Flitchio Manager app and Flitchio itself:
 
 .. _fig-software-architecture:

@@ -56,17 +56,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-        
-          <a href="index.html" class="icon icon-home"> Flitchio SDK
-        
+          
+            <a href="index.html" class="icon icon-home"> Flitchio SDK
+          
 
-        
-        </a>
+          
+          </a>
 
-        
+          
+            
+            
+              <div class="version">
+                0.6.1
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,19 +85,15 @@
   </form>
 </div>
 
-        
-      </div>
+          
+        </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-          
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#overview-of-the-device">Overview of the device</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#communicate-with-flitchio">Communicate with Flitchio</a></li>
-</ul>
-</li>
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Getting started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Flitchio SDK for Android</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bind-to-flitchio">Bind to Flitchio</a></li>
@@ -106,19 +112,16 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sdkunity.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases and ideas for Flitchio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="flitchioime.html">Enable Flitchio compatibility without Flitchio SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Feedback &amp; Support</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -133,7 +136,13 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
@@ -148,7 +157,8 @@
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="flitchio-sdk-for-android">
 <h1>Flitchio SDK for Android<a class="headerlink" href="#flitchio-sdk-for-android" title="Permalink to this headline">¶</a></h1>
@@ -179,16 +189,16 @@ Likewise, you should terminate it in the <code class="docutils literal"><span cl
 <p>Here is an example of a typical initialise/terminate cycle:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
 
-    <span class="kd">private</span> <span class="n">FlitchioController</span> <span class="n">mFlitchioController</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">FlitchioController</span> <span class="n">flitchioController</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
         <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
 
-        <span class="n">mFlitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">flitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
 
         <span class="k">try</span> <span class="o">{</span>
-            <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+            <span class="n">flitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
         <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="kd">final</span> <span class="n">FlitchioManagerDependencyException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
             <span class="c1">// Flitchio Manager not found (see Troubleshooting section)</span>
         <span class="o">}</span>
@@ -196,7 +206,7 @@ Likewise, you should terminate it in the <code class="docutils literal"><span cl
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDestroy</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
 
         <span class="kd">super</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
     <span class="o">}</span>
@@ -209,7 +219,7 @@ Likewise, you should terminate it in the <code class="docutils literal"><span cl
 <p>The code displayed above enables your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> instance to access or receive data from Flitchio Manager.
 There are two ways of accessing this data:</p>
 <ul class="simple">
-<li>Either your app implements a <strong>listener</strong> to receive events whenever the state of Flitchio changes (button/direction newly pressed or released, joystick moving, pressure variations).</li>
+<li>Either your app implements a <strong>status listener</strong> to receive events whenever the connection state of Flitchio changes and/or an <strong>event listener</strong> to receive button and direction events (newly pressed or released, joystick moving, pressure variations).</li>
 <li>Or your app actively <strong>polls</strong> and repeatedly requests the newest state of Flitchio (pressure applied on the buttons/directions and coordinates of the joysticks at a given moment).</li>
 </ul>
 <p>Whether you listen or poll is entirely your design decision.
@@ -221,26 +231,74 @@ That&#8217;s typically the case of Android games that use a SurfaceView or a GLS
 You could for example poll data in a rendering loop while listening for connection status changes.</p>
 <div class="section" id="listening-mode">
 <span id="id1"></span><h3>Listening Mode<a class="headerlink" href="#listening-mode" title="Permalink to this headline">¶</a></h3>
-<p>When you want to listen for incoming events, all you need to do is implement the <code class="docutils literal"><span class="pre">FlitchioListener</span></code> interface.
-Then:</p>
+<p>When you want to listen for incoming events, all you need to do is implement either one or both of the listener interfaces.</p>
+<p>The two listeners are:</p>
 <ul class="simple">
-<li>Call <code class="docutils literal"><span class="pre">onResume()</span></code> to register your listener and start receiving events.</li>
-<li>Call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onPause--"><code class="docutils literal"><span class="pre">onPause()</span></code></a> to unregister your listener and stop the stream of events.</li>
+<li><a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> which is used for listening to the connection state of Flitchio (whether it connected or disconnected).</li>
+<li><a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioEventListener.html"><code class="docutils literal"><span class="pre">FlitchioEventListener</span></code></a> which is used for listening to button and direction events from Flitchio (top button was pressed, bottom joystick has pressure of 0.3 etc.)</li>
 </ul>
-<p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in an Activity, you should register your <code class="docutils literal"><span class="pre">FlitchioListener</span></code> and unregister it respectively in the <code class="docutils literal"><span class="pre">onResume()</span></code> and <code class="docutils literal"><span class="pre">onPause()</span></code> methods of your Activity.
-If you don&#8217;t unregister, your Activity will receive data from Flitchio Manager even when it&#8217;s in background.
-This may lead to inconsistent behaviour and should be avoided at all times.</p>
-<p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in a Service, you can register your <code class="docutils literal"><span class="pre">FlitchioListener</span></code> right after calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a> and unregister it right before calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onDestroy--"><code class="docutils literal"><span class="pre">onDestroy()</span></code></a>.</p>
-<p>Here is an example of a typical controller lifecycle in listening mode:</p>
+<p>After implementing either of them you need to:</p>
+<ul class="simple">
+<li>Call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onResume-com.supenta.flitchio.sdk.FlitchioStatusListener-com.supenta.flitchio.sdk.FlitchioEventListener-android.os.Handler-"><code class="docutils literal"><span class="pre">onResume()</span></code></a> to register your listener(s) and start receiving events, you can pass <cite>null</cite> for the listener that you do not wish to register.</li>
+<li>Call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onPause--"><code class="docutils literal"><span class="pre">onPause()</span></code></a> to unregister your listener(s) and stop the stream of events.</li>
+</ul>
+<p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in an Activity, you should register your listeners and unregister them respectively in the <code class="docutils literal"><span class="pre">onResume()</span></code> and <code class="docutils literal"><span class="pre">onPause()</span></code> methods of your Activity.
+If you don&#8217;t unregister, your Activity will receive data from Flitchio Manager even when it&#8217;s in the background.
+This may lead to inconsistent behaviour and <strong>should be avoided at all times</strong>.</p>
+<p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in a Service, you can register your listeners right after calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a> and unregister it right before calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onDestroy--"><code class="docutils literal"><span class="pre">onDestroy()</span></code></a>.</p>
+<p>Here is an example of a typical controller lifecycle which listens only for status (connection and disconnection) events:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
 
-    <span class="kd">private</span> <span class="n">FlitchioController</span> <span class="n">mFlitchioController</span><span class="o">;</span>
-    <span class="kd">private</span> <span class="n">FlitchioListener</span> <span class="n">mFlitchioListenerImpl</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">FlitchioController</span> <span class="n">flitchioController</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">FlitchioStatusListener</span> <span class="n">flitchioStatusListenerImpl</span><span class="o">;</span>
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-        <span class="n">mFlitchioListenerImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FlitchioListenerImpl</span><span class="o">();</span> <span class="c1">// see below</span>
+        <span class="n">flitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">flitchioStatusListenerImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FlitchioStatusListenerImpl</span><span class="o">();</span> <span class="c1">// see below</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">flitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="kd">final</span> <span class="n">FlitchioManagerDependencyException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// Flitchio Manager not found (see Troubleshooting section)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onResume</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onResume</span><span class="o">();</span>
+
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="n">flitchioStatusListenerImpl</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span> <span class="c1">// event listener is not needed</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onPause</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
+
+        <span class="kd">super</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onDestroy</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
+
+        <span class="kd">super</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Here is an example of a typical controller lifecycle in listening mode for both status and button/joystick events:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">FlitchioController</span> <span class="n">flitchioController</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">FlitchioStatusListener</span> <span class="n">flitchioStatusListenerImpl</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">FlitchioEventListener</span> <span class="n">flitchioEventListenerImpl</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">flitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">flitchioStatusListenerImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FlitchioStatusListenerImpl</span><span class="o">();</span> <span class="c1">// see below</span>
+        <span class="n">flitchioEventListenerImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FlitchioEventListenerImpl</span><span class="o">();</span> <span class="c1">// see below</span>
 
         <span class="k">try</span> <span class="o">{</span>
             <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
@@ -253,33 +311,49 @@ This may lead to inconsistent behaviour and should be avoided at all times.</p>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onResume</span><span class="o">()</span> <span class="o">{</span>
         <span class="kd">super</span><span class="o">.</span><span class="na">onResume</span><span class="o">();</span>
 
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="n">mFlitchioListenerImpl</span><span class="o">);</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="n">flitchioStatusListenerImpl</span><span class="o">,</span> <span class="n">flitchioEventListenerImpl</span><span class="o">);</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onPause</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
 
         <span class="kd">super</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onDestroy</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
 
         <span class="kd">super</span><span class="o">.</span><span class="na">onDestroy</span><span class="o">();</span>
     <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>Once the controller is bound to Flitchio Manager and the <code class="docutils literal"><span class="pre">FlitchioListener</span></code> is registered, you will receive:</p>
+<p>Once the controller is bound to Flitchio Manager and the <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> is registered, you will receive:</p>
 <ul class="simple">
-<li>a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/ButtonEvent.html"><code class="docutils literal"><span class="pre">ButtonEvent</span></code></a> whenever the user presses or releases a button/direction of Flitchio, or varies the pressure;</li>
-<li>a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/JoystickEvent.html"><code class="docutils literal"><span class="pre">JoystickEvent</span></code></a> whenever the user moves a joystick of Flitchio;</li>
 <li>the connection status of Flitchio whenever it changes.</li>
 </ul>
+<p>Here is an example of what you can do with the received status event:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlitchioStatusListenerImpl</span> <span class="kd">implements</span> <span class="n">FlitchioStatusListener</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFlitchioStatusChanged</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Once the controller is bound to Flitchio Manager and the <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioEventListener.html"><code class="docutils literal"><span class="pre">FlitchioEventListener</span></code></a> is registered, you will receive:</p>
+<ul class="simple">
+<li>a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/ButtonEvent.html"><code class="docutils literal"><span class="pre">ButtonEvent</span></code></a> whenever the user presses or releases a button/direction of Flitchio, or varies the pressure;</li>
+<li>a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/JoystickEvent.html"><code class="docutils literal"><span class="pre">JoystickEvent</span></code></a> whenever the user moves a joystick of Flitchio.</li>
+</ul>
 <p>Here is an example of what you can do with the received events:</p>
-<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlitchioListenerImpl</span> <span class="kd">implements</span> <span class="n">FlitchioListener</span> <span class="o">{</span>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlitchioEventListenerImpl</span> <span class="kd">implements</span> <span class="n">FlitchioEventListener</span> <span class="o">{</span>
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFlitchioButtonEvent</span><span class="o">(</span><span class="n">InputElement</span><span class="o">.</span><span class="na">Button</span> <span class="n">source</span><span class="o">,</span> <span class="n">ButtonEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">if</span> <span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getAction</span><span class="o">()</span> <span class="o">==</span> <span class="n">ButtonEvent</span><span class="o">.</span><span class="na">ACTION_DOWN</span><span class="o">)</span> <span class="o">{</span>
@@ -307,15 +381,6 @@ This may lead to inconsistent behaviour and should be avoided at all times.</p>
             <span class="c1">// The top joystick has moved</span>
         <span class="o">}</span>
     <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFlitchioStatusChanged</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
-
-        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-
-        <span class="o">}</span>
-    <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -331,9 +396,9 @@ In each iteration of your game/rendering loop, call <a class="reference external
 You would then be able to query the current state like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
 
-    <span class="k">if</span> <span class="o">(</span><span class="n">mFlitchioController</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">isConnected</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">flitchioController</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">flitchioController</span><span class="o">.</span><span class="na">isConnected</span><span class="o">())</span> <span class="o">{</span>
         <span class="c1">// Retrieve the current state of Flitchio</span>
-        <span class="n">FlitchioSnapshot</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">obtainSnapshot</span><span class="o">();</span>
+        <span class="n">FlitchioSnapshot</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">flitchioController</span><span class="o">.</span><span class="na">obtainSnapshot</span><span class="o">();</span>
 
         <span class="k">if</span> <span class="o">(</span><span class="n">snapshot</span><span class="o">.</span><span class="na">getJoystickX</span><span class="o">(</span><span class="n">JOYSTICK_TOP</span><span class="o">)</span> <span class="o">==</span> <span class="mf">0.0f</span> <span class="o">&amp;&amp;</span>
             <span class="n">snapshot</span><span class="o">.</span><span class="na">getJoystickY</span><span class="o">(</span><span class="n">JOYSTICK_TOP</span><span class="o">)</span> <span class="o">==</span> <span class="mf">0.0f</span><span class="o">)</span> <span class="o">{</span>
@@ -348,7 +413,7 @@ You would then be able to query the current state like this:</p>
 </pre></div>
 </div>
 <p><strong>Important note:</strong> after calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a>, you can&#8217;t immediately start polling, because your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> is still initialising.
-Polling is possible from the moment the binding gets effective, i.e. from the first <code class="docutils literal"><span class="pre">onFlitchioStatusChanged()</span></code> callback.</p>
+Polling is possible from the moment the binding gets effective, i.e. from the first <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html#onFlitchioStatusChanged-boolean-"><code class="docutils literal"><span class="pre">onFlitchioStatusChanged()</span></code></a> callback.</p>
 <p>Please read <a class="reference internal" href="#know-when-to-poll"><span>Know when to poll data from Flitchio</span></a> for further details.</p>
 </div>
 </div>
@@ -366,7 +431,7 @@ Those logs are identified by the tag <code class="docutils literal"><span class=
 If it&#8217;s not installed, or if the version of Flitchio Manager installed is older than the version of the Flitchio SDK you are developing with, the <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a> method will throw an exception.
 You can handle it, by disabling Flitchio functionalities for your app, or preferably by redirecting your users to the Play Store to download Flitchio Manager:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="k">try</span> <span class="o">{</span>
-    <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+    <span class="n">flitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
 <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="kd">final</span> <span class="n">FlitchioManagerDependencyException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
     <span class="c1">// Start activity to update FlitchioManager</span>
     <span class="n">startActivity</span><span class="o">(</span><span class="n">FlitchioController</span><span class="o">.</span><span class="na">getPlayStoreIntentForFlitchioManager</span><span class="o">());</span>
@@ -381,38 +446,38 @@ You can handle it, by disabling Flitchio functionalities for your app, or prefer
 <span id="know-when-to-poll"></span><h3>Know when to poll data from Flitchio<a class="headerlink" href="#know-when-to-poll-data-from-flitchio" title="Permalink to this headline">¶</a></h3>
 <p>Because you need Android to initialise the service connection, you can&#8217;t poll data from Flitchio right after <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a> returns true.
 If you poll while the binding is not effective, <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#isConnected--"><code class="docutils literal"><span class="pre">isConnected()</span></code></a> will always return false and <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#obtainSnapshot--"><code class="docutils literal"><span class="pre">obtainSnapshot()</span></code></a> will always return an empty snapshot.
-To be notified as soon as the binding gets effective to be able to start polling, you should register a <code class="docutils literal"><span class="pre">FlitchioListener</span></code> and implement <code class="docutils literal"><span class="pre">onFlitchioStatusChanged()</span></code>.
+To be notified as soon as the binding gets effective to be able to start polling, you should register a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> and implement <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html#onFlitchioStatusChanged-boolean-"><code class="docutils literal"><span class="pre">onFlitchioStatusChanged()</span></code></a>.
 Only from the moment that method is called you can poll data about the real Flitchio state.
 The callback happens very shortly (it&#8217;s a matter of milliseconds) after your Activity or Service is initialised (i.e. after the sequence <code class="docutils literal"><span class="pre">onCreate()</span></code> - <code class="docutils literal"><span class="pre">onStart()</span></code> - <code class="docutils literal"><span class="pre">onResume()</span></code>).</p>
-<p>See <a class="reference internal" href="#listening-mode"><span>Listening Mode</span></a> to understand how to declare a <code class="docutils literal"><span class="pre">FlitchioListener</span></code>.</p>
+<p>See <a class="reference internal" href="#listening-mode"><span>Listening Mode</span></a> to understand how to declare a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a>.</p>
 <p>Here&#8217;s an example by code:</p>
-<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="kd">implements</span> <span class="n">FlitchioListener</span> <span class="o">{</span>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="kd">implements</span> <span class="n">FlitchioStatusListener</span> <span class="o">{</span>
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">flitchioController</span> <span class="o">=</span> <span class="n">FlitchioController</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
 
         <span class="k">try</span> <span class="o">{</span>
-            <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+            <span class="n">flitchioController</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
         <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="kd">final</span> <span class="n">FlitchioManagerDependencyException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
             <span class="c1">// ...</span>
         <span class="o">}</span>
 
-        <span class="c1">// mFlitchioController.obtainSnapshot() is invalid here!</span>
+        <span class="c1">// flitchioController.obtainSnapshot() is invalid here!</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onResume</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
 
-        <span class="c1">// mFlitchioController.obtainSnapshot() is invalid here!</span>
+        <span class="c1">// flitchioController.obtainSnapshot() is invalid here!</span>
     <span class="o">}</span>
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFlitchioStatusChanged</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">if</span> <span class="o">(</span><span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
             <span class="c1">// Valid from here!</span>
-            <span class="n">FlitchioSnapshot</span> <span class="n">validSnapshot</span> <span class="o">=</span> <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">obtainSnapshot</span><span class="o">();</span>
+            <span class="n">FlitchioSnapshot</span> <span class="n">validSnapshot</span> <span class="o">=</span> <span class="n">flitchioController</span><span class="o">.</span><span class="na">obtainSnapshot</span><span class="o">();</span>
         <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
             <span class="c1">// Binding is effective but Flitchio is unattached</span>
         <span class="o">}</span>
@@ -423,20 +488,20 @@ The callback happens very shortly (it&#8217;s a matter of milliseconds) after yo
 </div>
 <div class="section" id="receive-listener-callbacks-on-a-particular-thread">
 <span id="define-thread-callbacks"></span><h3>Receive listener callbacks on a particular thread<a class="headerlink" href="#receive-listener-callbacks-on-a-particular-thread" title="Permalink to this headline">¶</a></h3>
-<p>By default, all the callback methods of <code class="docutils literal"><span class="pre">FlitchioListener</span></code> are executed on an arbitrary non-UI thread, different from the main thread.
+<p>By default, all the callback methods of <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> and <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioEventListener.html"><code class="docutils literal"><span class="pre">FlitchioEventListener</span></code></a> are executed on an arbitrary non-UI thread, different from the main thread.
 This can be problematic if you try to do UI operations in those callbacks, such as updating Views: your app will crash.
-You can change the default behaviour by passing to <code class="docutils literal"><span class="pre">onResume()</span></code> a reference to a Handler object associated to the thread you want to receive the callbacks in.</p>
+You can change the default behaviour by passing to <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onResume-com.supenta.flitchio.sdk.FlitchioStatusListener-com.supenta.flitchio.sdk.FlitchioEventListener-android.os.Handler-"><code class="docutils literal"><span class="pre">onResume()</span></code></a> a reference to a Handler object associated to the thread you want to receive the callbacks in.</p>
 <p>In particular, if you want to receive these callbacks on the UI thread, you would do:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="nd">@Override</span>
 <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onResume</span><span class="o">()</span> <span class="o">{</span>
     <span class="kd">super</span><span class="o">.</span><span class="na">onResume</span><span class="o">();</span>
 
-    <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="k">new</span> <span class="n">Handler</span><span class="o">());</span>
+    <span class="n">flitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="k">new</span> <span class="n">Handler</span><span class="o">());</span>
 <span class="o">}</span>
 
 <span class="nd">@Override</span>
 <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onPause</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
+    <span class="n">flitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
 
     <span class="kd">super</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
 <span class="o">}</span>
@@ -454,7 +519,7 @@ If your app solely depends on input from Flitchio, i.e. the user doesn&#8217;t u
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onResume</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(...);</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onResume</span><span class="o">(...);</span>
 
         <span class="n">keepScreenOn</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
     <span class="o">}</span>
@@ -463,7 +528,7 @@ If your app solely depends on input from Flitchio, i.e. the user doesn&#8217;t u
     <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onPause</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">keepScreenOn</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
-        <span class="n">mFlitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
+        <span class="n">flitchioController</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
     <span class="o">}</span>
 
     <span class="kd">private</span> <span class="kt">void</span> <span class="nf">keepScreenOn</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">keepScreenOn</span><span class="o">)</span> <span class="o">{</span>
@@ -488,6 +553,7 @@ If your app solely depends on input from Flitchio, i.e. the user doesn&#8217;t u
 </div>
 
 
+           </div>
           </div>
           <footer>
   
@@ -506,9 +572,10 @@ If your app solely depends on input from Flitchio, i.e. the user doesn&#8217;t u
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, SUPENTA.
+
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

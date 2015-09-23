@@ -4,7 +4,7 @@
 Enable Flitchio compatibility without Flitchio SDK
 ---------------------------------------------------------
 
-If you don't want to, or can't, develop with Flitchio SDK, there's an alternate mode that uses IME.
+If you don't want to - or can't - develop with the Flitchio SDK, there's an alternate mode that uses IME.
 In this mode, Flitchio acts like a USB/Bluetooth gamepad and inputs directly into the game, without the need of coding specific Flitchio support.
 So if your game is designed to support existing gamepads, there's a chance that it will work with Flitchio too.
 
@@ -12,9 +12,9 @@ However, you should know that this mode is limited compared to Flitchio SDK.
 The IME doesn't provide any pressure information for the buttons, and the joysticks are reduced to four directions (``UP``, ``DOWN``, ``LEFT`` and ``RIGHT``) instead of a full analogue input.
 So you would easily gain in implementation time, but the user won't be able to enjoy the full Flitchio experience.
 
-To enable Flitchio IME support for your game, the latter just needs to register a listener for the standard Android KeyEvents.
+To enable Flitchio IME support for your game, the latter just needs to register a listener for the standard `Android KeyEvents <http://developer.android.com/reference/android/view/KeyEvent.html>`_.
 That should be the case already if you have implemented support for other USB/Bluetooth gamepads.
-KeyEvents are associated with a keycode that defines what identifies the key that is source of the event.
+``KeyEvents`` are associated with a keycode that defines what identifies the key that is source of the event.
 Your game reacts depending on this code and performs the appropriate action.
 
 All you need to do is assign each control of Flitchio to a keycode.

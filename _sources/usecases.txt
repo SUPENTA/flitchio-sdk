@@ -7,7 +7,7 @@ Use cases and ideas for Flitchio
 --------------------------------
 
 Apart from freeing your screen when you play, Flitchio brings another dimension to classic gaming.
-You can finally feel and control your games with accuracy, with tactile feedback and pressure-sensitivity.
+You can finally feel and control your games with accuracy, tactile feedback and pressure-sensitivity.
 
 Game developers are greatly encouraged to bring about their own ideas, to improve their existing games or create new ones.
 
@@ -20,8 +20,8 @@ Here are some leads:
     * - Type of game
       - Possible actions
     * - Racing game
-      - Turn left or right. Use pressure information to turn more.
-        |br| Or brake/accelerate more or less depending on applied pressure.
+      - Turn left or right. Use pressure information to turn more
+        |br| or brake/accelerate more or less depending on applied pressure.
     * - Platformer
         |br| Jump'n'Run
       - The higher the pressure, the higher the character should jump/run.
@@ -30,11 +30,11 @@ Here are some leads:
         |br| Triggers can be used for shoot, zoom, change weapon, etc.
     * - Puzzle
       - Use multiple pressure inputs to control different game objects
-        |br| (e.g.: balancing a scale or seesaw)
+        |br| (e.g.: balancing a scale or seesaw).
     * - 2D flying or underwater game
-      - Use pressure to ascend/descend
+      - Use pressure to ascend/descend.
     * - Beat'em'up
-      - Move the character around 360°
+      - Move the character around 360°.
 
 
 Flitchio is great for gaming, but it was also designed with other app developers in mind.
