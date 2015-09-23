@@ -41,16 +41,16 @@ Here is an example of a typical initialise/terminate cycle::
 
     public class MainActivity extends Activity {
 
-        private FlitchioController mFlitchioController;
+        private FlitchioController flitchioController;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-        
-            mFlitchioController = FlitchioController.getInstance(this);
+
+            flitchioController = FlitchioController.getInstance(this);
 
             try {
-                mFlitchioController.onCreate();
+                flitchioController.onCreate();
             } catch (final FlitchioManagerDependencyException e) {
                 // Flitchio Manager not found (see Troubleshooting section)
             }
@@ -58,7 +58,7 @@ Here is an example of a typical initialise/terminate cycle::
 
         @Override
         public void onDestroy() {
-            mFlitchioController.onDestroy();
+            flitchioController.onDestroy();
 
             super.onDestroy();
         }
@@ -71,7 +71,7 @@ Get data from Flitchio
 The code displayed above enables your :javaref:`FlitchioController` instance to access or receive data from Flitchio Manager.
 There are two ways of accessing this data:
 
-* Either your app implements a **listener** to receive events whenever the state of Flitchio changes (button/direction newly pressed or released, joystick moving, pressure variations).
+* Either your app implements a **status listener** to receive events whenever the connection state of Flitchio changes and/or an **event listener** to receive button and direction events (newly pressed or released, joystick moving, pressure variations).
 * Or your app actively **polls** and repeatedly requests the newest state of Flitchio (pressure applied on the buttons/directions and coordinates of the joysticks at a given moment).
 
 Whether you listen or poll is entirely your design decision.
@@ -88,29 +88,79 @@ You could for example poll data in a rendering loop while listening for connecti
 Listening Mode
 """"""""""""""
 
-When you want to listen for incoming events, all you need to do is implement the :javaref:`FlitchioListener` interface.
-Then:
+When you want to listen for incoming events, all you need to do is implement either one or both of the listener interfaces.
 
-* Call :javaref:`onResume() <FlitchioController#onResume(FlitchioListener, Handler)>` to register your listener and start receiving events.
-* Call :javaref:`onPause() <FlitchioController#onPause()>` to unregister your listener and stop the stream of events.
+The two listeners are:
 
-If you use your :javaref:`FlitchioController` in an Activity, you should register your :javaref:`FlitchioListener` and unregister it respectively in the ``onResume()`` and ``onPause()`` methods of your Activity.
-If you don't unregister, your Activity will receive data from Flitchio Manager even when it's in background.
-This may lead to inconsistent behaviour and should be avoided at all times.
+* :javaref:`FlitchioStatusListener` which is used for listening to the connection state of Flitchio (whether it connected or disconnected).
+* :javaref:`FlitchioEventListener` which is used for listening to button and direction events from Flitchio (top button was pressed, bottom joystick has pressure of 0.3 etc.)
 
-If you use your :javaref:`FlitchioController` in a Service, you can register your :javaref:`FlitchioListener` right after calling :javaref:`onCreate() <FlitchioController#onCreate()>` and unregister it right before calling :javaref:`onDestroy() <FlitchioController#onDestroy()>`.
+After implementing either of them you need to:
 
-Here is an example of a typical controller lifecycle in listening mode::
+* Call :javaref:`onResume() <FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener, Handler)>` to register your listener(s) and start receiving events, you can pass `null` for the listener that you do not wish to register.
+* Call :javaref:`onPause() <FlitchioController#onPause()>` to unregister your listener(s) and stop the stream of events.
+
+If you use your :javaref:`FlitchioController` in an Activity, you should register your listeners and unregister them respectively in the ``onResume()`` and ``onPause()`` methods of your Activity.
+If you don't unregister, your Activity will receive data from Flitchio Manager even when it's in the background.
+This may lead to inconsistent behaviour and **should be avoided at all times**.
+
+If you use your :javaref:`FlitchioController` in a Service, you can register your listeners right after calling :javaref:`onCreate() <FlitchioController#onCreate()>` and unregister it right before calling :javaref:`onDestroy() <FlitchioController#onDestroy()>`.
+
+Here is an example of a typical controller lifecycle which listens only for status (connection and disconnection) events::
 
     public class MainActivity extends Activity {
 
-        private FlitchioController mFlitchioController;
-        private FlitchioListener mFlitchioListenerImpl;
+        private FlitchioController flitchioController;
+        private FlitchioStatusListener flitchioStatusListenerImpl;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
-            mFlitchioController = FlitchioController.getInstance(this);
-            mFlitchioListenerImpl = new FlitchioListenerImpl(); // see below
+            flitchioController = FlitchioController.getInstance(this);
+            flitchioStatusListenerImpl = new FlitchioStatusListenerImpl(); // see below
+
+            try {
+                flitchioController.onCreate();
+            } catch (final FlitchioManagerDependencyException e) {
+                // Flitchio Manager not found (see Troubleshooting section)
+            }
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+
+            flitchioController.onResume(flitchioStatusListenerImpl, null); // event listener is not needed
+        }
+
+        @Override
+        protected void onPause() {
+            flitchioController.onPause();
+
+            super.onPause();
+        }
+
+        @Override
+        protected void onDestroy() {
+            flitchioController.onDestroy();
+
+            super.onDestroy();
+        }
+    }
+
+
+Here is an example of a typical controller lifecycle in listening mode for both status and button/joystick events::
+
+    public class MainActivity extends Activity {
+
+        private FlitchioController flitchioController;
+        private FlitchioStatusListener flitchioStatusListenerImpl;
+        private FlitchioEventListener flitchioEventListenerImpl;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            flitchioController = FlitchioController.getInstance(this);
+            flitchioStatusListenerImpl = new FlitchioStatusListenerImpl(); // see below
+            flitchioEventListenerImpl = new FlitchioEventListenerImpl(); // see below
 
             try {
                 mFlitchioController.onCreate();
@@ -123,40 +173,57 @@ Here is an example of a typical controller lifecycle in listening mode::
         protected void onResume() {
             super.onResume();
 
-            mFlitchioController.onResume(mFlitchioListenerImpl);
+            flitchioController.onResume(flitchioStatusListenerImpl, flitchioEventListenerImpl);
         }
 
         @Override
         protected void onPause() {
-            mFlitchioController.onPause();
+            flitchioController.onPause();
 
             super.onPause();
         }
 
         @Override
         protected void onDestroy() {
-            mFlitchioController.onDestroy();
+            flitchioController.onDestroy();
 
             super.onDestroy();
         }
     }
 
 
-Once the controller is bound to Flitchio Manager and the :javaref:`FlitchioListener` is registered, you will receive:
+Once the controller is bound to Flitchio Manager and the :javaref:`FlitchioStatusListener` is registered, you will receive:
+
+* the connection status of Flitchio whenever it changes.
+
+Here is an example of what you can do with the received status event::
+
+    public class FlitchioStatusListenerImpl implements FlitchioStatusListener {
+        @Override
+        public void onFlitchioStatusChanged(boolean isConnected) {
+            if (isConnected) {
+
+            } else {
+
+            }
+        }
+    }
+
+
+Once the controller is bound to Flitchio Manager and the :javaref:`FlitchioEventListener` is registered, you will receive:
 
 * a :javaref:`ButtonEvent` whenever the user presses or releases a button/direction of Flitchio, or varies the pressure;
-* a :javaref:`JoystickEvent` whenever the user moves a joystick of Flitchio;
-* the connection status of Flitchio whenever it changes.
+* a :javaref:`JoystickEvent` whenever the user moves a joystick of Flitchio.
 
 Here is an example of what you can do with the received events::
 
-    public class FlitchioListenerImpl implements FlitchioListener {
+    public class FlitchioEventListenerImpl implements FlitchioEventListener {
         @Override
         public void onFlitchioButtonEvent(InputElement.Button source, ButtonEvent event) {
             if (event.getAction() == ButtonEvent.ACTION_DOWN) {
                 // The source button has just been pressed
             }
-            
+
             float pressure = event.getPressure();
             if (pressure > 0.5f) {
                 // The source button is being pressed strongly
@@ -173,18 +240,9 @@ Here is an example of what you can do with the received events::
         public void onFlitchioJoystickEvent(InputElement.Joystick source, JoystickEvent event) {
             float x = event.getX();
             float y = event.getY();
-            
+
             if (source == InputElement.JOYSTICK_TOP) {
                 // The top joystick has moved
-            }
-        }
-
-        @Override
-        public void onFlitchioStatusChanged(boolean isConnected) {
-            if (isConnected) {
-
-            } else {
-
             }
         }
     }
@@ -208,9 +266,9 @@ You would then be able to query the current state like this::
 
     void update() {
 
-        if (mFlitchioController != null && mFlitchioController.isConnected()) {
+        if (flitchioController != null && flitchioController.isConnected()) {
             // Retrieve the current state of Flitchio
-            FlitchioSnapshot snapshot = mFlitchioController.obtainSnapshot();
+            FlitchioSnapshot snapshot = flitchioController.obtainSnapshot();
 
             if (snapshot.getJoystickX(JOYSTICK_TOP) == 0.0f &&
                 snapshot.getJoystickY(JOYSTICK_TOP) == 0.0f) {
@@ -225,7 +283,7 @@ You would then be able to query the current state like this::
 
 
 **Important note:** after calling :javaref:`onCreate() <FlitchioController#onCreate()>`, you can't immediately start polling, because your :javaref:`FlitchioController` is still initialising.
-Polling is possible from the moment the binding gets effective, i.e. from the first :javaref:`onFlitchioStatusChanged() <FlitchioListener#onFlitchioStatusChanged(boolean)>` callback.
+Polling is possible from the moment the binding gets effective, i.e. from the first :javaref:`onFlitchioStatusChanged() <FlitchioStatusListener#onFlitchioStatusChanged(boolean)>` callback.
 
 Please read :ref:`know-when-to-poll` for further details.
 
@@ -250,7 +308,7 @@ If it's not installed, or if the version of Flitchio Manager installed is older 
 You can handle it, by disabling Flitchio functionalities for your app, or preferably by redirecting your users to the Play Store to download Flitchio Manager::
 
     try {
-        mFlitchioController.onCreate();
+        flitchioController.onCreate();
     } catch (final FlitchioManagerDependencyException e) {
         // Start activity to update FlitchioManager
         startActivity(FlitchioController.getPlayStoreIntentForFlitchioManager());
@@ -266,41 +324,41 @@ Know when to poll data from Flitchio
 
 Because you need Android to initialise the service connection, you can't poll data from Flitchio right after :javaref:`onCreate() <FlitchioController#onCreate()>` returns true.
 If you poll while the binding is not effective, :javaref:`isConnected() <FlitchioController#isConnected()>` will always return false and :javaref:`obtainSnapshot() <FlitchioController#obtainSnapshot()>` will always return an empty snapshot.
-To be notified as soon as the binding gets effective to be able to start polling, you should register a :javaref:`FlitchioListener` and implement :javaref:`onFlitchioStatusChanged() <FlitchioListener#onFlitchioStatusChanged(boolean)>`.
+To be notified as soon as the binding gets effective to be able to start polling, you should register a :javaref:`FlitchioStatusListener` and implement :javaref:`onFlitchioStatusChanged() <FlitchioStatusListener#onFlitchioStatusChanged(boolean)>`.
 Only from the moment that method is called you can poll data about the real Flitchio state.
 The callback happens very shortly (it's a matter of milliseconds) after your Activity or Service is initialised (i.e. after the sequence ``onCreate()`` - ``onStart()`` - ``onResume()``).
 
-See :ref:`listening-mode` to understand how to declare a :javaref:`FlitchioListener`.
+See :ref:`listening-mode` to understand how to declare a :javaref:`FlitchioStatusListener`.
 
 Here's an example by code::
 
-    public class MainActivity extends Activity implements FlitchioListener {
+    public class MainActivity extends Activity implements FlitchioStatusListener {
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
-            mFlitchioController = FlitchioController.getInstance(this);
+            flitchioController = FlitchioController.getInstance(this);
 
             try {
-                mFlitchioController.onCreate();
+                flitchioController.onCreate();
             } catch (final FlitchioManagerDependencyException e) {
                 // ...
             }
 
-            // mFlitchioController.obtainSnapshot() is invalid here!
+            // flitchioController.obtainSnapshot() is invalid here!
         }
 
         @Override
         protected void onResume() {
-            mFlitchioController.onResume(this);
+            flitchioController.onResume(this, null);
 
-            // mFlitchioController.obtainSnapshot() is invalid here!
+            // flitchioController.obtainSnapshot() is invalid here!
         }
 
         @Override
         public void onFlitchioStatusChanged(boolean isConnected) {
             if (isConnected) {
                 // Valid from here!
-                FlitchioSnapshot validSnapshot = mFlitchioController.obtainSnapshot();
+                FlitchioSnapshot validSnapshot = flitchioController.obtainSnapshot();
             } else {
                 // Binding is effective but Flitchio is unattached
             }
@@ -308,15 +366,14 @@ Here's an example by code::
     }
 
 
-
 .. _define-thread-callbacks:
 
 Receive listener callbacks on a particular thread
 """""""""""""""""""""""""""""""""""""""""""""""""
 
-By default, all the callback methods of :javaref:`FlitchioListener` are executed on an arbitrary non-UI thread, different from the main thread.
+By default, all the callback methods of :javaref:`FlitchioStatusListener` and :javaref:`FlitchioEventListener` are executed on an arbitrary non-UI thread, different from the main thread.
 This can be problematic if you try to do UI operations in those callbacks, such as updating Views: your app will crash.
-You can change the default behaviour by passing to :javaref:`onResume() <FlitchioController#onResume(FlitchioListener, Handler)>` a reference to a Handler object associated to the thread you want to receive the callbacks in.
+You can change the default behaviour by passing to :javaref:`onResume() <FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener, Handler)>` a reference to a Handler object associated to the thread you want to receive the callbacks in.
 
 In particular, if you want to receive these callbacks on the UI thread, you would do::
 
@@ -324,12 +381,12 @@ In particular, if you want to receive these callbacks on the UI thread, you woul
     protected void onResume() {
         super.onResume();
 
-        mFlitchioController.onResume(this, new Handler());
+        flitchioController.onResume(this, this, new Handler());
     }
 
     @Override
     protected void onPause() {
-        mFlitchioController.onPause();
+        flitchioController.onPause();
 
         super.onPause();
     }
@@ -349,7 +406,7 @@ If your app solely depends on input from Flitchio, i.e. the user doesn't use the
 
         @Override
         protected void onResume() {
-            mFlitchioController.onResume(...);
+            flitchioController.onResume(...);
 
             keepScreenOn(true);
         }
@@ -358,7 +415,7 @@ If your app solely depends on input from Flitchio, i.e. the user doesn't use the
         protected void onPause() {
             keepScreenOn(false);
 
-            mFlitchioController.onPause();
+            flitchioController.onPause();
         }
 
         private void keepScreenOn(boolean keepScreenOn) {
