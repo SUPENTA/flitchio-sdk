@@ -27,3 +27,6 @@ githubPages {
         }
     }
 }
+
+// Dependency is implied by using each task's outputs, but we make sure of it
+tasks.getByPath(":publishGhPages").dependsOn generateAllDocs

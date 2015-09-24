@@ -93,18 +93,18 @@ When you want to listen for incoming events, all you need to do is implement eit
 The two listeners are:
 
 * :javaref:`FlitchioStatusListener` which is used for listening to the connection state of Flitchio (whether it connected or disconnected).
-* :javaref:`FlitchioEventListener` which is used for listening to button and direction events from Flitchio (top button was pressed, bottom joystick has pressure of 0.3 etc.)
+* :javaref:`FlitchioEventListener` which is used for listening to button and joystick events from Flitchio (top button was pressed, bottom joystick has pressure of 0.3 etc.)
 
 After implementing either of them you need to:
 
-* Call :javaref:`onResume() <FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener, Handler)>` to register your listener(s) and start receiving events, you can pass `null` for the listener that you do not wish to register.
+* Call :javaref:`onResume() <FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener, Handler)>` to register your listener(s) and start receiving events. You can pass `null` for the listener that you do not wish to register.
 * Call :javaref:`onPause() <FlitchioController#onPause()>` to unregister your listener(s) and stop the stream of events.
 
 If you use your :javaref:`FlitchioController` in an Activity, you should register your listeners and unregister them respectively in the ``onResume()`` and ``onPause()`` methods of your Activity.
 If you don't unregister, your Activity will receive data from Flitchio Manager even when it's in the background.
 This may lead to inconsistent behaviour and **should be avoided at all times**.
 
-If you use your :javaref:`FlitchioController` in a Service, you can register your listeners right after calling :javaref:`onCreate() <FlitchioController#onCreate()>` and unregister it right before calling :javaref:`onDestroy() <FlitchioController#onDestroy()>`.
+If you use your :javaref:`FlitchioController` in a Service, you can register your listeners right after calling :javaref:`onCreate() <FlitchioController#onCreate()>` and unregister them right before calling :javaref:`onDestroy() <FlitchioController#onDestroy()>`.
 
 Here is an example of a typical controller lifecycle which listens only for status (connection and disconnection) events::
 
@@ -192,9 +192,7 @@ Here is an example of a typical controller lifecycle in listening mode for both 
     }
 
 
-Once the controller is bound to Flitchio Manager and the :javaref:`FlitchioStatusListener` is registered, you will receive:
-
-* the connection status of Flitchio whenever it changes.
+Once the controller is bound to Flitchio Manager and the :javaref:`FlitchioStatusListener` is registered, you will receive the connection status of Flitchio whenever it changes.
 
 Here is an example of what you can do with the received status event::
 
@@ -258,7 +256,7 @@ Polling Mode
 """"""""""""
 
 When in polling mode, your app actively asks for the current state of Flitchio.
-This state is represented by a :javaref:`FlitchioSnapshot` object that contains information about all the pressed buttons/directions and all the pointers touching the trackpad at a given moment.
+This state is represented by a :javaref:`FlitchioSnapshot` object that contains information about all the pressed buttons and all the joystick positions at a given moment.
 In each iteration of your game/rendering loop, call :javaref:`isConnected() <FlitchioController#isConnected()>` to check the connection status of Flitchio and call :javaref:`obtainSnapshot() <FlitchioController#obtainSnapshot()>` to get the latest state of Flitchio.
 
 For the sake of the example, let's assume that your display is continuously updated in a method called ``update()``.
@@ -356,11 +354,12 @@ Here's an example by code::
 
         @Override
         public void onFlitchioStatusChanged(boolean isConnected) {
+            // Binding valid from here!
+
             if (isConnected) {
-                // Valid from here!
                 FlitchioSnapshot validSnapshot = flitchioController.obtainSnapshot();
             } else {
-                // Binding is effective but Flitchio is unattached
+                // Binding is valid but Flitchio is disconnected
             }
         }
     }
