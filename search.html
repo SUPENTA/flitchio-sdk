@@ -54,27 +54,17 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+      <div class="wy-side-nav-search">
+        
 
-          
-            <a href="index.html" class="icon icon-home"> Flitchio SDK
-          
+        
+          <a href="index.html" class="icon icon-home"> Flitchio SDK
+        
 
-          
-          </a>
+        
+        </a>
 
-          
-            
-            
-              <div class="version">
-                0.6.1
-              </div>
-            
-          
-
-          
+        
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="#" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -83,26 +73,50 @@
   </form>
 </div>
 
-          
-        </div>
+        
+      </div>
 
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
           
-            
-            
-                <ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sdkandroid.html">Flitchio SDK for Android</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a></li>
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#overview-of-the-device">Overview of the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#communicate-with-flitchio">Communicate with Flitchio</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sdkandroid.html">Flitchio SDK for Android</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#bind-to-flitchio">Bind to Flitchio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#get-data-from-flitchio">Get data from Flitchio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#listening-mode">Listening Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#polling-mode">Polling Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#troubleshooting-best-practices">Troubleshooting &amp; Best practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#debug-logs">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#deal-with-flitchio-manager-connection-error">Deal with Flitchio Manager connection error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#know-when-to-poll-data-from-flitchio">Know when to poll data from Flitchio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#receive-listener-callbacks-on-a-particular-thread">Receive listener callbacks on a particular thread</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#keep-your-screen-on-while-using-flitchio">Keep your screen on while using Flitchio</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sdkunity.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases and ideas for Flitchio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="flitchioime.html">Enable Flitchio compatibility without Flitchio SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Feedback &amp; Support</a></li>
 </ul>
 
-            
           
-        </div>
+        
       </div>
+      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -117,13 +131,7 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
+          <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
@@ -134,8 +142,7 @@
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+          <div role="main" class="document">
             
   <noscript>
   <div id="fallback" class="admonition warning">
@@ -151,7 +158,6 @@
   
   </div>
 
-           </div>
           </div>
           <footer>
   
@@ -161,10 +167,9 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, SUPENTA.
-
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
 </footer>
 

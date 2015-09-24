@@ -56,27 +56,17 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+      <div class="wy-side-nav-search">
+        
 
-          
-            <a href="index.html" class="icon icon-home"> Flitchio SDK
-          
+        
+          <a href="index.html" class="icon icon-home"> Flitchio SDK
+        
 
-          
-          </a>
+        
+        </a>
 
-          
-            
-            
-              <div class="version">
-                0.6.1
-              </div>
-            
-          
-
-          
+        
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -85,15 +75,19 @@
   </form>
 </div>
 
-          
-        </div>
+        
+      </div>
 
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
           
-            
-            
-                <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Getting started</a></li>
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#overview-of-the-device">Overview of the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#communicate-with-flitchio">Communicate with Flitchio</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Flitchio SDK for Android</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bind-to-flitchio">Bind to Flitchio</a></li>
@@ -112,16 +106,19 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sdkunity.html">Flitchio SDK for Unity 3D</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sdkunity.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases and ideas for Flitchio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="flitchioime.html">Enable Flitchio compatibility without Flitchio SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Feedback &amp; Support</a></li>
 </ul>
 
-            
           
-        </div>
+        
       </div>
+      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -136,13 +133,7 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
+          <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
@@ -157,8 +148,7 @@
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+          <div role="main" class="document">
             
   <div class="section" id="flitchio-sdk-for-android">
 <h1>Flitchio SDK for Android<a class="headerlink" href="#flitchio-sdk-for-android" title="Permalink to this headline">¶</a></h1>
@@ -235,17 +225,17 @@ You could for example poll data in a rendering loop while listening for connecti
 <p>The two listeners are:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> which is used for listening to the connection state of Flitchio (whether it connected or disconnected).</li>
-<li><a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioEventListener.html"><code class="docutils literal"><span class="pre">FlitchioEventListener</span></code></a> which is used for listening to button and direction events from Flitchio (top button was pressed, bottom joystick has pressure of 0.3 etc.)</li>
+<li><a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioEventListener.html"><code class="docutils literal"><span class="pre">FlitchioEventListener</span></code></a> which is used for listening to button and joystick events from Flitchio (top button was pressed, bottom joystick has pressure of 0.3 etc.)</li>
 </ul>
 <p>After implementing either of them you need to:</p>
 <ul class="simple">
-<li>Call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onResume-com.supenta.flitchio.sdk.FlitchioStatusListener-com.supenta.flitchio.sdk.FlitchioEventListener-android.os.Handler-"><code class="docutils literal"><span class="pre">onResume()</span></code></a> to register your listener(s) and start receiving events, you can pass <cite>null</cite> for the listener that you do not wish to register.</li>
+<li>Call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onResume-com.supenta.flitchio.sdk.FlitchioStatusListener-com.supenta.flitchio.sdk.FlitchioEventListener-android.os.Handler-"><code class="docutils literal"><span class="pre">onResume()</span></code></a> to register your listener(s) and start receiving events. You can pass <cite>null</cite> for the listener that you do not wish to register.</li>
 <li>Call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onPause--"><code class="docutils literal"><span class="pre">onPause()</span></code></a> to unregister your listener(s) and stop the stream of events.</li>
 </ul>
 <p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in an Activity, you should register your listeners and unregister them respectively in the <code class="docutils literal"><span class="pre">onResume()</span></code> and <code class="docutils literal"><span class="pre">onPause()</span></code> methods of your Activity.
 If you don&#8217;t unregister, your Activity will receive data from Flitchio Manager even when it&#8217;s in the background.
 This may lead to inconsistent behaviour and <strong>should be avoided at all times</strong>.</p>
-<p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in a Service, you can register your listeners right after calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a> and unregister it right before calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onDestroy--"><code class="docutils literal"><span class="pre">onDestroy()</span></code></a>.</p>
+<p>If you use your <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html"><code class="docutils literal"><span class="pre">FlitchioController</span></code></a> in a Service, you can register your listeners right after calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onCreate--"><code class="docutils literal"><span class="pre">onCreate()</span></code></a> and unregister them right before calling <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#onDestroy--"><code class="docutils literal"><span class="pre">onDestroy()</span></code></a>.</p>
 <p>Here is an example of a typical controller lifecycle which listens only for status (connection and disconnection) events:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
 
@@ -330,10 +320,7 @@ This may lead to inconsistent behaviour and <strong>should be avoided at all tim
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>Once the controller is bound to Flitchio Manager and the <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> is registered, you will receive:</p>
-<ul class="simple">
-<li>the connection status of Flitchio whenever it changes.</li>
-</ul>
+<p>Once the controller is bound to Flitchio Manager and the <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioStatusListener.html"><code class="docutils literal"><span class="pre">FlitchioStatusListener</span></code></a> is registered, you will receive the connection status of Flitchio whenever it changes.</p>
 <p>Here is an example of what you can do with the received status event:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlitchioStatusListenerImpl</span> <span class="kd">implements</span> <span class="n">FlitchioStatusListener</span> <span class="o">{</span>
     <span class="nd">@Override</span>
@@ -390,7 +377,7 @@ To define on which thread you want to receive these callbacks, please check <a c
 <div class="section" id="polling-mode">
 <span id="id2"></span><h3>Polling Mode<a class="headerlink" href="#polling-mode" title="Permalink to this headline">¶</a></h3>
 <p>When in polling mode, your app actively asks for the current state of Flitchio.
-This state is represented by a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioSnapshot.html"><code class="docutils literal"><span class="pre">FlitchioSnapshot</span></code></a> object that contains information about all the pressed buttons/directions and all the pointers touching the trackpad at a given moment.
+This state is represented by a <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioSnapshot.html"><code class="docutils literal"><span class="pre">FlitchioSnapshot</span></code></a> object that contains information about all the pressed buttons and all the joystick positions at a given moment.
 In each iteration of your game/rendering loop, call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#isConnected--"><code class="docutils literal"><span class="pre">isConnected()</span></code></a> to check the connection status of Flitchio and call <a class="reference external" href="http://dev.flitch.io/javadoc/com/supenta/flitchio/sdk/FlitchioController.html#obtainSnapshot--"><code class="docutils literal"><span class="pre">obtainSnapshot()</span></code></a> to get the latest state of Flitchio.</p>
 <p>For the sake of the example, let&#8217;s assume that your display is continuously updated in a method called <code class="docutils literal"><span class="pre">update()</span></code>.
 You would then be able to query the current state like this:</p>
@@ -475,11 +462,12 @@ The callback happens very shortly (it&#8217;s a matter of milliseconds) after yo
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFlitchioStatusChanged</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Binding valid from here!</span>
+
         <span class="k">if</span> <span class="o">(</span><span class="n">isConnected</span><span class="o">)</span> <span class="o">{</span>
-            <span class="c1">// Valid from here!</span>
             <span class="n">FlitchioSnapshot</span> <span class="n">validSnapshot</span> <span class="o">=</span> <span class="n">flitchioController</span><span class="o">.</span><span class="na">obtainSnapshot</span><span class="o">();</span>
         <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-            <span class="c1">// Binding is effective but Flitchio is unattached</span>
+            <span class="c1">// Binding is valid but Flitchio is disconnected</span>
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
@@ -553,7 +541,6 @@ If your app solely depends on input from Flitchio, i.e. the user doesn&#8217;t u
 </div>
 
 
-           </div>
           </div>
           <footer>
   
@@ -572,10 +559,9 @@ If your app solely depends on input from Flitchio, i.e. the user doesn&#8217;t u
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, SUPENTA.
-
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
 </footer>
 

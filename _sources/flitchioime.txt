@@ -14,7 +14,7 @@ So you would easily gain in implementation time, but the user won't be able to e
 
 To enable Flitchio IME support for your game, the latter just needs to register a listener for the standard `Android KeyEvents <http://developer.android.com/reference/android/view/KeyEvent.html>`_.
 That should be the case already if you have implemented support for other USB/Bluetooth gamepads.
-``KeyEvents`` are associated with a keycode that defines what identifies the key that is source of the event.
+KeyEvents are associated with a keycode that defines what identifies the key that is source of the event.
 Your game reacts depending on this code and performs the appropriate action.
 
 All you need to do is assign each control of Flitchio to a keycode.
