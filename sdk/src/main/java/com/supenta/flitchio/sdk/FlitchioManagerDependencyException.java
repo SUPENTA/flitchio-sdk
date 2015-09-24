@@ -9,7 +9,7 @@ package com.supenta.flitchio.sdk;
 @SuppressWarnings("serial")
 public class FlitchioManagerDependencyException extends Exception {
     public FlitchioManagerDependencyException() {
-        super("The latest version of Flitchio Manager is not installed." +
+        super("The latest version of Flitchio Manager is not installed. " +
                         "Please install or upgrade the Flitchio Manager app."
         );
     }
