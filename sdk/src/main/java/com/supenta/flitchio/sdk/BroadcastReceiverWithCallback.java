@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 
+/**
+ * Utility class for an easier definition of {@link BroadcastReceiver}s.
+ *
+ * @param <T> An interface for callbacks.
+ */
 abstract class BroadcastReceiverWithCallback<T> extends BroadcastReceiver {
     private final IntentFilter intentFilter;
     private T callback;

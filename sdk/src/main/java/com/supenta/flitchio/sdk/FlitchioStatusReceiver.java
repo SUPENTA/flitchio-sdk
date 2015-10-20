@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Receiver of Flitchio status update events. Out of all the status in
+ * Receiver of Flitchio status update events. Out of all the statuses in
  * {@link FlitchioStatusListener}, this broadcast receiver is only responsible for watching
  * {@link FlitchioStatusListener#STATUS_CONNECTED} and
  * {@link FlitchioStatusListener#STATUS_DISCONNECTED}.
