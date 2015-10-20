@@ -1,35 +1,39 @@
 package com.supenta.flitchio.sdk;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 
-abstract class BroadcastReceiverWithCallback<T> extends EasyBroadcastReceiver {
+abstract class BroadcastReceiverWithCallback<T> extends BroadcastReceiver {
+    private final IntentFilter intentFilter;
     private T callback;
 
-    BroadcastReceiverWithCallback(String... actionsToWatch) {
-        super(actionsToWatch);
+    protected BroadcastReceiverWithCallback(String... actionsToWatch) {
+        intentFilter = new IntentFilter();
+        for (String action : actionsToWatch) {
+            intentFilter.addAction(action);
+        }
     }
 
     public void start(Context context, @NonNull T callback) {
-        super.start(context);
-
         this.callback = callback;
+
+        context.registerReceiver(this, intentFilter);
     }
 
-    /**
-     * Warning: stop() also removes the callback given in {@link #start(Context, Object)}.
-     *
-     * @param context
-     */
-    @Override
     public void stop(Context context) {
-        callback = null;
+        try {
+            context.unregisterReceiver(this);
+        } catch (IllegalArgumentException e) {
+            FlitchioLog.i("BroadcastReceiver was not registered: no need to stop it");
+        }
 
-        super.stop(context);
+        callback = null;
     }
 
     @NonNull
-    protected T retrieveCallback() {
+    protected T getCallback() {
         return callback;
     }
 }
