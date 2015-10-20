@@ -5,8 +5,7 @@ import android.os.Handler;
 
 /**
  * Listener of Flitchio status update events like connection and disconnection. A listener must be
- * registered with
- * {@link FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener)} to receive
+ * registered with {@link FlitchioController#onCreate(FlitchioStatusListener)} to receive
  * events.
  *
  * @since 0.6.0
@@ -17,7 +16,14 @@ public interface FlitchioStatusListener {
      * @since 0.7.0
      */
     int STATUS_UNKNOWN = -1;
+    /**
+     * @since 0.7.0
+     */
     int STATUS_BINDING = 1;
+    /**
+     * @see FailureReason
+     * @since 0.7.0
+     */
     int STATUS_BINDING_FAILED = 2;
     /**
      * @since 0.7.0
