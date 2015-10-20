@@ -1,0 +1,5 @@
+package com.supenta.flitchio.sdk;
+
+public enum FailureReason {
+    MANAGER_OUTDATED, SERVICE_UNREACHABLE, SERVICE_REFUSED_CONNECTION, SERVICE_SHUTDOWN_CONNECTION
+}
