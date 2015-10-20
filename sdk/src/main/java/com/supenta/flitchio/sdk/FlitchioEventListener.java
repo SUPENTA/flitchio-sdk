@@ -4,9 +4,7 @@ import android.os.Handler;
 
 /**
  * Listener of Flitchio events: button state changed, joystick position changed. A listener must be
- * registered with
- * {@link FlitchioController#onResume(FlitchioStatusListener, FlitchioEventListener)} to receive
- * events.
+ * registered with {@link FlitchioController#onResume(FlitchioEventListener)} to receive events.
  *
  * @since 0.6.0
  */

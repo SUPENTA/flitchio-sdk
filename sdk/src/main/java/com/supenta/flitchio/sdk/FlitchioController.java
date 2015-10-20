@@ -30,7 +30,7 @@ import java.util.Map;
  * <p/>
  * The controller binds to the Flitchio Manager app when you call
  * {@link #onCreate(FlitchioStatusListener)}. To free the controller properly after
- * use, you must call {@link #onDestroy()}. // TODO add possible failure reasons
+ * use, you must call {@link #onDestroy()}.
  * <p/>
  * After {@link #onCreate(FlitchioStatusListener)} returns, the binding is not effective yet.
  * You need to wait for the initial callback
@@ -83,25 +83,19 @@ public class FlitchioController {
     private final Object lockListener = new Object();
     private final Object lockService = new Object();
 
-    /**
-     * The context used to bind.
-     */
     private final Context context;
 
     /**
      * Receiver used for listening to connection/disconnection events of Flitchio.
      */
-    private final FlitchioStatusReceiver statusReceiver;
-    private final Handler mainThreadHandler;
+    private final FlitchioStatusReceiver statusReceiver = new FlitchioStatusReceiver();
+    private final Handler mainThreadHandler = new Handler();
 
     /**
      * Received from service once the handshake has been done. Used for every further communication.
      */
     private int authToken = INVALID_AUTH_TOKEN;
 
-    /**
-     * Interface to FlitchioService.
-     */
     private IFlitchioService flitchioService = null;
 
     /**
@@ -112,16 +106,14 @@ public class FlitchioController {
     private FlitchioEventListener eventListener = null;
 
     /**
-     * The status listener to be called on receiving connected and disconnected events.
-     * Known limitation: there can be only one status listener per controller, and only one
-     * controller per context.
+     * The status listener to be called on every lifecycle change of this controller (binding,
+     * unbinding, binding error, connection of Flitchio, disconnection of Flitchio).
      */
     private FlitchioStatusListener statusListener = null;
 
     /**
-     * The thread to which the listener callbacks will be delivered (used by default), or the
-     * handler associated to the thread decided by the 3rd-party dev. The same thread is used for
-     * both status and event listeners.
+     * The thread to which the event callbacks will be delivered (used by default), or the
+     * handler associated to the thread decided by the 3rd-party dev.
      */
     private ListenerThread eventListenerThread = null;
     private Handler eventListenerThreadHandler = null;
@@ -132,11 +124,16 @@ public class FlitchioController {
     private ComponentName clientId = null;
 
     /**
-     * Current status of Flitchio. Its value is one of the constants of
+     * Status of this controller. Its value is one of the constants of
      * {@link FlitchioStatusListener}.
      */
-    private int currentStatus;
+    private int currentStatus = FlitchioStatusListener.STATUS_UNBOUND;
+    /**
+     * When the status is {@link FlitchioStatusListener#STATUS_BINDING_FAILED}, this holds the
+     * reason for the failure.
+     */
     private FailureReason failureReason = null;
+
     /**
      * Listener object for the binding to the service, that detects when the binding is done and
      * when an unexpected disconnection occurred. The methods here are ALWAYS CALLED ON UI THREAD.
@@ -199,11 +196,6 @@ public class FlitchioController {
     private FlitchioController(@NonNull Context context) {
         this.context = context;
         this.clientId = new ComponentName(context, context.getClass());
-
-        this.currentStatus = FlitchioStatusListener.STATUS_UNBOUND;
-
-        this.mainThreadHandler = new Handler();
-        this.statusReceiver = new FlitchioStatusReceiver();
     }
 
     /**
@@ -214,6 +206,7 @@ public class FlitchioController {
      * @return An instance of {@link FlitchioController}.
      * @since 0.5.0
      */
+    @MainThread
     public static synchronized FlitchioController getInstance(@NonNull Context context) {
         // Check if there's already a controller for this context
         for (Map.Entry<WeakReference<Context>, FlitchioController> entry : controllers.entrySet()) {
@@ -334,7 +327,7 @@ public class FlitchioController {
     }
 
     /**
-     * Register a {@link FlitchioEventListener} to receive callbacks.
+     * Register a {@link FlitchioEventListener} to receive event callbacks.
      * If you use this {@link FlitchioController} in an {@link Activity}, this should be
      * called in your Activity's onResume() (hence the name). If you use this
      * {@link FlitchioController} in a {@link Service}, this can be called right after

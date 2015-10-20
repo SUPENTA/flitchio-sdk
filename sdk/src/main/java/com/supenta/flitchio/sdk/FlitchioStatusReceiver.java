@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Receiver of Flitchio status update events.
- * <p/>
- * Trick: the callback from this broadcast receiver is actually same as what we give to the
- * end listener so we use the same interface {@link FlitchioStatusListener}.
+ * Receiver of Flitchio status update events. Out of all the status in
+ * {@link FlitchioStatusListener}, this broadcast receiver is only responsible for watching
+ * {@link FlitchioStatusListener#STATUS_CONNECTED} and
+ * {@link FlitchioStatusListener#STATUS_DISCONNECTED}.
  */
 class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatusListener> {
     /**
@@ -17,9 +17,12 @@ class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatu
      */
     static final String ACTION_FLITCHIO_STATUS_CHANGED =
             FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_STATUS_CHANGED";
+
     /**
      * Current status of Flitchio passed with a {@link #ACTION_FLITCHIO_STATUS_CHANGED} broadcast.
-     * The possible values are the constants of {@link FlitchioStatusListener}.
+     * The two possible values are {@link FlitchioStatusListener#STATUS_CONNECTED} and
+     * {@link FlitchioStatusListener#STATUS_DISCONNECTED}.
+     * KEEP IT SYNCED WITH THE VALUE IN FLITCHIO MANAGER.
      */
     static final String EXTRA_STATUS =
             FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".EXTRA_STATUS";
