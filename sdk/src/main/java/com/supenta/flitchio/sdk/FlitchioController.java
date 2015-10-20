@@ -351,6 +351,9 @@ public class FlitchioController {
      * If you use this controller in a {@link Service}, this method can be called right after
      * {@link #onCreate(FlitchioStatusListener)}.
      * <p/>
+     * After calling this method, you are ensured to receive at least one
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} callback with the current status.
+     * <p/>
      * This is a variant of {@link #onResume(FlitchioEventListener)} that allows you to
      * define the thread on which you wish to receive the event callbacks.
      *
@@ -438,6 +441,9 @@ public class FlitchioController {
      * If you use this controller in a {@link Service}, this method can be called right after
      * {@link #onCreate(FlitchioStatusListener)}.
      * <p/>
+     * After calling this method, you are ensured to receive at least one
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} callback with the current status.
+     * <p/>
      * This is a variant of {@link #onResume()} that allows you to listen for button and joystick
      * events.
      * You will get these event callback an arbitrary thread (different from the main thread).
@@ -464,6 +470,9 @@ public class FlitchioController {
      * Activity's onResume().
      * If you use this controller in a {@link Service}, this method can be called right after
      * {@link #onCreate(FlitchioStatusListener)}.
+     * <p/>
+     * After calling this method, you are ensured to receive at least one
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} callback with the current status.
      * <p/>
      * This variant only enables you to follow status changes of Flitchio.
      * If you also wish to listen to button and joystick events, use
