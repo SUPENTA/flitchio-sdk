@@ -17,22 +17,24 @@ public interface FlitchioStatusListener {
      * @since 0.7.0
      */
     int STATUS_UNKNOWN = -1;
+    int STATUS_BINDING = 1;
+    int STATUS_BINDING_FAILED = 2;
     /**
      * @since 0.7.0
      */
-    int STATUS_BOUND = 0;
+    int STATUS_BOUND = 3;
     /**
      * @since 0.7.0
      */
-    int STATUS_UNBOUND = 1;
+    int STATUS_UNBOUND = 0;
     /**
      * @since 0.7.0
      */
-    int STATUS_CONNECTED = 2;
+    int STATUS_CONNECTED = 4;
     /**
      * @since 0.7.0
      */
-    int STATUS_DISCONNECTED = 3;
+    int STATUS_DISCONNECTED = 5;
 
     /**
      * Called when the connection status of Flitchio has changed: either a new Flitchio has been
