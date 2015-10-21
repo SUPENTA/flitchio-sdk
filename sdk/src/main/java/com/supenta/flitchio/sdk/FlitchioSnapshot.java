@@ -8,27 +8,27 @@ import android.os.Parcelable;
  * {@link ButtonEvent} and partly like a {@link JoystickEvent}, in the sense that it contains
  * information about all the buttons and all the joysticks at the same time. The snapshot should be
  * retrieved in polling mode, once per update loop iteration. If you don't use polling mode in your
- * app, you should rather consider registering a {@link FlitchioEventListener} to receive the equivalent
- * {@link ButtonEvent}s and {@link JoystickEvent}s.
- * <p>
+ * app, you should rather consider registering a {@link FlitchioEventListener} to receive the
+ * equivalent {@link ButtonEvent}s and {@link JoystickEvent}s.
+ * <p/>
  * <h3>Buttons</h3>
- * <p>
+ * <p/>
  * All the buttons are defined in {@link InputElement#BUTTONS}. For all the methods below, you can
  * identify a button either by passing directly a {@link InputElement.Button} instance or with the
  * integer code of the button.
- * <p>
+ * <p/>
  * For each button, you can check its state in the current snapshot with
  * {@link #getButtonState(InputElement.Button)}. The possible states are listed in
  * {@link InputElement.Button}. You can also retrieve the current pressure with
  * {@link #getButtonPressure(InputElement.Button)}, in the interval [0.0 ; 1.0] (a pressure value
  * of 0.0 means that the button is not currently pressed).
- * <p>
+ * <p/>
  * <h3>Joysticks</h3>
- * <p>
+ * <p/>
  * All the joysticks are defined in {@link InputElement#JOYSTICKS}. For all the methods below, you
  * can identify a joystick either by passing directly a {@link InputElement.Joystick} instance
  * or with the integer code of the joystick.
- * <p>
+ * <p/>
  * For each joystick, you can access its X and Y coordinates in the current snapshot with
  * {@link #getJoystickX(InputElement.Joystick)} and {@link #getJoystickY(InputElement.Joystick)}.
  * The value retrieved is in the interval [-1.0 ; 1.0].

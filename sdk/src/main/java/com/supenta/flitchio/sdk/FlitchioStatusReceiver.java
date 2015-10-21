@@ -1,63 +1,39 @@
 package com.supenta.flitchio.sdk;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
 /**
- * Receiver of Flitchio status update events. This holds a reference to the controller so when a
- * status update triggers (as a broadcast) the receiver can easily broadcast the update through the
- * SDK.
+ * Receiver of Flitchio status update events. Out of all the {@link Status}es, this broadcast
+ * receiver is only responsible for watching {@link Status#CONNECTED} and
+ * {@link Status#DISCONNECTED}.
  */
-class FlitchioStatusReceiver extends BroadcastReceiver {
+class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatusListener> {
+    /**
+     * Broadcast notifying that Flitchio has connected or disconnected.
+     * Always contains {@link #EXTRA_STATUS}.
+     * KEEP IT SYNCED WITH THE VALUE IN FLITCHIO MANAGER.
+     */
+    static final String ACTION_FLITCHIO_STATUS_CHANGED =
+            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_STATUS_CHANGED";
 
     /**
-     * Action for "Flitchio connected" event. Important to keep the value synced with the one in
-     * Flitchio Manager.
+     * Current status of Flitchio passed with a {@link #ACTION_FLITCHIO_STATUS_CHANGED} broadcast.
+     * The two possible values are {@link Status#CONNECTED} and {@link Status#DISCONNECTED}.
+     * KEEP IT SYNCED WITH THE VALUE IN FLITCHIO MANAGER.
      */
-    private static final String ACTION_FLITCHIO_CONNECTED =
-            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_CONNECTED";
+    static final String EXTRA_STATUS =
+            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".EXTRA_STATUS";
 
-    /**
-     * Action for "Flitchio disconnected" event. Important to keep the value synced with the one in
-     * Flitchio Manager.
-     */
-    private static final String ACTION_FLITCHIO_DISCONNECTED =
-            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".ACTION_FLITCHIO_DISCONNECTED";
-
-    private final FlitchioController flitchioController;
-
-    FlitchioStatusReceiver(FlitchioController flitchioController) {
-        this.flitchioController = flitchioController;
-    }
-
-    IntentFilter getIntentFilter() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ACTION_FLITCHIO_CONNECTED);
-        intentFilter.addAction(ACTION_FLITCHIO_DISCONNECTED);
-        return intentFilter;
+    FlitchioStatusReceiver() {
+        super(ACTION_FLITCHIO_STATUS_CHANGED);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         FlitchioLog.v("onReceive: " + intent);
 
-        final String action = intent.getAction();
-
-        switch (action) {
-            case ACTION_FLITCHIO_CONNECTED:
-                FlitchioLog.i("Flitchio has connected");
-
-                flitchioController.postStatusUpdate(true /* isConnected */);
-                break;
-            case ACTION_FLITCHIO_DISCONNECTED:
-                FlitchioLog.i("Flitchio has disconnected");
-
-                flitchioController.postStatusUpdate(false /* isConnected */);
-                break;
-            default:
-                FlitchioLog.wtf("Invalid intent: " + intent);
-        }
+        final int statusOrdinal = intent.getIntExtra(EXTRA_STATUS, Status.UNKNOWN.ordinal());
+        getCallback().onFlitchioStatusChanged(Status.values()[statusOrdinal]);
     }
 }
