@@ -35,15 +35,15 @@ import java.util.Map;
  * at the appropriate moments to ensure a clean lifecycle.</strong>
  * <p/>
  * After {@link #onCreate(FlitchioStatusListener)} returns, the binding is not effective yet.
- * You will get notified by a {@link FlitchioStatusListener#onFlitchioStatusChanged(int)}
+ * You will get notified by a {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)}
  * callback.
- * When the status callback is {@link FlitchioStatusListener#STATUS_BOUND}, you can start
+ * When the status callback is {@link Status#BOUND}, you can start
  * using Flitchio.
  * The {@link FlitchioStatusListener} will also notify you about other status changes (like
  * "Flitchio just disconnected").
- * See {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} for details.
+ * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for details.
  * <p/>
- * As soon as this controller is in {@link FlitchioStatusListener#STATUS_CONNECTED}, you can poll
+ * As soon as this controller is in {@link Status#CONNECTED}, you can poll
  * data by calling {@link #obtainSnapshot()}.
  * You typically call {@link #obtainSnapshot()} if you want to use your controller in
  * <em>polling mode</em>, i.e. if your app is designed to have a rendering loop updating the
@@ -130,14 +130,8 @@ public class FlitchioController {
 
     /**
      * Status of this controller.
-     * Its value is one of the constants of {@link FlitchioStatusListener}.
      */
-    private int currentStatus = FlitchioStatusListener.STATUS_UNBOUND;
-    /**
-     * When the status is {@link FlitchioStatusListener#STATUS_BINDING_FAILED}, this holds the
-     * reason for the failure.
-     */
-    private FailureReason failureReason = null;
+    private Status currentStatus = new Status(Status.UNBOUND);
 
     /**
      * Listener object for the binding to the service, that detects when the binding is done and
@@ -158,24 +152,24 @@ public class FlitchioController {
                     if (authToken == INVALID_AUTH_TOKEN) {
                         FlitchioLog.e("Unexpected error: could not authenticate to service");
 
-                        reportFailure(FailureReason.SERVICE_REFUSED_CONNECTION);
+                        reportStatus(new Status.FailingStatus(Status.FailingStatus.REASON_SERVICE_REFUSED_CONNECTION));
                         onDestroy();
                         return;
                     }
 
                     // We fire "bound" event
-                    reportStatus(FlitchioStatusListener.STATUS_BOUND);
+                    reportStatus(new Status(Status.BOUND));
 
                     // Right after we fire the real connection status (connected/disconnected)
                     if (flitchioService.isConnected(authToken)) {
-                        reportStatus(FlitchioStatusListener.STATUS_CONNECTED);
+                        reportStatus(new Status(Status.CONNECTED));
                     } else {
-                        reportStatus(FlitchioStatusListener.STATUS_DISCONNECTED);
+                        reportStatus(new Status(Status.DISCONNECTED));
                     }
                 } catch (RemoteException e) {
                     FlitchioLog.e("Unexpected error: could not identify this controller");
 
-                    reportFailure(FailureReason.SERVICE_UNREACHABLE); // Possibly another type of reason
+                    reportStatus(new Status.FailingStatus(Status.FailingStatus.REASON_SERVICE_UNREACHABLE));
                     onDestroy();
                     return;
                 }
@@ -193,7 +187,7 @@ public class FlitchioController {
             FlitchioLog.e(
                     "Unexpected error: this controller has been unbound from Flitchio Manager");
 
-            reportFailure(FailureReason.SERVICE_SHUTDOWN_CONNECTION);
+            reportStatus(new Status.FailingStatus(Status.FailingStatus.REASON_SERVICE_SHUTDOWN_CONNECTION));
             onDestroy();
         }
     };
@@ -302,7 +296,7 @@ public class FlitchioController {
      * At the moment it returns, the binding is <strong>not yet effective</strong>.
      * To be notified with the status changes (binding effective or failed, Flitchio
      * connected or disconnected), declare a {@link FlitchioStatusListener} and pass it.
-     * See {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} for the status changes you
+     * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for the status changes you
      * can watch.
      * <p/>
      * In the rare case that you don't wish to receive status callbacks, you can pass null.
@@ -313,17 +307,17 @@ public class FlitchioController {
     public void onCreate(@Nullable FlitchioStatusListener statusListener) {
         this.statusListener = statusListener;
 
-        if (currentStatus != FlitchioStatusListener.STATUS_BINDING_FAILED
-                && currentStatus != FlitchioStatusListener.STATUS_UNBOUND) {
+        if (currentStatus.code != Status.BINDING_FAILED
+                && currentStatus.code != Status.UNBOUND) {
 
-            // STATUS_BINDING_FAILED and STATUS_UNBOUND and the only two "initial" values possible
+            // BINDING_FAILED and UNBOUND and the only two "initial" values possible
 
             FlitchioLog.i("Called onCreate() but the status is already " + currentStatus + ": nothing will be done");
             return;
         }
 
         if (!isFlitchioManagerUsable(context)) {
-            reportFailure(FailureReason.MANAGER_UNUSABLE);
+            reportStatus(new Status.FailingStatus(Status.FailingStatus.REASON_MANAGER_UNUSABLE));
             return;
         }
 
@@ -335,9 +329,9 @@ public class FlitchioController {
                 Context.BIND_AUTO_CREATE);
 
         if (!willBind) {
-            reportFailure(FailureReason.SERVICE_UNREACHABLE);
+            reportStatus(new Status.FailingStatus(Status.FailingStatus.REASON_SERVICE_UNREACHABLE));
         } else {
-            reportStatus(FlitchioStatusListener.STATUS_BINDING);
+            reportStatus(new Status(Status.BINDING));
         }
     }
 
@@ -352,7 +346,8 @@ public class FlitchioController {
      * {@link #onCreate(FlitchioStatusListener)}.
      * <p/>
      * After calling this method, you are ensured to receive at least one
-     * {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} callback with the current status.
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} callback with the current
+     * status.
      * <p/>
      * This is a variant of {@link #onResume(FlitchioEventListener)} that allows you to
      * define the thread on which you wish to receive the event callbacks.
@@ -373,12 +368,12 @@ public class FlitchioController {
             /*
              * DETERMINE THE CURRENT STATUS (as we may have missed updates during pause)
              */
-            int statusAfterCheck;
+            Status statusAfterCheck;
             try {
                 if (flitchioService.isConnected(authToken)) {
-                    statusAfterCheck = FlitchioStatusListener.STATUS_CONNECTED;
+                    statusAfterCheck = new Status(Status.CONNECTED);
                 } else {
-                    statusAfterCheck = FlitchioStatusListener.STATUS_DISCONNECTED;
+                    statusAfterCheck = new Status(Status.DISCONNECTED);
                 }
             } catch (Exception e) { // NullPointerException | RemoteException
                 // Status is either UNBOUND, BINDING or BINDING_FAILED: we just fire it again
@@ -396,7 +391,7 @@ public class FlitchioController {
              */
             statusReceiver.start(context, new FlitchioStatusListener() {
                 @Override
-                public void onFlitchioStatusChanged(int status) {
+                public void onFlitchioStatusChanged(Status status) {
                     reportStatus(status);
                 }
             });
@@ -442,7 +437,8 @@ public class FlitchioController {
      * {@link #onCreate(FlitchioStatusListener)}.
      * <p/>
      * After calling this method, you are ensured to receive at least one
-     * {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} callback with the current status.
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} callback with the current
+     * status.
      * <p/>
      * This is a variant of {@link #onResume()} that allows you to listen for button and joystick
      * events.
@@ -472,7 +468,8 @@ public class FlitchioController {
      * {@link #onCreate(FlitchioStatusListener)}.
      * <p/>
      * After calling this method, you are ensured to receive at least one
-     * {@link FlitchioStatusListener#onFlitchioStatusChanged(int)} callback with the current status.
+     * {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} callback with the current
+     * status.
      * <p/>
      * This variant only enables you to follow status changes of Flitchio.
      * If you also wish to listen to button and joystick events, use
@@ -556,8 +553,8 @@ public class FlitchioController {
 
         statusListener = null;
 
-        if (currentStatus != FlitchioStatusListener.STATUS_BINDING_FAILED) {
-            reportStatus(FlitchioStatusListener.STATUS_UNBOUND);
+        if (currentStatus.code != Status.BINDING_FAILED) {
+            reportStatus(new Status(Status.UNBOUND));
         }
     }
 
@@ -616,11 +613,11 @@ public class FlitchioController {
 
     /**
      * Retrieve the latest state of Flitchio as a {@link FlitchioSnapshot}.
-     * <strong>Note:</strong> before the status is {@link FlitchioStatusListener#STATUS_CONNECTED},
+     * <strong>Note:</strong> before the status is {@link Status#CONNECTED},
      * the snapshot returned by this method is always empty.
      *
      * @return The snapshot representing the latest state of Flitchio. It is never null: when
-     * the status isn't {@link FlitchioStatusListener#STATUS_CONNECTED}, you get an empty snapshot
+     * the status isn't {@link Status#DISCONNECTED}, you get an empty snapshot
      * instead.
      * @since 0.5.0
      */
@@ -651,11 +648,10 @@ public class FlitchioController {
      * Retrieve the current status of this controller. To get notified of status changes, pass a
      * {@link FlitchioStatusListener} in {@link #onCreate(FlitchioStatusListener)}.
      *
-     * @return The status of this controller. The value is one of the constants in
-     * {@link FlitchioStatusListener}.
+     * @return The status of this controller.
      * @since 0.7.0
      */
-    public int getStatus() {
+    public Status getStatus() {
         return currentStatus;
     }
 
@@ -665,17 +661,12 @@ public class FlitchioController {
      * @param newStatus The new status.
      */
     @MainThread
-    private void reportStatus(int newStatus) {
-        if (currentStatus == FlitchioStatusListener.STATUS_UNKNOWN) {
-            FlitchioLog.wtf("This is unexpected: current status is unknown");
+    private void reportStatus(Status newStatus) {
+        if (newStatus.code == Status.UNKNOWN) {
+            FlitchioLog.wtf("This is unexpected: new status is unknown");
         }
 
         this.currentStatus = newStatus;
-
-        if (currentStatus != FlitchioStatusListener.STATUS_BINDING_FAILED) {
-            failureReason = null;
-        }
-
         fireCurrentStatus();
     }
 
@@ -687,29 +678,6 @@ public class FlitchioController {
         }
 
         mainThreadHandler.post(new StatusRunnable(currentStatus));
-    }
-
-    /**
-     * Report {@link FlitchioStatusListener#STATUS_BINDING_FAILED} as current status and take note
-     * of the reason of the failure.
-     *
-     * @param failureReason The reason of the failure.
-     */
-    private void reportFailure(@NonNull FailureReason failureReason) {
-        this.failureReason = failureReason;
-        reportStatus(FlitchioStatusListener.STATUS_BINDING_FAILED);
-    }
-
-    /**
-     * Retrieve the reason of the failure in case of a
-     * {@link FlitchioStatusListener#STATUS_BINDING_FAILED} status.
-     *
-     * @return The reason of the failed binding or null if the latest binding has not failed.
-     * @since 0.7.0
-     */
-    @Nullable
-    public FailureReason getFailureReason() {
-        return failureReason;
     }
 
     /**
@@ -748,9 +716,9 @@ public class FlitchioController {
      */
     @MainThread
     private class StatusRunnable implements Runnable {
-        private final int status;
+        private final Status status;
 
-        public StatusRunnable(int status) {
+        public StatusRunnable(Status status) {
             this.status = status;
         }
 
