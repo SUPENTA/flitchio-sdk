@@ -34,6 +34,6 @@ class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatu
         FlitchioLog.v("onReceive: " + intent);
 
         final int status = intent.getIntExtra(EXTRA_STATUS, Status.UNKNOWN);
-        getCallback().onFlitchioStatusChanged(Status.withCode(status));
+        getCallback().onFlitchioStatusChanged(new Status(status));
     }
 }
