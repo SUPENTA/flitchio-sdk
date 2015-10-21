@@ -33,7 +33,7 @@ class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatu
     public void onReceive(Context context, Intent intent) {
         FlitchioLog.v("onReceive: " + intent);
 
-        final int status = intent.getIntExtra(EXTRA_STATUS, Status.UNKNOWN);
-        getCallback().onFlitchioStatusChanged(Status.withCode(status));
+        final int statusOrdinal = intent.getIntExtra(EXTRA_STATUS, Status.UNKNOWN.ordinal());
+        getCallback().onFlitchioStatusChanged(Status.values()[statusOrdinal]);
     }
 }

@@ -1,38 +1,56 @@
 package com.supenta.flitchio.sdk;
 
-public class Status {
+import android.support.annotation.NonNull;
 
+public enum Status {
     /**
      * @since 0.7.0
      */
-    public static final int UNKNOWN = -1;
+    UNKNOWN,
     /**
      * The previous binding between {@link FlitchioController} and the Flitchio Manager app has
      * been terminated properly.
      *
      * @since 0.7.0
      */
-    public static final int UNBOUND = 0;
+    UNBOUND,
     /**
      * The {@link FlitchioController} is trying to bind to the Flitchio Manager app.
      *
      * @since 0.7.0
      */
-    public static final int BINDING = 1;
+    BINDING,
     /**
      * The {@link FlitchioController} couldn't bind to the Flitchio Manager app, or the previous
      * binding has ended unexpectedly.
      *
-     * @see FlitchioController#getFailureReason()
      * @since 0.7.0
      */
-    public static final int BINDING_FAILED = 2;
+    BINDING_FAILED {
+        // TODO There might still be a problem if we use two controllers: won't the failure reason be shared?
+
+        private FailureReason failureReason;
+
+        @Override
+        void setFailureReason(FailureReason failureReason) {
+            if (failureReason == null || failureReason == FailureReason.NONE) {
+                throw new IllegalArgumentException("You must provide a reason for the failure, provided reason is " + failureReason);
+            }
+            this.failureReason = failureReason;
+        }
+
+        @NonNull
+        @Override
+        public FailureReason getFailureReason() {
+            return failureReason;
+        }
+    },
     /**
      * The {@link FlitchioController} has successfully bound to the Flitchio Manager app.
      *
      * @since 0.7.0
      */
-    public static final int BOUND = 3;
+    BOUND,
     /**
      * The {@link FlitchioController} is bound to the Flitchio Manager app and Flitchio is
      * connected to the phone. You can call {@link FlitchioController#obtainSnapshot()} to poll
@@ -41,42 +59,39 @@ public class Status {
      *
      * @since 0.7.0
      */
-    public static final int CONNECTED = 4;
+    CONNECTED,
     /**
      * The {@link FlitchioController} is bound to the Flitchio Manager app and Flitchio is
      * disconnected from the phone.
      *
      * @since 0.7.0
      */
-    public static final int DISCONNECTED = 5;
+    DISCONNECTED;
 
-    public final int code;
-    public final int failureReason;
+    /**
+     * @return The reason of the failed binding.
+     * @since 0.7.0
+     */
+    // Note: this is overridden by BINDING_FAILED
+    @NonNull
+    public FailureReason getFailureReason() {
+        return FailureReason.NONE;
+    }
 
-    private Status(int code, int failureReason) {
-        this.code = code;
-        this.failureReason = failureReason;
-
-        if (this.code == BINDING_FAILED && this.failureReason == Failure.NONE) {
-            throw new IllegalArgumentException("You need to explain why");
+    // Note: this is overridden by BINDING_FAILED
+    void setFailureReason(FailureReason failureReason) {
+        if (failureReason != null && failureReason != FailureReason.NONE) {
+            throw new IllegalArgumentException("Not allowed to report a failure if the state is not " + BINDING_FAILED);
         }
     }
 
-    public static Status withFailure(int failureReason) {
-        return new Status(BINDING_FAILED, failureReason);
-    }
-
-    public static Status withCode(int statusCode) {
-        return new Status(statusCode, Failure.NONE);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o != null && o instanceof Status && ((Status) o).code == code;
-    }
-
-    public static class Failure {
-        public static final int NONE = -1;
+    public enum FailureReason {
+        /**
+         * No failure has been reported. The status is probably not {@link #BINDING_FAILED}.
+         *
+         * @since 0.7.0
+         */
+        NONE,
         /**
          * The Flitchio Manager app is not installed on the user's phone,
          * or the version that is installed doesn't support this version of the SDK.
@@ -86,24 +101,24 @@ public class Status {
          * @see FlitchioController#getVersionCode
          * @since 0.7.0
          */
-        public static final int MANAGER_UNUSABLE = 0;
+        MANAGER_UNUSABLE,
         /**
          * The Flitchio Manager app cannot be reached for unexpected reason.
          *
          * @since 0.7.0
          */
-        public static final int SERVICE_UNREACHABLE = 1;
+        SERVICE_UNREACHABLE,
         /**
          * This controller has not been accepted by Flitchio Manager.
          *
          * @since 0.7.0
          */
-        public static final int SERVICE_REFUSED_CONNECTION = 2;
+        SERVICE_REFUSED_CONNECTION,
         /**
          * The binding with Flitchio Manager ended unexpectedly.
          *
          * @since 0.7.0
          */
-        public static final int SERVICE_SHUTDOWN_CONNECTION = 3;
+        SERVICE_SHUTDOWN_CONNECTION
     }
 }
