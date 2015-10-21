@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Receiver of Flitchio status update events. Out of all the statuses in
- * {@link FlitchioStatusListener}, this broadcast receiver is only responsible for watching
- * {@link FlitchioStatusListener#STATUS_CONNECTED} and
- * {@link FlitchioStatusListener#STATUS_DISCONNECTED}.
+ * Receiver of Flitchio status update events. Out of all the {@link Status}es, this broadcast
+ * receiver is only responsible for watching {@link Status#CONNECTED} and
+ * {@link Status#DISCONNECTED}.
  */
 class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatusListener> {
     /**
@@ -20,8 +19,7 @@ class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatu
 
     /**
      * Current status of Flitchio passed with a {@link #ACTION_FLITCHIO_STATUS_CHANGED} broadcast.
-     * The two possible values are {@link FlitchioStatusListener#STATUS_CONNECTED} and
-     * {@link FlitchioStatusListener#STATUS_DISCONNECTED}.
+     * The two possible values are {@link Status#CONNECTED} and {@link Status#DISCONNECTED}.
      * KEEP IT SYNCED WITH THE VALUE IN FLITCHIO MANAGER.
      */
     static final String EXTRA_STATUS =
@@ -35,7 +33,7 @@ class FlitchioStatusReceiver extends BroadcastReceiverWithCallback<FlitchioStatu
     public void onReceive(Context context, Intent intent) {
         FlitchioLog.v("onReceive: " + intent);
 
-        final int status = intent.getIntExtra(EXTRA_STATUS, FlitchioStatusListener.STATUS_UNKNOWN);
-        getCallback().onFlitchioStatusChanged(status);
+        final int status = intent.getIntExtra(EXTRA_STATUS, Status.UNKNOWN);
+        getCallback().onFlitchioStatusChanged(Status.withCode(status));
     }
 }
