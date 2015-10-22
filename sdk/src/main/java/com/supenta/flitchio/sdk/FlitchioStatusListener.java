@@ -33,8 +33,7 @@ public interface FlitchioStatusListener {
      * <strong>To get all the callbacks, it is crucial to respect the lifecycle of the
      * {@link FlitchioController}, with onCreate(), onResume(), onPause() and onDestroy().</strong>
      *
-     * @param status The new connection status: one of the constants declared in
-     *               {@link FlitchioStatusListener}.
+     * @param status The new connection status: one of the {@link Status} constants.
      * @since 0.7.0
      */
     void onFlitchioStatusChanged(Status status);

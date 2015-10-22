@@ -310,6 +310,10 @@ public class FlitchioController {
                 && currentStatus.code != Status.UNBOUND) {
 
             // BINDING_FAILED and UNBOUND and the only two "initial" values possible
+            // TODO it'd be safer though to test if the service is really reachable, flitchioService.isConnected()
+            // In the improvement of this, it's important to consider that onDestroy() may never be called
+            // (because an Activity isn't ensured to call its onDestroy()), but we should still be able
+            // to have a successful onCreate().
 
             FlitchioLog.i("Called onCreate() but the status is already " + currentStatus + ": nothing will be done");
             return;

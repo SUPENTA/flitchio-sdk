@@ -36,7 +36,7 @@ Whichever context you use, you **must** tie the controller to your context lifec
 
 * :javaref:`onCreate() <FlitchioController#onCreate(FlitchioStatusListener)>` to initialise the controller and bind to the Flitchio Manager app.
 * :javaref:`onResume() <FlitchioController#onResume()>` to start monitoring status changes.
-* :javaref:`onPause() <FlitchioController#onResume()>` to pause the monitoring of status changes.
+* :javaref:`onPause() <FlitchioController#onPause()>` to pause the monitoring of status changes.
 * :javaref:`onDestroy() <FlitchioController#onDestroy()>` to terminate the controller properly.
 
 If you don't call all of these 4 methods, your app may behave incorrectly.
@@ -51,7 +51,7 @@ Here is the typical initial setup for an Activity::
             super.onCreate(savedInstanceState);
             
             flitchioController = FlitchioController.getInstance(this);
-            flitchioController.onCreate();
+            flitchioController.onCreate(statusListener /* see below */);
         }
         
         protected void onResume() {
@@ -78,12 +78,13 @@ And here is the typical initial setup for a Service::
     public class BackgroundService extends Service {
 
         private FlitchioController flitchioController;
+        private FlitchioStatusListener statusListener;
 
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             flitchioController = FlitchioController.getInstance(this);
-            flitchioController.onCreate();
+            flitchioController.onCreate(statusListener /* see below */);
             flitchioController.onResume();
         }
 
@@ -95,16 +96,63 @@ And here is the typical initial setup for a Service::
         }
     }
 
+The typical implementation of the ``statusListener`` is explained in :ref:`follow-status-changes`.
+
+.. _follow-status-changes:
+
 Follow status changes
 ^^^^^^^^^^^^^^^^^^^^^
 
-TODO: it will describe the FlitchioStatusListener and the :ref:`potential failures <failure-reasons>`.
+Because the controller initialisation is asynchronous, you need to register a :javaref:`FlitchioStatusListener` to follow its status changes.
+Your status listener will get a status callback at every important moment in the lifetime of your controller, such as:
 
+* :javaref:`Status#BINDING` when you asked for a binding but it hasn't completed yet. This is usually the first status callback.
+* :javaref:`Status#BOUND` when your binding has completed.
+* :javaref:`Status#CONNECTED` when your binding is complete and Flitchio is connected to the phone. This is the moment you can start :ref:`getting data from Flitchio<get-data>`.
+* :javaref:`Status#DISCONNECTED` when your binding is complete but Flitchio is disconnected from the phone. You can for example display a message to your user asking them to connect Flitchio to the phone.
+* :javaref:`Status#BINDING_FAILED` when your controller couldn't bind. This can happen for several reasons, read :ref:`failure-reasons` for details.
+
+Check the :javaref:`Status` API reference for an overview for all the possible statuses.
+
+Here's a typical implementation of the status listener::
+
+    flitchioController.onCreate(new FlitchioStatusListener() {
+        @Override
+        public void onFlitchioStatusChanged(Status status) {
+            if (status.code == Status.BOUND) {
+                // Yay, binding is effective!
+
+            } else if (status.code == Status.CONNECTED) {
+                startGettingDataFromFlitchio();
+
+            } else if (status.code == Status.DISCONNECTED) {
+                askUserToConnectFlitchio();
+
+            } else if (status.code == Status.BINDING_FAILED) {
+                int failureReason = status.failureReason;
+
+                // See section "Troubleshoot the reasons of a failed binding"
+
+            } else {
+                Log.v("Not reacting on status: "+status);
+            }
+        }
+    });
+
+
+Note: in this example, the status listener is implemented as an anonymous class, but you can of course let your Activity/Service implement :javaref:`FlitchioStatusListener` or create another class instead.
+
+If you don't care whether or not your controller gets bound and do not wish to follow the connection status of Flitchio, you can pass null as argument of :javaref:`FlitchioController#onCreate(FlitchioStatusListener)`.
+
+In addition to the status callbacks, you can also check your controller's status at any time by calling :javaref:`FlitchioController#getStatus()`.
+
+
+.. _get-data:
 
 Get data from Flitchio
 ^^^^^^^^^^^^^^^^^^^^^^
 
-As soon as your controller is in :javaref:`connected status <FlitchioStatusListener#STATUS_CONNECTED>`, you are able to get data from Flitchio.
+As soon as your controller is in :javaref:`Status#CONNECTED`, you are able to get data from Flitchio.
 There are two ways of accessing this data:
 
 * Either your app implements an **event listener** to receive button and direction events (newly pressed or released, joystick moving, pressure variations).
@@ -121,28 +169,26 @@ That's typically the case of Android games that use a SurfaceView or a GLSurface
 Listening Mode
 """"""""""""""
 
-If you want to listen for incoming events, all you need to do is implement a :javaref:`FlitchioEventListener` and pass it in :javaref:`onResume() <FlitchioController#onResume()>` instead of using the simple version with no parameter.
+If you want to listen for incoming events, all you need to do is implement a :javaref:`FlitchioEventListener` and pass it in :javaref:`onResume(FlitchioEventListener) <FlitchioController#onResume(FlitchioEventListener)>` instead of using the simple version with no parameter.
 
 Here is an example of a typical controller lifecycle in listening mode for button and joystick events::
 
     public class MainActivity extends Activity {
 
         private FlitchioController flitchioController;
-        private FlitchioEventListener flitchioEventListenerImpl;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             flitchioController = FlitchioController.getInstance(this);
-            flitchioEventListenerImpl = new FlitchioEventListenerImpl(); // see below
 
-            flitchioController.onCreate(...);
+            flitchioController.onCreate(statusListener);
         }
 
         @Override
         protected void onResume() {
             super.onResume();
 
-            flitchioController.onResume(flitchioEventListenerImpl);
+            flitchioController.onResume(eventListener /* see below */);
         }
 
         @Override
@@ -166,9 +212,9 @@ Once the controller is bound to Flitchio Manager, Flitchio is connected, and the
 * a :javaref:`ButtonEvent` whenever the user presses or releases a button/direction of Flitchio, or varies the pressure;
 * a :javaref:`JoystickEvent` whenever the user moves a joystick of Flitchio.
 
-Here is an example of what you can do with the received events::
+Here's a typical implementation of the event listener::
 
-    public class FlitchioEventListenerImpl implements FlitchioEventListener {
+    flitchioController.onResume(new FlitchioEventListener() {
         @Override
         public void onFlitchioButtonEvent(InputElement.Button source, ButtonEvent event) {
             if (event.getAction() == ButtonEvent.ACTION_DOWN) {
@@ -196,11 +242,12 @@ Here is an example of what you can do with the received events::
                 // The top joystick has moved
             }
         }
-    }
+    });
 
+Note: in this example, the event listener is implemented as an anonymous class, but you can of course let your Activity/Service implement :javaref:`FlitchioEventListener` or create another class instead.
 
-**Important note:** these listener callbacks, by default, are executed on an arbitrary thread different from the main thread.
-To define on which thread you want to receive these callbacks, please check :ref:`define-thread-callbacks`.
+These event callbacks, by default, are executed on an arbitrary thread different from the main thread.
+To define on which thread you want to receive the event callbacks, please check :ref:`define-thread-callbacks`.
 
 .. _polling-mode:
 
@@ -216,7 +263,7 @@ You would then be able to query the current state like this::
 
     void update() {
 
-        if (flitchioController != null && flitchioController.getStatus() == FlitchioStatusListener#STATUS_CONNECTED) {
+        if (flitchioController != null && flitchioController.getStatus().code == Status#CONNECTED) {
             // Retrieve the current state of Flitchio
             FlitchioSnapshot snapshot = flitchioController.obtainSnapshot();
 
@@ -232,8 +279,8 @@ You would then be able to query the current state like this::
     }
 
 
-**Important note:** after calling :javaref:`onCreate() <FlitchioController#onCreate()>`, you can't immediately start polling, because your :javaref:`FlitchioController` is still initialising.
-Polling is possible as soon as you get a status callback with :javaref:`connected status <FlitchioStatusListener#STATUS_CONNECTED>`.
+**Important note:** after calling :javaref:`onCreate() <FlitchioController#onCreate(FlitchioStatusListener)>`, you can't immediately start polling, because your controller is still initialising.
+Polling is possible as soon as you get a status callback with :javaref:`Status#CONNECTED`.
 
 Troubleshooting & Best practices
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -251,23 +298,23 @@ If you remove logging in your app with Proguard, the :javaref:`FlitchioControlle
 Troubleshoot the reasons of a failed binding
 """"""""""""""""""""""""""""""""""""""""""""
 
-If you get a status callback with :javaref:`STATUS_BINDING_FAILED <FlitchioStatusListener#STATUS_BINDING_FAILED>`, it means that either a binding attempt hasn't succeeded, or the existing binding has ended unexpectedly.
-You can troubleshoot the reason of this failure with :javaref:`FlitchioController#getFailureReason()`.
+If you get a status callback with :javaref:`Status#BINDING_FAILED`, it means that either a binding attempt hasn't succeeded, or the existing binding has ended unexpectedly.
+You can troubleshoot the reason of this failure by checking the :javaref:`Status#failureReason` field of this status.
 Here are the most common reasons:
 
-* :javaref:`FailureReason#MANAGER_UNUSABLE`: the user doesn't have the Flitchio Manager app installed on their phone, or they have an outdated version. In both cases, they need to download the latest version from the Play Store. :javaref:`FlitchioController#getPlayStoreIntentForFlitchioManager()` can help you for that. Alternatively, you can check the version of the SDK with :javaref:`FlitchioController#getVersionCode()` and the version of Flitchio Manager on the user's phone with :javaref:`FlitchioController#getFlitchioManagerVersionCode()`.
-* :javaref:`FailureReason#SERVICE_UNREACHABLE`: the Flitchio Manager app cannot be reached for an unexpected reason.
-* :javaref:`FailureReason#SERVICE_REFUSED_CONNECTION`: this controller has not been accepted by Flitchio Manager.
-* :javaref:`FailureReason#SERVICE_SHUTDOWN_CONNECTION`: the binding with Flitchio Manager ended unexpectedly. Try to restart the app.
+* :javaref:`Status.FailingStatus#REASON_MANAGER_UNUSABLE`: the user doesn't have the Flitchio Manager app installed on their phone, or they have an outdated version. In both cases, they need to download the latest version from the Play Store. :javaref:`FlitchioController#getPlayStoreIntentForFlitchioManager()` can help you for that. Alternatively, you can check the version of the SDK with :javaref:`FlitchioController#getVersionCode()` and the version of Flitchio Manager on the user's phone with :javaref:`FlitchioController#getFlitchioManagerVersionCode(Context)`.
+* :javaref:`Status.FailingStatus#REASON_SERVICE_UNREACHABLE`: the Flitchio Manager app cannot be reached for an unexpected reason.
+* :javaref:`Status.FailingStatus#REASON_SERVICE_REFUSED_CONNECTION`: this controller has not been accepted by Flitchio Manager.
+* :javaref:`Status.FailingStatus#REASON_SERVICE_SHUTDOWN_CONNECTION`: the binding with Flitchio Manager ended unexpectedly. Try to restart the app.
 
 .. _define-thread-callbacks:
 
-Receive listener callbacks on a particular thread
-"""""""""""""""""""""""""""""""""""""""""""""""""
+Receive event callbacks on a particular thread
+""""""""""""""""""""""""""""""""""""""""""""""
 
 By default, all the callback methods of :javaref:`FlitchioEventListener` are executed on an arbitrary non-UI thread, different from the main thread.
 This can be problematic if you try to do UI operations in those callbacks, such as updating Views: your app will crash.
-You can change the default behaviour by passing to :javaref:`onResume() <FlitchioController#onResume(FlitchioEventListener, Handler)>` a reference to a Handler object associated to the thread you want to receive the callbacks in.
+You can change the default behaviour by passing to :javaref:`FlitchioController#onResume(FlitchioEventListener, Handler)` a reference to a Handler object associated to the thread you want to receive the callbacks in.
 
 In particular, if you want to receive these callbacks on the UI thread, you would do::
 
@@ -275,7 +322,7 @@ In particular, if you want to receive these callbacks on the UI thread, you woul
     protected void onResume() {
         super.onResume();
 
-        flitchioController.onResume(flitchioEventListenerImpl, new Handler());
+        flitchioController.onResume(eventListener, new Handler());
     }
 
     @Override
@@ -285,6 +332,7 @@ In particular, if you want to receive these callbacks on the UI thread, you woul
         super.onPause();
     }
 
+Note that the status callbacks of :javaref:`FlitchioStatusListener` will always happen on the main thread.
 
 Keep your screen on while using Flitchio
 """"""""""""""""""""""""""""""""""""""""
