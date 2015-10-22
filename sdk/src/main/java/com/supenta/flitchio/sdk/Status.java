@@ -106,6 +106,14 @@ public class Status {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o != null
+                && o instanceof Status
+                && code == ((Status) o).code
+                && failureReason == ((Status) o).failureReason;
+    }
+
     /**
      * Subclass of {@link Status} describing that a failure has happened.
      * A failing status has a {@link #BINDING_FAILED} code and it holds the reason of the
