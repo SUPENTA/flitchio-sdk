@@ -8,7 +8,7 @@ import android.content.Intent;
  * receiver is only responsible for watching {@link Status#CONNECTED} and
  * {@link Status#DISCONNECTED}.
  */
-class InternalStatusReceiver extends BroadcastReceiverWithCallback<InternalStatusListener> {
+class InternalStatusReceiver extends SecureBroadcastReceiverWithCallback<InternalStatusListener> {
     /**
      * Broadcast notifying that Flitchio has connected or disconnected.
      * Always contains {@link #EXTRA_STATUS}.
@@ -25,8 +25,17 @@ class InternalStatusReceiver extends BroadcastReceiverWithCallback<InternalStatu
     static final String EXTRA_STATUS =
             FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".EXTRA_STATUS";
 
+    /**
+     * Thanks to the permission passed when you register the receiver, this receiver will only
+     * receive status from brodcasters who hold this permission (normally, only Flitchio Manager
+     * should have it).
+     * KEEP IT SYNCED WITH THE VALUE IN FLITCHIO MANAGER.
+     */
+    static final String PERMISSION_BROADCAST_STATUS =
+            FlitchioController.FLITCHIO_MANAGER_PACKAGE + ".PERMISSION_BROADCAST_STATUS";
+
     InternalStatusReceiver() {
-        super(ACTION_FLITCHIO_STATUS_CHANGED);
+        super(PERMISSION_BROADCAST_STATUS, ACTION_FLITCHIO_STATUS_CHANGED);
     }
 
     @Override

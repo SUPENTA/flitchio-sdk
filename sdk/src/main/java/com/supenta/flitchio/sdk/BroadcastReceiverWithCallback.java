@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
  * @param <T> An interface for callbacks.
  */
 abstract class BroadcastReceiverWithCallback<T> extends BroadcastReceiver {
-    private final IntentFilter intentFilter;
+    protected final IntentFilter intentFilter;
     private T callback;
 
     protected BroadcastReceiverWithCallback(String... actionsToWatch) {
@@ -24,6 +24,10 @@ abstract class BroadcastReceiverWithCallback<T> extends BroadcastReceiver {
     public void start(@NonNull Context context, @NonNull T callback) {
         this.callback = callback;
 
+        registerReceiver(context);
+    }
+
+    protected void registerReceiver(@NonNull Context context) {
         context.registerReceiver(this, intentFilter);
     }
 
