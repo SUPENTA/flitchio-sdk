@@ -27,13 +27,13 @@ import java.util.Map;
  * Object providing the main communication channel to the Flitchio Manager app.
  * This is the most important component of the Flitchio SDK, and the only object you have to
  * manipulate in order to use Flitchio with your app.
- * <p/>
+ * <p>
  * <strong>The controller initialises and binds to the Flitchio Manager app when you call
  * {@link #onCreate(FlitchioStatusListener)}.
  * To free the controller properly after use, you must call {@link #onDestroy()}.
  * You also need to call {@link #onResume()} (or one of its other versions) and {@link #onPause()}
  * at the appropriate moments to ensure a clean lifecycle.</strong>
- * <p/>
+ * <p>
  * After {@link #onCreate(FlitchioStatusListener)} returns, the binding is not effective yet.
  * You will get notified by a {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)}
  * callback.
@@ -41,14 +41,14 @@ import java.util.Map;
  * The {@link FlitchioStatusListener} will also notify you about other status changes (like
  * "Flitchio just disconnected").
  * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for details.
- * <p/>
+ * <p>
  * As soon as this controller is in {@link Status#CONNECTED}, you can poll
  * data by calling {@link #obtainSnapshot()}.
  * You typically call {@link #obtainSnapshot()} if you want to use your controller in
  * <em>polling mode</em>, i.e. if your app is designed to have a rendering loop updating the
  * display at high frequency.
  * That's typically the case for games that use a {@link SurfaceView} or a {@link GLSurfaceView}.
- * <p/>
+ * <p>
  * If you don't want to actively poll data from Flitchio, but rather receive events every time
  * a button has been pressed/released or a joystick has moved, you can use your controller in
  * <em>listening mode</em>.
@@ -91,7 +91,7 @@ public class FlitchioController {
     /**
      * Receiver used for listening to connection/disconnection events of Flitchio.
      */
-    private final FlitchioStatusReceiver statusReceiver = new FlitchioStatusReceiver();
+    private final InternalStatusReceiver statusReceiver = new InternalStatusReceiver();
     private final Handler mainThreadHandler = new Handler();
 
     /**
@@ -288,18 +288,18 @@ public class FlitchioController {
 
     /**
      * Initialise this controller.
-     * <p/>
+     * <p>
      * <strong>You must call this method appropriately in the lifecycle of your Activity or
      * Service.</strong>
      * It should be called in the onCreate() method of your {@link Activity} / {@link Service}.
-     * <p/>
+     * <p>
      * This method attempts to initialise the controller and bind to Flitchio.
      * At the moment it returns, the binding is <strong>not yet effective</strong>.
      * To be notified with the status changes (binding effective or failed, Flitchio
      * connected or disconnected), implement a {@link FlitchioStatusListener} and pass it.
      * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for the status changes
      * you can watch.
-     * <p/>
+     * <p>
      * In the rare case that you don't wish to receive status callbacks, you can pass null.
      *
      * @param statusListener The listener for status changes.
@@ -342,18 +342,18 @@ public class FlitchioController {
 
     /**
      * Resume this controller.
-     * <p/>
+     * <p>
      * <strong>You must call this method (or one of its other versions) appropriately in the
      * lifecycle of your Activity or Service.</strong>
      * If you use this controller in an {@link Activity}, this method should be called in your
      * Activity's onResume().
      * If you use this controller in a {@link Service}, this method can be called right after
      * {@link #onCreate(FlitchioStatusListener)}.
-     * <p/>
+     * <p>
      * After calling this method, you are ensured to receive at least one
      * {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} callback with the current
      * status.
-     * <p/>
+     * <p>
      * This is a variant of {@link #onResume(FlitchioEventListener)} that allows you to
      * define the thread on which you wish to receive the event callbacks.
      *
@@ -394,9 +394,9 @@ public class FlitchioController {
             /*
              * START LISTENING to status updates again
              */
-            statusReceiver.start(context, new FlitchioStatusListener() {
+            statusReceiver.start(context, new InternalStatusListener() {
                 @Override
-                public void onFlitchioStatusChanged(Status status) {
+                public void onInternalStatusChanged(Status status) {
                     reportStatus(status);
                 }
             });
@@ -433,18 +433,18 @@ public class FlitchioController {
 
     /**
      * Resume this controller.
-     * <p/>
+     * <p>
      * <strong>You must call this method (or one of its other versions) appropriately in the
      * lifecycle of your Activity or Service.</strong>
      * If you use this controller in an {@link Activity}, this method should be called in your
      * Activity's onResume().
      * If you use this controller in a {@link Service}, this method can be called right after
      * {@link #onCreate(FlitchioStatusListener)}.
-     * <p/>
+     * <p>
      * After calling this method, you are ensured to receive at least one
      * {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} callback with the current
      * status.
-     * <p/>
+     * <p>
      * This is a variant of {@link #onResume()} that allows you to listen for button and joystick
      * events.
      * You will get these event callback an arbitrary thread (different from the main thread).
@@ -464,18 +464,18 @@ public class FlitchioController {
 
     /**
      * Resume this controller.
-     * <p/>
+     * <p>
      * <strong>You must call this method (or one of its other versions) appropriately in the
      * lifecycle of your Activity or Service.</strong>
      * If you use this controller in an {@link Activity}, this method should be called in your
      * Activity's onResume().
      * If you use this controller in a {@link Service}, this method can be called right after
      * {@link #onCreate(FlitchioStatusListener)}.
-     * <p/>
+     * <p>
      * After calling this method, you are ensured to receive at least one
      * {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} callback with the current
      * status.
-     * <p/>
+     * <p>
      * This variant only enables you to follow status changes of Flitchio.
      * If you also wish to listen to button and joystick events, use
      * {@link #onResume(FlitchioEventListener)} instead.
@@ -491,7 +491,7 @@ public class FlitchioController {
 
     /**
      * Pause this controller.
-     * <p/>
+     * <p>
      * <strong>You must call this method appropriately in the lifecycle of your Activity or
      * Service.</strong>
      * If you use this controller in an {@link Activity}, this method should be called in your
@@ -513,7 +513,7 @@ public class FlitchioController {
 
     /**
      * Terminate this controller.
-     * <p/>
+     * <p>
      * <strong>You must call this method appropriately in the lifecycle of your Activity or
      * Service.</strong>
      * It should be called in the onDestroy() method of your {@link Activity} / {@link Service}.
