@@ -19,7 +19,7 @@
     </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Flitchio Developer Documentation &mdash; Flitchio SDK 0.6.1 documentation</title>
+  <title>Flitchio Developer Documentation &mdash; Flitchio SDK 0.7.0 documentation</title>
   
 
   
@@ -41,7 +41,7 @@
   
 
   
-    <link rel="top" title="Flitchio SDK 0.6.1 documentation" href="#"/>
+    <link rel="top" title="Flitchio SDK 0.7.0 documentation" href="#"/>
         <link rel="next" title="Getting started" href="overview.html"/> 
 
   
@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="sdkandroid.html">Flitchio SDK for Android</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#bind-to-flitchio">Bind to Flitchio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#follow-status-changes">Follow status changes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#get-data-from-flitchio">Get data from Flitchio</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#listening-mode">Listening Mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#polling-mode">Polling Mode</a></li>
@@ -97,9 +98,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#troubleshooting-best-practices">Troubleshooting &amp; Best practices</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#debug-logs">Debug logs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#deal-with-flitchio-manager-connection-error">Deal with Flitchio Manager connection error</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#know-when-to-poll-data-from-flitchio">Know when to poll data from Flitchio</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#receive-listener-callbacks-on-a-particular-thread">Receive listener callbacks on a particular thread</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#troubleshoot-the-reasons-of-a-failed-binding">Troubleshoot the reasons of a failed binding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#receive-event-callbacks-on-a-particular-thread">Receive event callbacks on a particular thread</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sdkandroid.html#keep-your-screen-on-while-using-flitchio">Keep your screen on while using Flitchio</a></li>
 </ul>
 </li>
@@ -162,7 +162,7 @@
 </ul>
 </dd>
 </dl>
-<p>This document was generated on September 24, 2015 for Flitchio SDK version 0.6.1.</p>
+<p>This document was generated on October 22, 2015 for Flitchio SDK version 0.7.0.</p>
 <hr class="docutils" />
 <div class="toctree-wrapper compound">
 <ul>
@@ -174,6 +174,7 @@
 <li class="toctree-l1"><a class="reference internal" href="sdkandroid.html">Flitchio SDK for Android</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#add-the-sdk-to-your-project">Add the SDK to your project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#bind-to-flitchio">Bind to Flitchio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#follow-status-changes">Follow status changes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#get-data-from-flitchio">Get data from Flitchio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sdkandroid.html#troubleshooting-best-practices">Troubleshooting &amp; Best practices</a></li>
 </ul>
@@ -226,7 +227,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.1',
+            VERSION:'0.7.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
