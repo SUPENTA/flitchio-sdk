@@ -21,13 +21,13 @@ abstract class BroadcastReceiverWithCallback<T> extends BroadcastReceiver {
         }
     }
 
-    public void start(Context context, @NonNull T callback) {
+    public void start(@NonNull Context context, @NonNull T callback) {
         this.callback = callback;
 
         context.registerReceiver(this, intentFilter);
     }
 
-    public void stop(Context context) {
+    public void stop(@NonNull Context context) {
         try {
             context.unregisterReceiver(this);
         } catch (IllegalArgumentException e) {

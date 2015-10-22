@@ -80,7 +80,7 @@ public class Status {
      * {@link FailingStatus#REASON_SERVICE_UNREACHABLE} or
      * {@link FailingStatus#REASON_SERVICE_SHUTDOWN_CONNECTION}.
      * If this status' {@link #code} is not {@link #BINDING_FAILED}, its value is
-     * {@link FailingStatus#REASON_NONE}.
+     * {@link FailingStatus#NOT_FAILED}.
      *
      * @since 0.7.0
      */
@@ -92,16 +92,16 @@ public class Status {
      * @param code Identifier for this status: one of the {@link Status} constants.
      */
     Status(int code) {
-        this(code, FailingStatus.REASON_NONE);
+        this(code, FailingStatus.NOT_FAILED);
     }
 
     private Status(int code, int failureReason) {
         this.code = code;
         this.failureReason = failureReason;
 
-        if (this.code == BINDING_FAILED && this.failureReason == FailingStatus.REASON_NONE) {
+        if (this.code == BINDING_FAILED && this.failureReason == FailingStatus.NOT_FAILED) {
             throw new IllegalArgumentException("Declared a BINDING_FAILED status without providing a failure reason");
-        } else if (this.code != BINDING_FAILED && this.failureReason != FailingStatus.REASON_NONE) {
+        } else if (this.code != BINDING_FAILED && this.failureReason != FailingStatus.NOT_FAILED) {
             throw new IllegalArgumentException("Declared status is not BINDING_FAILED but a failure reason has been provided");
         }
     }
@@ -119,7 +119,7 @@ public class Status {
          *
          * @since 0.7.0
          */
-        public static final int REASON_NONE = -1;
+        public static final int NOT_FAILED = -1;
         /**
          * The Flitchio Manager app is not installed on the user's phone,
          * or the version that is installed doesn't support this version of the SDK.

@@ -130,6 +130,7 @@ public class FlitchioController {
     /**
      * Status of this controller.
      */
+    @NonNull
     private Status currentStatus = new Status(Status.UNBOUND);
 
     /**
@@ -206,6 +207,7 @@ public class FlitchioController {
      * @since 0.5.0
      */
     @MainThread
+    @NonNull
     public static synchronized FlitchioController getInstance(@NonNull Context context) {
         // Check if there's already a controller for this context
         for (Map.Entry<WeakReference<Context>, FlitchioController> entry : controllers.entrySet()) {
@@ -231,8 +233,7 @@ public class FlitchioController {
      * @return True if the Manager installed on the phone can be used by this version of the SDK.
      */
     private static boolean isFlitchioManagerUsable(Context context) {
-        return BuildConfig.DEBUG // In debug, we consider the Manager always accessible
-                || getFlitchioManagerVersionCode(context) >= getVersionCode();
+        return getFlitchioManagerVersionCode(context) >= getVersionCode();
     }
 
     /**
@@ -241,6 +242,7 @@ public class FlitchioController {
      * @return An intent to open the PlayStore on FlitchioManager page.
      * @since 0.5.0
      */
+    @NonNull
     public static Intent getPlayStoreIntentForFlitchioManager() {
         // This intent will work only if the Play Store is installed, which we assume here.
         // Otherwise a possible alternative is:
@@ -654,6 +656,7 @@ public class FlitchioController {
      * @return The status of this controller.
      * @since 0.7.0
      */
+    @NonNull
     public Status getStatus() {
         return currentStatus;
     }
