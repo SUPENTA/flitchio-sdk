@@ -43,7 +43,9 @@ task("buildHtml") {
     dependsOn "checkSetupSphinx",
             "checkSetupSphinxJavalink",
             "checkSetupSphinxAnalytics",
-            ":sdk:assembleRelease" // To generate classes for sphinx-javalink
+            ":sdk:assembleRelease", // To generate classes for sphinx-javalink
+            ":sdk:javadoc"
+    // Not exactly necessary to build, but it is extremely misleading without the latest Javadoc
 
     inputs.dir srcDir
     inputs.property("version", libraryVersion)
