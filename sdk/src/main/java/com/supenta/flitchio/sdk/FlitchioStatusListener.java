@@ -27,7 +27,8 @@ public interface FlitchioStatusListener {
      * <li>At any point, if the binding fails, you will get a {@link Status#BINDING_FAILED}
      * callback.
      * It can happen in the attempt of binding or if the current binding hangs up.
-     * You can check the reason of the failure with {@link Status#failureReason}.</li>
+     * You can check the reason of the failure in {@link Status#failureReason}: its value is
+     * one of the constants in {@link Status.FailingStatus}.</li>
      * </ul>
      * <strong>To get all the callbacks, it is crucial to respect the lifecycle of the
      * {@link FlitchioController}, with onCreate(), onResume(), onPause() and onDestroy().</strong>

@@ -37,8 +37,7 @@ import java.util.Map;
  * After {@link #onCreate(FlitchioStatusListener)} returns, the binding is not effective yet.
  * You will get notified by a {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)}
  * callback.
- * When the status callback is {@link Status#BOUND}, you can start
- * using Flitchio.
+ * When the status callback is {@link Status#BOUND}, you can start using Flitchio.
  * The {@link FlitchioStatusListener} will also notify you about other status changes (like
  * "Flitchio just disconnected").
  * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for details.
@@ -295,9 +294,9 @@ public class FlitchioController {
      * This method attempts to initialise the controller and bind to Flitchio.
      * At the moment it returns, the binding is <strong>not yet effective</strong>.
      * To be notified with the status changes (binding effective or failed, Flitchio
-     * connected or disconnected), declare a {@link FlitchioStatusListener} and pass it.
-     * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for the status changes you
-     * can watch.
+     * connected or disconnected), implement a {@link FlitchioStatusListener} and pass it.
+     * See {@link FlitchioStatusListener#onFlitchioStatusChanged(Status)} for the status changes
+     * you can watch.
      * <p/>
      * In the rare case that you don't wish to receive status callbacks, you can pass null.
      *
