@@ -4,7 +4,7 @@ import android.os.Parcel;
 
 /**
  * Base class for button and joystick events that are fired in listening mode.
- * <p>
+ * <p/>
  * Each event has one source that is an {@link InputElement} and one action ({@link #getAction()}).
  *
  * @since 0.5.0
@@ -44,6 +44,9 @@ public abstract class InputEvent<T extends InputElement> {
 
     /**
      * Not to be used by 3rd-party developers.
+     * This flag is used to mark that a specific event should be dispatched to the listeners.
+     * If the action doesn't have this flag, then the data of the event is used in a
+     * {@link FlitchioSnapshot} but no event is fired as such.
      *
      * @hide
      * @deprecated
