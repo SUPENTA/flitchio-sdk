@@ -224,7 +224,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getButtonState(int)
      * @since 0.5.0
      */
-    public final float getButtonState(InputElement.Button button) {
+    public final int getButtonState(InputElement.Button button) {
         return getButtonState(button.code);
     }
 
