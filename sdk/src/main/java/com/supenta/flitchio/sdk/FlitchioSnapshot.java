@@ -181,7 +181,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @since 0.5.0
      */
     // !!! KEEP THE JAVADOC SYNCED WITH ButtonEvent !!!
-    public final float getButtonPressure(int buttonCode) {
+    public float getButtonPressure(int buttonCode) {
         if (buttonEvents[buttonCode] != null) {
             return buttonEvents[buttonCode].getPressure();
         } else {
@@ -196,7 +196,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getButtonPressure(int)
      * @since 0.5.0
      */
-    public final float getButtonPressure(InputElement.Button button) {
+    public float getButtonPressure(InputElement.Button button) {
         return getButtonPressure(button.code);
     }
 
@@ -208,7 +208,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getButtonState(InputElement.Button)
      * @since 0.5.0
      */
-    public final int getButtonState(int buttonCode) {
+    public int getButtonState(int buttonCode) {
         if (buttonEvents[buttonCode] != null) {
             return buttonEvents[buttonCode].getAction(); // Action will be translated to State
         } else {
@@ -224,7 +224,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getButtonState(int)
      * @since 0.5.0
      */
-    public final int getButtonState(InputElement.Button button) {
+    public int getButtonState(InputElement.Button button) {
         return getButtonState(button.code);
     }
 
@@ -235,7 +235,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickX(InputElement.Joystick)
      * @since 0.5.0
      */
-    public final float getJoystickX(int joystickCode) {
+    public float getJoystickX(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
             return joystickEvents[joystickCode].getX();
         } else {
@@ -250,7 +250,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickX(int)
      * @since 0.5.0
      */
-    public final float getJoystickX(InputElement.Joystick joystick) {
+    public float getJoystickX(InputElement.Joystick joystick) {
         return getJoystickX(joystick.code);
     }
 
@@ -261,7 +261,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickY(InputElement.Joystick)
      * @since 0.5.0
      */
-    public final float getJoystickY(int joystickCode) {
+    public float getJoystickY(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
             return joystickEvents[joystickCode].getY();
         } else {
@@ -276,7 +276,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickY(int)
      * @since 0.5.0
      */
-    public final float getJoystickY(InputElement.Joystick joystick) {
+    public float getJoystickY(InputElement.Joystick joystick) {
         return getJoystickY(joystick.code);
     }
 
@@ -288,7 +288,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickAngle(InputElement.Joystick)
      * @since 0.5.0
      */
-    public final float getJoystickAngle(int joystickCode) {
+    public float getJoystickAngle(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
             return joystickEvents[joystickCode].getAngle();
         } else {
@@ -304,7 +304,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickAngle(int)
      * @since 0.5.0
      */
-    public final float getJoystickAngle(InputElement.Joystick joystick) {
+    public float getJoystickAngle(InputElement.Joystick joystick) {
         return getJoystickAngle(joystick.code);
     }
 
@@ -315,7 +315,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickDistance(InputElement.Joystick)
      * @since 0.5.0
      */
-    public final float getJoystickDistance(int joystickCode) {
+    public float getJoystickDistance(int joystickCode) {
         if (joystickEvents[joystickCode] != null) {
             return joystickEvents[joystickCode].getDistance();
         } else {
@@ -330,7 +330,7 @@ public final class FlitchioSnapshot implements Parcelable {
      * @see #getJoystickDistance(int)
      * @since 0.5.0
      */
-    public final float getJoystickDistance(InputElement.Joystick joystick) {
+    public float getJoystickDistance(InputElement.Joystick joystick) {
         return getJoystickDistance(joystick.code);
     }
 }
